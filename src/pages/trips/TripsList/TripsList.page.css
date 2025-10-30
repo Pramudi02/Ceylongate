@@ -198,6 +198,95 @@
   font-weight: var(--font-weight-medium);
 }
 
+.tour-no-cell {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.country-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--gray-100);
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.destinations-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.more-badge {
+  background: var(--primary-color);
+  color: white;
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+.guide-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.period-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.days-badge {
+  background: var(--success-light);
+  color: var(--success);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: bold;
+  width: fit-content;
+}
+
+.type-badge {
+  padding: 4px 12px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-transform: capitalize;
+}
+
+.type-cultural {
+  background: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6;
+}
+
+.type-honeymoon {
+  background: rgba(236, 72, 153, 0.1);
+  color: #ec4899;
+}
+
+.type-wildlife {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.type-adventure {
+  background: rgba(249, 115, 22, 0.1);
+  color: #f97316;
+}
+
+.type-leisure {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
 /* Action Buttons */
 .action-buttons {
   display: flex;

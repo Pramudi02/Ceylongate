@@ -8,17 +8,127 @@ const TripsList = () => {
   const [statusFilter, setStatusFilter] = useState('All');
 
   const trips = [
-    { id: 1, name: 'Maldives Paradise', destination: 'Maldives', guide: 'Kamal Silva', startDate: '2025-11-15', endDate: '2025-11-22', guests: 15, status: 'Upcoming' },
-    { id: 2, name: 'Sigiriya Adventure', destination: 'Sigiriya, Sri Lanka', guide: 'Nimal Perera', startDate: '2025-10-28', endDate: '2025-11-02', guests: 12, status: 'Ongoing' },
-    { id: 3, name: 'Ella Mountain Trek', destination: 'Ella, Sri Lanka', guide: 'Sunil Fernando', startDate: '2025-09-10', endDate: '2025-09-15', guests: 8, status: 'Completed' },
-    { id: 4, name: 'Galle Fort Tour', destination: 'Galle, Sri Lanka', guide: 'Kamal Silva', startDate: '2025-11-05', endDate: '2025-11-08', guests: 20, status: 'Upcoming' },
-    { id: 5, name: 'Kandy Cultural Tour', destination: 'Kandy, Sri Lanka', guide: 'Nimal Perera', startDate: '2025-10-20', endDate: '2025-10-25', guests: 10, status: 'Ongoing' },
-    { id: 6, name: 'Yala Safari Experience', destination: 'Yala, Sri Lanka', guide: 'Sunil Fernando', startDate: '2025-09-01', endDate: '2025-09-05', guests: 16, status: 'Completed' }
+    { 
+      id: 1, 
+      tourNo: 'CGT-2025-001',
+      name: 'Sri Lanka Heritage Tour', 
+      countryOfClient: 'Italy',
+      agent: { name: 'Rome Travel Agency', contact: '+39 06 1234567' },
+      guide: { name: 'Kamal Silva', contact: '+94 77 123 4567', license: 'TG-2023-001' },
+      tripCountry: 'Sri Lanka',
+      startDate: '2025-11-15', 
+      endDate: '2025-11-22',
+      days: 8,
+      nights: 7,
+      numberOfClients: 15,
+      destinations: ['Colombo', 'Kandy', 'Sigiriya', 'Ella'],
+      tourType: 'Cultural',
+      assignedEmployee: 'Admin User',
+      notes: 'VIP group, special dietary requirements',
+      status: 'Upcoming'
+    },
+    { 
+      id: 2, 
+      tourNo: 'CGT-2025-002',
+      name: 'Romantic Honeymoon Getaway', 
+      countryOfClient: 'France',
+      agent: { name: 'Paris Luxury Tours', contact: '+33 1 4567890' },
+      guide: { name: 'Nimal Perera', contact: '+94 77 234 5678', license: 'TG-2023-012' },
+      tripCountry: 'Sri Lanka',
+      startDate: '2025-10-28', 
+      endDate: '2025-11-05',
+      days: 9,
+      nights: 8,
+      numberOfClients: 2,
+      destinations: ['Bentota', 'Ella', 'Nuwara Eliya', 'Galle'],
+      tourType: 'Honeymoon',
+      assignedEmployee: 'Kamal Silva',
+      notes: 'Anniversary celebration, candlelight dinner arrangements',
+      status: 'Ongoing'
+    },
+    { 
+      id: 3, 
+      tourNo: 'CGT-2025-003',
+      name: 'Wildlife Safari Adventure', 
+      countryOfClient: 'Germany',
+      agent: { name: 'Berlin Adventure Tours', contact: '+49 30 987654' },
+      guide: { name: 'Sunil Fernando', contact: '+94 77 345 6789', license: 'TG-2023-025' },
+      tripCountry: 'Sri Lanka',
+      startDate: '2025-09-10', 
+      endDate: '2025-09-17',
+      days: 8,
+      nights: 7,
+      numberOfClients: 8,
+      destinations: ['Yala', 'Udawalawe', 'Minneriya', 'Wilpattu'],
+      tourType: 'Wildlife',
+      assignedEmployee: 'Nimal Perera',
+      notes: 'Photography focused group, early morning safaris requested',
+      status: 'Completed'
+    },
+    { 
+      id: 4, 
+      tourNo: 'CGT-2025-004',
+      name: 'Galle Fort Heritage Walk', 
+      countryOfClient: 'United Kingdom',
+      agent: { name: 'London Historic Tours', contact: '+44 20 7123456' },
+      guide: { name: 'Kamal Silva', contact: '+94 77 123 4567', license: 'TG-2023-001' },
+      tripCountry: 'Sri Lanka',
+      startDate: '2025-11-05', 
+      endDate: '2025-11-08',
+      days: 4,
+      nights: 3,
+      numberOfClients: 20,
+      destinations: ['Galle', 'Unawatuna', 'Mirissa'],
+      tourType: 'Cultural',
+      assignedEmployee: 'Admin User',
+      notes: 'Group tour, museum visits included',
+      status: 'Upcoming'
+    },
+    { 
+      id: 5, 
+      tourNo: 'CGT-2025-005',
+      name: 'Temple & Tea Country Explorer', 
+      countryOfClient: 'Australia',
+      agent: { name: 'Sydney Asia Tours', contact: '+61 2 9876543' },
+      guide: { name: 'Nimal Perera', contact: '+94 77 234 5678', license: 'TG-2023-012' },
+      tripCountry: 'Sri Lanka',
+      startDate: '2025-10-20', 
+      endDate: '2025-10-27',
+      days: 8,
+      nights: 7,
+      numberOfClients: 10,
+      destinations: ['Kandy', 'Nuwara Eliya', 'Dambulla', 'Polonnaruwa'],
+      tourType: 'Cultural',
+      assignedEmployee: 'Sunil Fernando',
+      notes: 'Tea plantation tour and temple visits',
+      status: 'Ongoing'
+    },
+    { 
+      id: 6, 
+      tourNo: 'CGT-2025-006',
+      name: 'Adventure Trekking Expedition', 
+      countryOfClient: 'United States',
+      agent: { name: 'New York Adventure Co', contact: '+1 212 5551234' },
+      guide: { name: 'Sunil Fernando', contact: '+94 77 345 6789', license: 'TG-2023-025' },
+      tripCountry: 'Sri Lanka',
+      startDate: '2025-09-01', 
+      endDate: '2025-09-10',
+      days: 10,
+      nights: 9,
+      numberOfClients: 16,
+      destinations: ['Ella', 'Horton Plains', 'Adams Peak', 'Knuckles Range'],
+      tourType: 'Adventure',
+      assignedEmployee: 'Admin User',
+      notes: 'Hiking group, camping equipment provided',
+      status: 'Completed'
+    }
   ];
 
   const filteredTrips = trips.filter(trip => {
     const matchesSearch = trip.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         trip.destination.toLowerCase().includes(searchTerm.toLowerCase());
+                         trip.tourNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         trip.destinations.join(' ').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         trip.countryOfClient.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'All' || trip.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -89,12 +199,14 @@ const TripsList = () => {
         <table className="trips-table">
           <thead>
             <tr>
+              <th>Tour No</th>
               <th>Trip Name</th>
-              <th>Destination</th>
+              <th>Client Country</th>
+              <th>Destinations</th>
               <th>Tour Guide</th>
-              <th>Start Date</th>
-              <th>End Date</th>
+              <th>Travel Period</th>
               <th>Guests</th>
+              <th>Tour Type</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -103,21 +215,41 @@ const TripsList = () => {
             {filteredTrips.map(trip => (
               <tr key={trip.id}>
                 <td>
-                  <div className="trip-name-cell">
-                    <strong>{trip.name}</strong>
-                    <span className="trip-id">#{trip.id.toString().padStart(4, '0')}</span>
+                  <div className="tour-no-cell">
+                    <strong>{trip.tourNo}</strong>
                   </div>
                 </td>
                 <td>
-                  <span className="destination"><span className="icon-location"></span> {trip.destination}</span>
+                  <div className="trip-name-cell">
+                    <strong>{trip.name}</strong>
+                  </div>
                 </td>
                 <td>
-                  <span className="guide"><span className="icon-user"></span> {trip.guide}</span>
+                  <span className="country-badge">{trip.countryOfClient}</span>
                 </td>
-                <td>{trip.startDate}</td>
-                <td>{trip.endDate}</td>
                 <td>
-                  <span className="guests-badge">{trip.guests} guests</span>
+                  <div className="destinations-cell">
+                    <span className="icon-location"></span>
+                    {trip.destinations.slice(0, 2).join(', ')}
+                    {trip.destinations.length > 2 && <span className="more-badge">+{trip.destinations.length - 2}</span>}
+                  </div>
+                </td>
+                <td>
+                  <div className="guide-cell">
+                    <span className="icon-user"></span> {trip.guide.name}
+                  </div>
+                </td>
+                <td>
+                  <div className="period-cell">
+                    {trip.startDate} → {trip.endDate}
+                    <small className="days-badge">{trip.days}D/{trip.nights}N</small>
+                  </div>
+                </td>
+                <td>
+                  <span className="guests-badge">{trip.numberOfClients}</span>
+                </td>
+                <td>
+                  <span className="type-badge type-{trip.tourType.toLowerCase()}">{trip.tourType}</span>
                 </td>
                 <td>
                   <span className={`badge ${getStatusClass(trip.status)}`}>
