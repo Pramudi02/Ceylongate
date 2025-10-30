@@ -206,7 +206,6 @@ const TripsList = () => {
               <th>Tour Guide</th>
               <th>Travel Period</th>
               <th>Guests</th>
-              <th>Tour Type</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -236,20 +235,18 @@ const TripsList = () => {
                 </td>
                 <td>
                   <div className="guide-cell">
-                    <span className="icon-user"></span> {trip.guide.name}
+                    <span className="guide-name">{trip.guide.name}</span>
+                    <span className="guide-license">{trip.guide.license}</span>
                   </div>
                 </td>
                 <td>
                   <div className="period-cell">
-                    {trip.startDate} → {trip.endDate}
-                    <small className="days-badge">{trip.days}D/{trip.nights}N</small>
+                    <span className="dates">{trip.startDate} → {trip.endDate}</span>
+                    <span className="days-badge">{trip.days}D/{trip.nights}N</span>
                   </div>
                 </td>
                 <td>
                   <span className="guests-badge">{trip.numberOfClients}</span>
-                </td>
-                <td>
-                  <span className="type-badge type-{trip.tourType.toLowerCase()}">{trip.tourType}</span>
                 </td>
                 <td>
                   <span className={`badge ${getStatusClass(trip.status)}`}>
@@ -257,29 +254,12 @@ const TripsList = () => {
                   </span>
                 </td>
                 <td>
-                  <div className="action-buttons">
-                    <button
-                      className="action-btn btn-view"
-                      onClick={() => navigate(`/trips/${trip.id}`)}
-                      title="View Details"
-                    >
-                      <span className="icon-eye"></span>
-                    </button>
-                    <button
-                      className="action-btn btn-edit"
-                      onClick={() => {}}
-                      title="Edit"
-                    >
-                      <span className="icon-edit"></span>
-                    </button>
-                    <button
-                      className="action-btn btn-delete"
-                      onClick={() => {}}
-                      title="Delete"
-                    >
-                      <span className="icon-trash"></span>
-                    </button>
-                  </div>
+                  <button
+                    className="btn-view-more"
+                    onClick={() => navigate(`/trips/${trip.id}`)}
+                  >
+                    View More
+                  </button>
                 </td>
               </tr>
             ))}
