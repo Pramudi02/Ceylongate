@@ -1,0 +1,130 @@
+.notfound-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.notfound-container {
+  text-align: center;
+  max-width: 600px;
+  position: relative;
+  z-index: 1;
+}
+
+.notfound-animation {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.float-icon {
+  position: absolute;
+  font-size: 48px;
+  animation: float 6s ease-in-out infinite;
+  opacity: 0.3;
+}
+
+.icon-1 {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.icon-2 {
+  top: 60%;
+  right: 15%;
+  animation-delay: 2s;
+}
+
+.icon-3 {
+  bottom: 20%;
+  left: 20%;
+  animation-delay: 4s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-30px) rotate(10deg);
+  }
+}
+
+.error-code {
+  font-size: 120px;
+  font-weight: var(--font-weight-bold);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--space-md);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.error-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-900);
+  margin-bottom: var(--space-lg);
+}
+
+.error-message {
+  font-size: var(--font-size-lg);
+  color: var(--gray-600);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-2xl);
+}
+
+.notfound-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  margin-bottom: var(--space-2xl);
+  flex-wrap: wrap;
+}
+
+.help-text {
+  font-size: var(--font-size-sm);
+  color: var(--gray-500);
+}
+
+.help-text a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+}
+
+.help-text a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .error-code {
+    font-size: 80px;
+  }
+
+  .error-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .error-message {
+    font-size: var(--font-size-base);
+  }
+
+  .notfound-actions {
+    flex-direction: column;
+  }
+
+  .float-icon {
+    font-size: 32px;
+  }
+}
