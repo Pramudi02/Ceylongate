@@ -1,0 +1,220 @@
+.trip-invoices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.invoices-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.invoices-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.invoice-card {
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.invoice-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-lg);
+}
+
+.invoice-main {
+  padding: var(--space-xl);
+}
+
+.invoice-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+
+.invoice-id {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-900);
+}
+
+.invoice-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+  padding: var(--space-lg);
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.detail-label {
+  font-size: var(--font-size-xs);
+  color: var(--gray-600);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: var(--font-weight-medium);
+}
+
+.detail-value {
+  font-size: var(--font-size-base);
+  color: var(--gray-900);
+  font-weight: var(--font-weight-semibold);
+}
+
+.amount {
+  font-size: var(--font-size-2xl);
+  color: var(--primary-color);
+  font-weight: var(--font-weight-bold);
+}
+
+.invoice-actions {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.btn-action {
+  padding: 10px 20px;
+  border: 2px solid var(--gray-300);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-base);
+}
+
+.btn-edit:hover {
+  background: var(--warning-light);
+  border-color: var(--warning);
+}
+
+.btn-finalize:hover {
+  background: var(--success-light);
+  border-color: var(--success);
+}
+
+.btn-download:hover {
+  background: var(--primary-lighter);
+  border-color: var(--primary-color);
+}
+
+.btn-versions:hover {
+  background: var(--info-light);
+  border-color: var(--info);
+}
+
+.version-history {
+  background: var(--gray-50);
+  padding: var(--space-xl);
+  border-top: 2px solid var(--gray-200);
+  animation: slideInUp var(--transition-slow);
+}
+
+.version-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-900);
+  margin-bottom: var(--space-lg);
+}
+
+.versions-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.version-item {
+  background: var(--white);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: var(--space-md);
+  border: 1px solid var(--gray-200);
+}
+
+.version-badge {
+  background: var(--primary-color);
+  color: var(--white);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  height: fit-content;
+}
+
+.version-details {
+  flex: 1;
+}
+
+.version-date {
+  font-size: var(--font-size-sm);
+  color: var(--gray-600);
+  margin-bottom: var(--space-xs);
+}
+
+.version-changes {
+  font-size: var(--font-size-base);
+  color: var(--gray-900);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-3xl);
+  background: var(--gray-50);
+  border-radius: var(--radius-xl);
+  border: 2px dashed var(--gray-300);
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: var(--space-lg);
+  display: block;
+}
+
+.empty-state h3 {
+  font-size: var(--font-size-xl);
+  color: var(--gray-700);
+  margin-bottom: var(--space-sm);
+}
+
+.empty-state p {
+  font-size: var(--font-size-base);
+  color: var(--gray-600);
+  margin-bottom: var(--space-lg);
+}
+
+@media (max-width: 768px) {
+  .invoices-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .invoice-details {
+    grid-template-columns: 1fr;
+  }
+
+  .invoice-actions {
+    flex-direction: column;
+  }
+
+  .btn-action {
+    width: 100%;
+  }
+}
