@@ -102,6 +102,42 @@
   line-height: var(--line-height-relaxed);
 }
 
+.itinerary-activities {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-sm) 0 0 0;
+}
+
+.itinerary-activities li {
+  font-size: var(--font-size-base);
+  color: var(--gray-600);
+  padding: var(--space-xs) 0;
+  padding-left: var(--space-lg);
+  position: relative;
+}
+
+.itinerary-activities li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.notes-box {
+  background: var(--white);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+}
+
+.notes-box p {
+  font-size: var(--font-size-base);
+  color: var(--gray-700);
+  line-height: var(--line-height-relaxed);
+  margin: 0;
+}
+
 .passengers-table-container {
   background: var(--white);
   border-radius: var(--radius-md);
