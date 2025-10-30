@@ -241,8 +241,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  color: white;
+  background-color: #0076b648;
+  color: rgb(0, 0, 0) !important;
   padding: 6px 12px;
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
@@ -256,23 +256,24 @@
   justify-content: center;
   width: 20px;
   height: 20px;
-  background: rgba(255, 255, 255, 0.3);
   border-radius: var(--radius-full);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
+  color: black !important;
 }
 
 .destination-name {
   padding: 0 4px;
+  color: black !important;
 }
 
 .btn-remove-destination {
-  background: rgba(255, 255, 255, 0.2);
   border: none;
-  color: white;
+  color: rgb(86, 0, 0);
   width: 20px;
   height: 20px;
   border-radius: var(--radius-full);
+  background-color: #0076b600;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -283,7 +284,7 @@
 }
 
 .btn-remove-destination:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background-color: #0076b600;
   transform: rotate(90deg);
 }
 
@@ -475,6 +476,15 @@
   font-size: var(--font-size-lg);
   line-height: 1;
   flex-shrink: 0;
+  color: #3b82f6;
+  font-weight: var(--font-weight-bold);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: var(--radius-full);
 }
 
 .info-message p {

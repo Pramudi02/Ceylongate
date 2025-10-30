@@ -336,7 +336,7 @@ const CreateTripForm = ({ onClose, onSubmit }) => {
                   <div className="add-new-form">
                     <h4>Add New Agent</h4>
                     <div className="info-message">
-                      <span className="info-icon">ℹ️</span>
+                      <span className="info-icon">ℹ</span>
                       <p>You can add more detailed information about this agent later on the Agents page.</p>
                     </div>
                     <div className="form-group">
@@ -443,7 +443,7 @@ const CreateTripForm = ({ onClose, onSubmit }) => {
                   <div className="add-new-form">
                     <h4>Add New Tour Guide</h4>
                     <div className="info-message">
-                      <span className="info-icon">ℹ️</span>
+                      <span className="info-icon">ℹ</span>
                       <p>You can add more detailed information about this guide later on the Tour Guides page.</p>
                     </div>
                     <div className="form-group">
@@ -574,7 +574,6 @@ const CreateTripForm = ({ onClose, onSubmit }) => {
                     <div className="selected-destinations">
                       {selectedDestinations.map((dest, index) => (
                         <div key={dest} className="destination-tag">
-                          <span className="destination-number">{index + 1}</span>
                           <span className="destination-name">{dest}</span>
                           <button
                             type="button"
