@@ -1,0 +1,144 @@
+.trip-details-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  padding: var(--space-2xl);
+}
+
+.btn-back {
+  background: var(--white);
+  border: 2px solid var(--gray-300);
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  margin-bottom: var(--space-lg);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.btn-back:hover {
+  background: var(--gray-100);
+  border-color: var(--primary-color);
+}
+
+.trip-header {
+  margin-bottom: var(--space-xl);
+}
+
+.trip-header-content {
+  background: var(--white);
+  padding: var(--space-xl);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.trip-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-900);
+  margin-bottom: var(--space-sm);
+}
+
+.trip-meta {
+  display: flex;
+  gap: var(--space-md);
+  font-size: var(--font-size-base);
+  color: var(--gray-600);
+  flex-wrap: wrap;
+}
+
+.tabs-container {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.tabs-nav {
+  display: flex;
+  border-bottom: 2px solid var(--gray-200);
+  background: var(--gray-50);
+  padding: var(--space-md) var(--space-lg) 0;
+  gap: var(--space-sm);
+  overflow-x: auto;
+}
+
+.tab-button {
+  background: transparent;
+  border: none;
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-600);
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+.tab-button:hover {
+  background: var(--white);
+  color: var(--primary-color);
+}
+
+.tab-button.active {
+  background: var(--white);
+  color: var(--primary-color);
+  border-bottom: 3px solid var(--primary-color);
+}
+
+.tab-icon {
+  font-size: var(--font-size-xl);
+}
+
+.tab-label {
+  font-size: var(--font-size-base);
+}
+
+.tab-content {
+  padding: var(--space-2xl);
+  min-height: 400px;
+  animation: fadeIn var(--transition-slow);
+}
+
+@media (max-width: 768px) {
+  .trip-details-page {
+    padding: var(--space-md);
+  }
+
+  .trip-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .trip-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .tabs-nav {
+    padding: var(--space-sm) var(--space-md) 0;
+  }
+
+  .tab-button {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-sm);
+  }
+
+  .tab-icon {
+    font-size: var(--font-size-lg);
+  }
+
+  .tab-content {
+    padding: var(--space-lg);
+  }
+}
