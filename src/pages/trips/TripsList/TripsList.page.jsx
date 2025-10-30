@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TripsList.page.css';
+import CreateTripForm from './CreateTripForm';
 
 const TripsList = () => {
   const navigate = useNavigate();
@@ -8,8 +9,8 @@ const TripsList = () => {
   const [statusFilter, setStatusFilter] = useState('All');
   const [monthFilter, setMonthFilter] = useState('All Months');
   const [yearFilter, setYearFilter] = useState('All Years');
-
-  const trips = [
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [trips, setTrips] = useState([
     { 
       id: 1, 
       tourNo: 'CGT-2025-001',
@@ -124,7 +125,11 @@ const TripsList = () => {
       notes: 'Hiking group, camping equipment provided',
       status: 'Completed'
     }
-  ];
+  ]);
+
+  const handleCreateTrip = (newTrip) => {
+    setTrips(prev => [...prev, newTrip]);
+  };
 
   const filteredTrips = trips.filter(trip => {
     const matchesSearch = trip.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -167,8 +172,8 @@ const TripsList = () => {
             <p className="page-subtitle">View and manage all your trips</p>
           </div>
         </div>
-        <button className="btn-primary" onClick={() => {}}>
-          <span className="icon-plus"></span> Create New Trip
+        <button className="btn-primary" onClick={() => setShowCreateForm(true)}>
+          <span className="icon-plus">+</span> Create New Trip
         </button>
       </div>
 
@@ -318,6 +323,14 @@ const TripsList = () => {
           </div>
         </div>
       </div>
+
+      {/* Create Trip Form Modal */}
+      {showCreateForm && (
+        <CreateTripForm
+          onClose={() => setShowCreateForm(false)}
+          onSubmit={handleCreateTrip}
+        />
+      )}
     </div>
   );
 };
