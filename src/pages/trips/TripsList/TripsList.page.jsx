@@ -6,6 +6,8 @@ const TripsList = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
+  const [monthFilter, setMonthFilter] = useState('All Months');
+  const [yearFilter, setYearFilter] = useState('All Years');
 
   const trips = [
     { 
@@ -130,7 +132,16 @@ const TripsList = () => {
                          trip.destinations.join(' ').toLowerCase().includes(searchTerm.toLowerCase()) ||
                          trip.countryOfClient.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'All' || trip.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    
+    // Month and Year filtering
+    const tripDate = new Date(trip.startDate);
+    const tripMonth = tripDate.getMonth() + 1; // 0-based, so add 1
+    const tripYear = tripDate.getFullYear();
+    
+    const matchesMonth = monthFilter === 'All Months' || parseInt(monthFilter) === tripMonth;
+    const matchesYear = yearFilter === 'All Years' || parseInt(yearFilter) === tripYear;
+    
+    return matchesSearch && matchesStatus && matchesMonth && matchesYear;
   });
 
   const getStatusClass = (status) => {
@@ -186,6 +197,40 @@ const TripsList = () => {
             <option>Ongoing</option>
             <option>Completed</option>
             <option>Cancelled</option>
+          </select>
+        </div>
+
+        <div className="filter-group date-filter-group">
+          <label className="filter-label">Period:</label>
+          <select
+            className="filter-select"
+            value={monthFilter}
+            onChange={(e) => setMonthFilter(e.target.value)}
+          >
+            <option>All Months</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
+          <select
+            className="filter-select"
+            value={yearFilter}
+            onChange={(e) => setYearFilter(e.target.value)}
+          >
+            <option>All Years</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
           </select>
         </div>
 
@@ -258,6 +303,7 @@ const TripsList = () => {
                     className="btn-view-more"
                     onClick={() => navigate(`/trips/${trip.id}`)}
                   >
+                    <span className="icon-eye"></span>
                     View More
                   </button>
                 </td>

@@ -96,10 +96,21 @@
   gap: var(--space-sm);
 }
 
+.date-filter-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--gray-50);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+}
+
 .filter-label {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--gray-700);
+  white-space: nowrap;
 }
 
 .filter-select {
@@ -150,7 +161,7 @@
   text-align: left;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
-  color: var(--white);
+  color: #000000;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   border-bottom: none;
@@ -450,10 +461,12 @@
 
 /* View More Button */
 .btn-view-more {
-  display: inline-block;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary-color);
   color: white !important;
-  border: none;
+  border: 2px solid var(--primary-color);
   padding: 10px 24px;
   border-radius: var(--radius-lg);
   font-size: var(--font-size-sm);
@@ -466,12 +479,26 @@
   white-space: nowrap;
   min-width: 120px;
   text-align: center;
+  justify-content: center;
+}
+
+.btn-view-more .icon-eye {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  filter: brightness(0) saturate(100%) invert(100%);
 }
 
 .btn-view-more:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(52, 139, 180, 0.5);
-  background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+  background: white;
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color);
+}
+
+.btn-view-more:hover .icon-eye {
+  filter: brightness(0) saturate(100%) invert(42%) sepia(85%) saturate(476%) hue-rotate(158deg) brightness(93%) contrast(89%);
 }
 
 .btn-view-more:active {
