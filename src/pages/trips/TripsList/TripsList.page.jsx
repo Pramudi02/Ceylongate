@@ -233,10 +233,6 @@ const TripsList = () => {
             <option value="2027">2027</option>
           </select>
         </div>
-
-        <div className="results-count">
-          Showing {filteredTrips.length} of {trips.length} trips
-        </div>
       </div>
 
       {/* Trips Table */}
@@ -247,7 +243,6 @@ const TripsList = () => {
               <th>Tour No</th>
               <th>Trip Name</th>
               <th>Client Country</th>
-              <th>Destinations</th>
               <th>Tour Guide</th>
               <th>Travel Period</th>
               <th>Guests</th>
@@ -270,13 +265,6 @@ const TripsList = () => {
                 </td>
                 <td>
                   <span className="country-badge">{trip.countryOfClient}</span>
-                </td>
-                <td>
-                  <div className="destinations-cell">
-                    <span className="icon-location"></span>
-                    {trip.destinations.slice(0, 2).join(', ')}
-                    {trip.destinations.length > 2 && <span className="more-badge">+{trip.destinations.length - 2}</span>}
-                  </div>
                 </td>
                 <td>
                   <div className="guide-cell">
@@ -319,6 +307,15 @@ const TripsList = () => {
             <p>Try adjusting your search or filter criteria</p>
           </div>
         )}
+
+        <div className="table-footer">
+          <div className="footer-info">
+            <span className="icon-list"></span>
+            <span className="footer-text">
+              Displaying <strong>{filteredTrips.length}</strong> of <strong>{trips.length}</strong> total trips
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
