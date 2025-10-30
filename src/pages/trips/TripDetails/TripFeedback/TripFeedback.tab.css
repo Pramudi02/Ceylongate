@@ -1,0 +1,223 @@
+.trip-feedback {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rating-summary {
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--space-2xl);
+}
+
+.average-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  padding: var(--space-xl);
+  background: var(--primary-lighter);
+  border-radius: var(--radius-lg);
+}
+
+.rating-number {
+  font-size: 64px;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+.rating-stars {
+  font-size: var(--font-size-2xl);
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.star.filled {
+  color: var(--warning);
+}
+
+.rating-count {
+  font-size: var(--font-size-sm);
+  color: var(--gray-600);
+  font-weight: var(--font-weight-medium);
+}
+
+.rating-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  justify-content: center;
+}
+
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.rating-label {
+  font-size: var(--font-size-sm);
+  color: var(--gray-700);
+  width: 50px;
+}
+
+.rating-bar {
+  flex: 1;
+  height: 12px;
+  background: var(--gray-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.rating-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-light) 100%);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+}
+
+.rating-percent {
+  font-size: var(--font-size-sm);
+  color: var(--gray-600);
+  width: 30px;
+  text-align: right;
+}
+
+.feedbacks-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.feedback-card {
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  transition: all var(--transition-base);
+}
+
+.feedback-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+}
+
+.feedback-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.customer-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.customer-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-light) 100%);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.customer-name {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--gray-900);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.verified-badge {
+  background: var(--success);
+  color: var(--white);
+  font-size: var(--font-size-xs);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.feedback-date {
+  font-size: var(--font-size-sm);
+  color: var(--gray-500);
+}
+
+.feedback-rating {
+  display: flex;
+  gap: var(--space-xs);
+  font-size: var(--font-size-lg);
+}
+
+.feedback-comment {
+  font-size: var(--font-size-base);
+  color: var(--gray-700);
+  line-height: var(--line-height-relaxed);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-3xl);
+  background: var(--gray-50);
+  border-radius: var(--radius-xl);
+  border: 2px dashed var(--gray-300);
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: var(--space-lg);
+  display: block;
+}
+
+.empty-state h3 {
+  font-size: var(--font-size-xl);
+  color: var(--gray-700);
+  margin-bottom: var(--space-sm);
+}
+
+.empty-state p {
+  font-size: var(--font-size-base);
+  color: var(--gray-600);
+}
+
+@media (max-width: 968px) {
+  .rating-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .feedback-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .feedback-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+}
