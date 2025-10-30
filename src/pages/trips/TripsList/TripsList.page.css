@@ -202,8 +202,10 @@
 .trips-table thead {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
   position: sticky;
+  background: #0000000f;
   top: 0;
   z-index: 10;
+  border-bottom: 3px solid var(--gray-300);
 }
 
 .trips-table th {
@@ -216,6 +218,11 @@
   letter-spacing: 0.8px;
   border-bottom: none;
   white-space: nowrap;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.trips-table th:last-child {
+  border-right: none;
 }
 
 .trips-table th:first-child {
@@ -457,12 +464,23 @@
 .period-cell {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+  align-items: flex-start;
 }
 
-.period-cell .dates {
+.period-cell .date-start,
+.period-cell .date-end {
   font-size: var(--font-size-sm);
-  color: var(--gray-700);
+  color: var(--gray-800);
+  font-weight: var(--font-weight-medium);
+}
+
+.period-cell .date-separator {
+  font-size: var(--font-size-xs);
+  color: var(--gray-500);
+  font-weight: var(--font-weight-normal);
+  text-align: center;
+  width: 100%;
 }
 
 .days-badge {

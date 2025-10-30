@@ -274,7 +274,8 @@ const TripsList = () => {
                 </td>
                 <td>
                   <div className="period-cell">
-                    <span className="dates">{trip.startDate} → {trip.endDate}</span>
+                    <span className="date-start">{trip.startDate}</span>
+                    <span className="date-end">{trip.endDate}</span>
                     <span className="days-badge">{trip.days}D/{trip.nights}N</span>
                   </div>
                 </td>
