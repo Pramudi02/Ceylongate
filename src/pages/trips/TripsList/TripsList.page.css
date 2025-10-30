@@ -200,9 +200,11 @@
 }
 
 .trips-table thead {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  position: sticky;
   background: #0000000f;
+  
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+  position: sticky;
   top: 0;
   z-index: 10;
   border-bottom: 3px solid var(--gray-300);
@@ -221,7 +223,12 @@
   border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.trips-table th:first-child {
+  border-top-left-radius: var(--radius-xl);
+}
+
 .trips-table th:last-child {
+  border-top-right-radius: var(--radius-xl);
   border-right: none;
 }
 
