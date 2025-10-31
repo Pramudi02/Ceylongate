@@ -7,10 +7,14 @@ const TripHotels = ({ tripData }) => {
   const [reservations, setReservations] = useState([]);
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [editingReservation, setEditingReservation] = useState(null);
+  const [reservationVersions, setReservationVersions] = useState({});
   
   const hotels = [
     {
       id: 1,
+      reservationId: 'RES-001',
+      version: 3,
       name: 'Paradise Beach Resort',
       address: '123 Beach Road, Bentota, Sri Lanka',
       checkIn: '2025-11-15',
@@ -27,10 +31,15 @@ const TripHotels = ({ tripData }) => {
       requisitionNo: 'CGT 2025-10-D',
       tourNo: 'CGT 2025-10',
       paymentTerm: 'Payment by Ceylon Gate Travels without extras',
-      confirmBy: 'Admin User'
+      confirmBy: 'Admin User',
+      createdAt: '2025-10-25T10:00:00',
+      updatedAt: '2025-10-28T15:30:00',
+      isLatestVersion: true
     },
     {
       id: 2,
+      reservationId: 'RES-002',
+      version: 1,
       name: 'Sunset Villa Maldives',
       address: '456 Ocean Drive, Colombo 3, Sri Lanka',
       checkIn: '2025-11-15',
@@ -47,7 +56,10 @@ const TripHotels = ({ tripData }) => {
       requisitionNo: 'CGT 2025-10-E',
       tourNo: 'CGT 2025-10',
       paymentTerm: 'Payment by Ceylon Gate Travels without extras',
-      confirmBy: 'Admin User'
+      confirmBy: 'Admin User',
+      createdAt: '2025-10-26T09:00:00',
+      updatedAt: '2025-10-26T09:00:00',
+      isLatestVersion: true
     }
   ];
 
@@ -61,17 +73,76 @@ const TripHotels = ({ tripData }) => {
   };
 
   const handleCreateReservation = () => {
+    setEditingReservation(null);
     setShowReservationForm(true);
+  };
+
+  const handleEditReservation = (hotel) => {
+    if (hotel.isLatestVersion) {
+      setEditingReservation(hotel);
+      setShowReservationForm(true);
+    }
   };
 
   const handleCloseForm = () => {
     setShowReservationForm(false);
+    setEditingReservation(null);
   };
 
   const handleSubmitReservation = (reservationData) => {
-    console.log('Reservation created:', reservationData);
-    setReservations([...reservations, reservationData]);
-    // TODO: Save to backend/database
+    if (editingReservation) {
+      // Create new version
+      const newVersion = {
+        ...reservationData,
+        id: Date.now(),
+        reservationId: editingReservation.reservationId,
+        version: editingReservation.version + 1,
+        updatedAt: new Date().toISOString(),
+        isLatestVersion: true
+      };
+      
+      // Mark old version as not latest
+      const updatedHotels = hotels.map(h => 
+        h.reservationId === editingReservation.reservationId 
+          ? { ...h, isLatestVersion: false }
+          : h
+      );
+      
+      console.log('New version created:', newVersion);
+      // TODO: Save to backend/database with version history
+    } else {
+      // Create new reservation
+      const newReservation = {
+        ...reservationData,
+        id: Date.now(),
+        reservationId: `RES-${String(Date.now()).slice(-6)}`,
+        version: 1,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        isLatestVersion: true
+      };
+      
+      console.log('Reservation created:', newReservation);
+      setReservations([...reservations, newReservation]);
+      // TODO: Save to backend/database
+    }
+  };
+
+  const handleCancelReservation = (hotel) => {
+    if (window.confirm(`Are you sure you want to cancel reservation ${hotel.confirmationNo}?`)) {
+      // Create cancelled version
+      const cancelledVersion = {
+        ...hotel,
+        id: Date.now(),
+        version: hotel.version + 1,
+        status: 'Cancelled',
+        updatedAt: new Date().toISOString(),
+        isLatestVersion: true
+      };
+      
+      console.log('Reservation cancelled:', cancelledVersion);
+      // TODO: Save to backend/database
+    }
   };
 
   const handleViewDetails = (hotel) => {
@@ -102,13 +173,12 @@ const TripHotels = ({ tripData }) => {
   return (
     <div className="trip-hotels">
       <div className="hotels-header">
-        <h3 className="section-title">Hotel Reservations</h3>
+        <h3 className="section-title">
+          <span className="icon-hotel"></span> Hotel Reservations
+        </h3>
         <div className="header-actions">
-          <button className="btn-primary" onClick={handleCreateReservation}>
-            <span className="btn-icon">+</span> Add Reservation
-          </button>
           <button className="btn-create-order" onClick={handleCreateReservation}>
-            <span className="btn-icon">�</span> Create Hotel Order
+            <span className="icon-order"></span> Create Hotel Order
           </button>
         </div>
       </div>
@@ -117,63 +187,92 @@ const TripHotels = ({ tripData }) => {
         {hotels.map(hotel => (
           <div key={hotel.id} className="hotel-card">
             <div className="hotel-header">
-              <h4 className="hotel-name">
-                <span className="icon-hotel">🏨</span> {hotel.name}
-              </h4>
-              <span className={`badge ${getStatusClass(hotel.status)}`}>
+              <div className="hotel-title-section">
+                <span className="icon-building"></span>
+                <h4 className="hotel-name">{hotel.name}</h4>
+                <span className="version-badge">v{hotel.version}</span>
+              </div>
+              <span className={`status-badge ${getStatusClass(hotel.status)}`}>
                 {hotel.status}
               </span>
             </div>
 
+            <div className="hotel-address">
+              <span className="icon-location"></span>
+              <span>{hotel.address}</span>
+            </div>
+
             <div className="hotel-details">
-              <div className="detail-row">
-                <span className="detail-label">
-                  <span className="icon">📅</span> Check-in
-                </span>
-                <span className="detail-value">{formatDate(hotel.checkIn)}</span>
+              <div className="detail-group">
+                <div className="detail-row">
+                  <span className="detail-label">
+                    <span className="icon-calendar"></span> Check-in
+                  </span>
+                  <span className="detail-value">{formatDate(hotel.checkIn)}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">
+                    <span className="icon-calendar"></span> Check-out
+                  </span>
+                  <span className="detail-value">{formatDate(hotel.checkOut)}</span>
+                </div>
               </div>
-              <div className="detail-row">
-                <span className="detail-label">
-                  <span className="icon">📅</span> Check-out
-                </span>
-                <span className="detail-value">{formatDate(hotel.checkOut)}</span>
+
+              <div className="detail-group">
+                <div className="detail-row">
+                  <span className="detail-label">
+                    <span className="icon-moon"></span> Nights
+                  </span>
+                  <span className="detail-value badge-nights">{hotel.nights}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">
+                    <span className="icon-meal"></span> Basis
+                  </span>
+                  <span className="detail-value badge-basis">{hotel.basis}</span>
+                </div>
               </div>
-              <div className="detail-row">
-                <span className="detail-label">
-                  <span className="icon">🌙</span> Nights
-                </span>
-                <span className="detail-value">{hotel.nights}</span>
+
+              <div className="detail-group">
+                <div className="detail-row">
+                  <span className="detail-label">
+                    <span className="icon-guests"></span> Guests
+                  </span>
+                  <span className="detail-value">{hotel.guests} people</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">
+                    <span className="icon-room"></span> Rooms
+                  </span>
+                  <span className="detail-value">{getRoomBreakdownText(hotel.rooms)}</span>
+                </div>
               </div>
-              <div className="detail-row">
-                <span className="detail-label">
-                  <span className="icon">🍽️</span> Basis
+
+              <div className="confirmation-section">
+                <span className="confirmation-label">
+                  <span className="icon-confirm"></span> Confirmation No:
                 </span>
-                <span className="detail-value">{hotel.basis}</span>
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">
-                  <span className="icon">👥</span> Guests
-                </span>
-                <span className="detail-value">{hotel.guests} people</span>
-              </div>
-              <div className="detail-row">
-                <span className="detail-label">
-                  <span className="icon">🔖</span> Confirmation
-                </span>
-                <span className="detail-value confirmation">{hotel.confirmationNo}</span>
+                <span className="confirmation-value">{hotel.confirmationNo}</span>
               </div>
             </div>
 
             <div className="hotel-actions">
-              <button className="btn-action" onClick={() => handleViewDetails(hotel)}>
-                <span className="icon">👁</span> View Details
+              <button className="btn-view" onClick={() => handleViewDetails(hotel)}>
+                <span className="icon-view"></span> View Details
               </button>
-              <button className="btn-action">
-                <span className="icon">✏</span> Edit
-              </button>
-              <button className="btn-action btn-danger">
-                <span className="icon">✕</span> Cancel
-              </button>
+              {hotel.isLatestVersion && hotel.status !== 'Cancelled' && (
+                <>
+                  <button className="btn-edit" onClick={() => handleEditReservation(hotel)}>
+                    <span className="icon-edit"></span> Edit
+                  </button>
+                  <button className="btn-cancel" onClick={() => handleCancelReservation(hotel)}>
+                    <span className="icon-close"></span> Cancel
+                  </button>
+                </>
+              )}
+              {!hotel.isLatestVersion && (
+                <span className="old-version-label">Old Version</span>
+              )}
             </div>
           </div>
         ))}
@@ -184,6 +283,7 @@ const TripHotels = ({ tripData }) => {
           trip={tripData}
           onClose={handleCloseForm}
           onSubmit={handleSubmitReservation}
+          initialData={editingReservation}
         />
       )}
 
@@ -191,9 +291,15 @@ const TripHotels = ({ tripData }) => {
         <div className="hotel-details-modal">
           <div className="details-modal-container">
             <div className="details-header">
-              <h2>Hotel Reservation Details</h2>
+              <h2>
+                Hotel Reservation Details 
+                <span className="version-info">Version {selectedReservation.version}</span>
+                {selectedReservation.isLatestVersion && (
+                  <span className="latest-badge">Latest</span>
+                )}
+              </h2>
               <button className="btn-close-details" onClick={handleCloseDetails}>
-                <span className="close-icon">✕</span>
+                <span className="close-icon"></span>
               </button>
             </div>
 
@@ -224,10 +330,22 @@ const TripHotels = ({ tripData }) => {
                       <span className="info-value">{selectedReservation.confirmationNo}</span>
                     </div>
                     <div className="info-item">
+                      <span className="info-label">Version:</span>
+                      <span className="info-value">v{selectedReservation.version}</span>
+                    </div>
+                    <div className="info-item">
                       <span className="info-label">Status:</span>
                       <span className={`badge ${getStatusClass(selectedReservation.status)}`}>
                         {selectedReservation.status}
                       </span>
+                    </div>
+                    <div className="info-item">
+                      <span className="info-label">Created:</span>
+                      <span className="info-value">{formatDate(selectedReservation.createdAt)}</span>
+                    </div>
+                    <div className="info-item">
+                      <span className="info-label">Last Updated:</span>
+                      <span className="info-value">{formatDate(selectedReservation.updatedAt)}</span>
                     </div>
                     <div className="info-item">
                       <span className="info-label">No. Pax:</span>
@@ -296,11 +414,16 @@ const TripHotels = ({ tripData }) => {
 
             <div className="details-actions">
               <button className="btn-action-modal btn-print" onClick={() => window.print()}>
-                <span className="icon">🖨</span> Print
+                <span className="icon"></span> Print
               </button>
-              <button className="btn-action-modal btn-edit">
-                <span className="icon">✏</span> Edit Reservation
-              </button>
+              {selectedReservation.isLatestVersion && selectedReservation.status !== 'Cancelled' && (
+                <button className="btn-action-modal btn-edit" onClick={() => {
+                  handleCloseDetails();
+                  handleEditReservation(selectedReservation);
+                }}>
+                  <span className="icon"></span> Edit Reservation
+                </button>
+              )}
               <button className="btn-action-modal btn-close-alt" onClick={handleCloseDetails}>
                 Close
               </button>
