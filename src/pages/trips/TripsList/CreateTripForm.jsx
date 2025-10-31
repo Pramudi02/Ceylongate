@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './CreateTripForm.css';
 
 const CreateTripForm = ({ onClose, onSubmit }) => {
@@ -29,6 +29,9 @@ const CreateTripForm = ({ onClose, onSubmit }) => {
   const [showAddGuide, setShowAddGuide] = useState(false);
   const [agentSearchTerm, setAgentSearchTerm] = useState('');
   const [guideSearchTerm, setGuideSearchTerm] = useState('');
+  
+  // Rich text editor ref
+  const notesEditorRef = useRef(null);
 
   // Available destinations in Sri Lanka
   const availableDestinations = [
@@ -154,6 +157,26 @@ const CreateTripForm = ({ onClose, onSubmit }) => {
     };
     setSelectedGuide(newGuide);
     setShowAddGuide(false);
+  };
+
+  // Set initial content for notes editor
+  useEffect(() => {
+    if (notesEditorRef.current && notesEditorRef.current.innerHTML === '') {
+      notesEditorRef.current.innerHTML = formData.notes || '';
+    }
+  }, []);
+
+  const applyFormatting = (command, value = null) => {
+    document.execCommand(command, false, value);
+    notesEditorRef.current?.focus();
+  };
+
+  const handleNotesInput = () => {
+    const content = notesEditorRef.current?.innerHTML || '';
+    setFormData(prev => ({
+      ...prev,
+      notes: content
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -591,13 +614,81 @@ const CreateTripForm = ({ onClose, onSubmit }) => {
 
               <div className="form-group full-width">
                 <label>Notes</label>
-                <textarea
-                  name="notes"
-                  value={formData.notes}
-                  onChange={handleChange}
-                  placeholder="Add any special notes or requirements..."
-                  rows="3"
-                />
+                <div className="rich-text-editor">
+                  <div className="editor-toolbar">
+                    <button
+                      type="button"
+                      className="toolbar-btn"
+                      onClick={() => applyFormatting('bold')}
+                      title="Bold"
+                    >
+                      <strong>B</strong>
+                    </button>
+                    <button
+                      type="button"
+                      className="toolbar-btn"
+                      onClick={() => applyFormatting('italic')}
+                      title="Italic"
+                    >
+                      <em>I</em>
+                    </button>
+                    <button
+                      type="button"
+                      className="toolbar-btn"
+                      onClick={() => applyFormatting('underline')}
+                      title="Underline"
+                    >
+                      <u>U</u>
+                    </button>
+                    <div className="toolbar-divider"></div>
+                    <div className="color-picker-wrapper">
+                      <input
+                        type="color"
+                        id="textColorPicker"
+                        className="color-picker-input"
+                        onChange={(e) => applyFormatting('foreColor', e.target.value)}
+                        title="Text Color"
+                      />
+                      <label htmlFor="textColorPicker" className="toolbar-btn color-btn" title="Text Color">
+                        A
+                      </label>
+                    </div>
+                    <div className="toolbar-divider"></div>
+                    <button
+                      type="button"
+                      className="toolbar-btn"
+                      onClick={() => applyFormatting('insertUnorderedList')}
+                      title="Bullet List"
+                    >
+                      ☰
+                    </button>
+                    <button
+                      type="button"
+                      className="toolbar-btn"
+                      onClick={() => applyFormatting('insertOrderedList')}
+                      title="Numbered List"
+                    >
+                      1.
+                    </button>
+                    <div className="toolbar-divider"></div>
+                    <button
+                      type="button"
+                      className="toolbar-btn"
+                      onClick={() => applyFormatting('removeFormat')}
+                      title="Clear Formatting"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <div
+                    ref={notesEditorRef}
+                    className="editor-content"
+                    contentEditable
+                    onInput={handleNotesInput}
+                    suppressContentEditableWarning={true}
+                    data-placeholder="Add any special notes or requirements..."
+                  />
+                </div>
               </div>
             </div>
           </div>
