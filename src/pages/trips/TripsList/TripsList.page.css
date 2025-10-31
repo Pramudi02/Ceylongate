@@ -37,9 +37,9 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  color: white;
-  border: none;
+  background: #10b981;
+  color: white !important;
+  border: 2px solid #10b981;
   padding: 12px 28px;
   border-radius: var(--radius-md);
   font-size: var(--font-size-base);
@@ -49,17 +49,24 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-sm);
-  box-shadow: 0 4px 12px rgba(52, 139, 180, 0.3);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  position: relative;
+  z-index: 10;
+  opacity: 1;
+  visibility: visible;
 }
 
 .btn-primary:hover {
+  background: white;
+  color: #10b981 !important;
+  border-color: #10b981;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(52, 139, 180, 0.4);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
 }
 
 .btn-primary:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(52, 139, 180, 0.3);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
 
 .btn-primary .icon-plus {
@@ -69,6 +76,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: inherit;
 }
 
 .page-title {

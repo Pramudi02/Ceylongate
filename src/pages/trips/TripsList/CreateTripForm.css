@@ -584,6 +584,7 @@
 .btn-submit:hover {
   background: var(--secondary-color);
   border-color: var(--secondary-color);
+  color: var(--primary-color);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(52, 139, 180, 0.4);
 }
@@ -592,6 +593,11 @@
   width: 16px;
   height: 16px;
   display: inline-block;
+  color: white;
+}
+
+.btn-submit:hover .icon-check {
+  color: var(--primary-color);
 }
 
 /* Rich Text Editor */

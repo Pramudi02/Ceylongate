@@ -247,7 +247,7 @@ const TripsList = () => {
             <tr>
               <th>Tour No</th>
               <th>Trip Name</th>
-              <th>Client Country</th>
+              <th>Country</th>
               <th>Tour Guide</th>
               <th>Travel Period</th>
               <th>Guests</th>
