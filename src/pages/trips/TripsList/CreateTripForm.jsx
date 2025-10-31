@@ -1,25 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './CreateTripForm.css';
 
-const CreateTripForm = ({ onClose, onSubmit }) => {
+const CreateTripForm = ({ onClose, onSubmit, initialData = null, isEditMode = false }) => {
   const [formData, setFormData] = useState({
-    tourNo: '',
-    name: '',
-    countryOfClient: '',
-    agentName: '',
-    agentContact: '',
-    guideName: '',
-    guideContact: '',
-    guideLicense: '',
-    startDate: '',
-    endDate: '',
-    numberOfClients: '',
-    tourType: 'Cultural',
-    status: 'Upcoming',
-    notes: ''
+    tourNo: initialData?.tourNo || '',
+    name: initialData?.name || '',
+    countryOfClient: initialData?.countryOfClient || '',
+    agentName: initialData?.agent?.name || '',
+    agentContact: initialData?.agent?.contact || '',
+    guideName: initialData?.guide?.name || '',
+    guideContact: initialData?.guide?.contact || '',
+    guideLicense: initialData?.guide?.license || '',
+    startDate: initialData?.startDate || '',
+    endDate: initialData?.endDate || '',
+    numberOfClients: initialData?.numberOfClients || '',
+    tourType: initialData?.tourType || 'Cultural',
+    status: initialData?.status || 'Upcoming',
+    notes: initialData?.notes || ''
   });
 
-  const [selectedDestinations, setSelectedDestinations] = useState([]);
+  const [selectedDestinations, setSelectedDestinations] = useState(initialData?.destinations || []);
   const [currentDestination, setCurrentDestination] = useState('');
   
   // Agent and Guide selection states
@@ -218,7 +218,7 @@ const CreateTripForm = ({ onClose, onSubmit }) => {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>Create New Trip</h2>
+          <h2>{isEditMode ? 'Edit Trip Details' : 'Create New Trip'}</h2>
           <button className="btn-close" onClick={onClose}>×</button>
         </div>
 
@@ -699,7 +699,7 @@ const CreateTripForm = ({ onClose, onSubmit }) => {
             </button>
             <button type="submit" className="btn-submit">
               <span className="icon-check"></span>
-              Create Trip
+              {isEditMode ? 'Update Trip' : 'Create Trip'}
             </button>
           </div>
         </form>
