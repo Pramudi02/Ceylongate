@@ -9,6 +9,7 @@ const TripHotels = ({ tripData }) => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [editingReservation, setEditingReservation] = useState(null);
   const [reservationVersions, setReservationVersions] = useState({});
+  const [expandedVersions, setExpandedVersions] = useState({});
   
   const hotels = [
     {
@@ -34,7 +35,36 @@ const TripHotels = ({ tripData }) => {
       confirmBy: 'Admin User',
       createdAt: '2025-10-25T10:00:00',
       updatedAt: '2025-10-28T15:30:00',
-      isLatestVersion: true
+      isLatestVersion: true,
+      versionHistory: [
+        { 
+          version: 1, 
+          date: '2025-10-25', 
+          updatedBy: 'Admin User',
+          changes: 'Initial reservation created - 7 nights, HB basis',
+          nights: 7,
+          rate: 3200,
+          total: 22400
+        },
+        { 
+          version: 2, 
+          date: '2025-10-27', 
+          updatedBy: 'Admin User',
+          changes: 'Updated rate from $3200 to $3400',
+          nights: 7,
+          rate: 3400,
+          total: 23800
+        },
+        { 
+          version: 3, 
+          date: '2025-10-28', 
+          updatedBy: 'Admin User',
+          changes: 'Final rate adjustment to $3500',
+          nights: 7,
+          rate: 3500,
+          total: 24500
+        }
+      ]
     },
     {
       id: 2,
@@ -59,7 +89,18 @@ const TripHotels = ({ tripData }) => {
       confirmBy: 'Admin User',
       createdAt: '2025-10-26T09:00:00',
       updatedAt: '2025-10-26T09:00:00',
-      isLatestVersion: true
+      isLatestVersion: true,
+      versionHistory: [
+        { 
+          version: 1, 
+          date: '2025-10-26', 
+          updatedBy: 'Admin User',
+          changes: 'Initial reservation created',
+          nights: 3,
+          rate: 1800,
+          total: 5400
+        }
+      ]
     }
   ];
 
@@ -145,6 +186,13 @@ const TripHotels = ({ tripData }) => {
     }
   };
 
+  const toggleVersionHistory = (reservationId) => {
+    setExpandedVersions(prev => ({
+      ...prev,
+      [reservationId]: !prev[reservationId]
+    }));
+  };
+
   const handleViewDetails = (hotel) => {
     setSelectedReservation(hotel);
     setShowDetailsModal(true);
@@ -166,8 +214,19 @@ const TripHotels = ({ tripData }) => {
   const getRoomBreakdownText = (rooms) => {
     return Object.entries(rooms)
       .filter(([_, count]) => count > 0)
-      .map(([type, count]) => `${type}:${count}`)
+      .map(([type, count]) => `${type}: ${count}`)
       .join(', ');
+  };
+
+  const getRoomBreakdownBadges = (rooms) => {
+    return Object.entries(rooms)
+      .filter(([_, count]) => count > 0)
+      .map(([type, count]) => (
+        <span key={type} className="room-badge">
+          <span className="room-type">{type}</span>
+          <span className="room-count">{count}</span>
+        </span>
+      ));
   };
 
   return (
@@ -178,7 +237,7 @@ const TripHotels = ({ tripData }) => {
         </h3>
         <div className="header-actions">
           <button className="btn-create-order" onClick={handleCreateReservation}>
-            <span className="icon-order"></span> Create Hotel Order
+            + Create Hotel Order
           </button>
         </div>
       </div>
@@ -192,9 +251,6 @@ const TripHotels = ({ tripData }) => {
                 <h4 className="hotel-name">{hotel.name}</h4>
                 <span className="version-badge">v{hotel.version}</span>
               </div>
-              <span className={`status-badge ${getStatusClass(hotel.status)}`}>
-                {hotel.status}
-              </span>
             </div>
 
             <div className="hotel-address">
@@ -240,40 +296,103 @@ const TripHotels = ({ tripData }) => {
                   </span>
                   <span className="detail-value">{hotel.guests} people</span>
                 </div>
-                <div className="detail-row">
+                <div className="detail-row detail-row-rooms">
                   <span className="detail-label">
                     <span className="icon-room"></span> Rooms
                   </span>
-                  <span className="detail-value">{getRoomBreakdownText(hotel.rooms)}</span>
+                  <div className="room-badges-container">
+                    {getRoomBreakdownBadges(hotel.rooms)}
+                  </div>
                 </div>
-              </div>
-
-              <div className="confirmation-section">
-                <span className="confirmation-label">
-                  <span className="icon-confirm"></span> Confirmation No:
-                </span>
-                <span className="confirmation-value">{hotel.confirmationNo}</span>
               </div>
             </div>
 
             <div className="hotel-actions">
-              <button className="btn-view" onClick={() => handleViewDetails(hotel)}>
+              <button className="btn-hotel-view" onClick={() => handleViewDetails(hotel)}>
                 <span className="icon-view"></span> View Details
               </button>
               {hotel.isLatestVersion && hotel.status !== 'Cancelled' && (
                 <>
-                  <button className="btn-edit" onClick={() => handleEditReservation(hotel)}>
+                  <button className="btn-hotel-edit" onClick={() => handleEditReservation(hotel)}>
                     <span className="icon-edit"></span> Edit
                   </button>
-                  <button className="btn-cancel" onClick={() => handleCancelReservation(hotel)}>
-                    <span className="icon-close"></span> Cancel
+                  <button className="btn-hotel-cancel" onClick={() => handleCancelReservation(hotel)}>
+                    <span className="icon-close"></span> Cancel Reservation
                   </button>
                 </>
               )}
               {!hotel.isLatestVersion && (
                 <span className="old-version-label">Old Version</span>
               )}
+              {hotel.versionHistory && hotel.versionHistory.length > 1 && (
+                <button 
+                  className="btn-hotel-versions"
+                  onClick={() => toggleVersionHistory(hotel.reservationId)}
+                >
+                  
+                  {expandedVersions[hotel.reservationId] ? '▼' : '▶'} Versions ({hotel.versionHistory.length})
+                </button>
+              )}
             </div>
+
+            {expandedVersions[hotel.reservationId] && hotel.versionHistory && (
+              <div className="version-history">
+                <h5 className="version-title">
+                  <span className="icon-history"></span> Version History
+                </h5>
+                <div className="versions-list">
+                  {hotel.versionHistory.slice().reverse().map(version => (
+                    <div 
+                      key={version.version} 
+                      className={`version-item ${version.version === hotel.version ? 'current-version' : ''}`}
+                    >
+                      <span className={`version-badge-history ${version.version === hotel.version ? 'latest' : ''}`}>
+                        v{version.version}
+                        {version.version === hotel.version && <span className="latest-tag">Latest</span>}
+                      </span>
+                      <div className="version-details">
+                        <p className="version-date">
+                          <span className="icon-calendar"></span> {version.date} • 
+                          <span className="icon-user"></span> {version.updatedBy}
+                        </p>
+                        <p className="version-changes">
+                          <span className="icon-edit"></span> {version.changes}
+                        </p>
+                        <div className="version-amounts">
+                          <span className="version-amount">
+                            <span className="icon-moon"></span> {version.nights} nights
+                          </span>
+                          <span className="version-amount">
+                            <span className="icon-dollar"></span> ${version.rate}/night
+                          </span>
+                          <span className="version-amount total">
+                            <span className="icon-total"></span> Total: ${version.total}
+                          </span>
+                        </div>
+                      </div>
+                      <button 
+                        className="btn-view-version"
+                        onClick={() => {
+                          // Create a version snapshot to view
+                          const versionSnapshot = {
+                            ...hotel,
+                            version: version.version,
+                            nights: version.nights,
+                            rate: version.rate,
+                            updatedAt: version.date,
+                            updatedBy: version.updatedBy,
+                            isLatestVersion: version.version === hotel.version
+                          };
+                          handleViewDetails(versionSnapshot);
+                        }}
+                      >
+                        <span className="icon-view"></span> View
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -299,7 +418,7 @@ const TripHotels = ({ tripData }) => {
                 )}
               </h2>
               <button className="btn-close-details" onClick={handleCloseDetails}>
-                <span className="close-icon"></span>
+                <span className="close-icon">✕</span>
               </button>
             </div>
 
@@ -334,12 +453,6 @@ const TripHotels = ({ tripData }) => {
                       <span className="info-value">v{selectedReservation.version}</span>
                     </div>
                     <div className="info-item">
-                      <span className="info-label">Status:</span>
-                      <span className={`badge ${getStatusClass(selectedReservation.status)}`}>
-                        {selectedReservation.status}
-                      </span>
-                    </div>
-                    <div className="info-item">
                       <span className="info-label">Created:</span>
                       <span className="info-value">{formatDate(selectedReservation.createdAt)}</span>
                     </div>
@@ -365,7 +478,11 @@ const TripHotels = ({ tripData }) => {
                         <th>Nights</th>
                         <th>Basis</th>
                         <th>Wing</th>
-                        <th>Room Breakdown</th>
+                        {Object.entries(selectedReservation.rooms)
+                          .filter(([_, count]) => count > 0)
+                          .map(([type, _]) => (
+                            <th key={type}>{type}</th>
+                          ))}
                       </tr>
                     </thead>
                     <tbody>
@@ -375,7 +492,11 @@ const TripHotels = ({ tripData }) => {
                         <td>{selectedReservation.nights}</td>
                         <td>{selectedReservation.basis}</td>
                         <td>{selectedReservation.wing}</td>
-                        <td>{getRoomBreakdownText(selectedReservation.rooms)}</td>
+                        {Object.entries(selectedReservation.rooms)
+                          .filter(([_, count]) => count > 0)
+                          .map(([type, count]) => (
+                            <td key={type} className="room-count-cell">{count}</td>
+                          ))}
                       </tr>
                     </tbody>
                   </table>
@@ -395,19 +516,6 @@ const TripHotels = ({ tripData }) => {
                     </div>
                   </div>
 
-                  <div className="room-details-breakdown">
-                    <h3>Room Allocation Details</h3>
-                    <div className="room-grid">
-                      {Object.entries(selectedReservation.rooms).map(([type, count]) => (
-                        count > 0 && (
-                          <div key={type} className="room-item">
-                            <span className="room-type">{type}</span>
-                            <span className="room-count">{count}</span>
-                          </div>
-                        )
-                      ))}
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

@@ -353,7 +353,9 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>{isEditMode ? 'Edit Hotel Reservation' : 'Create Hotel Reservation Order'}</h2>
-          <button className="btn-close" onClick={onClose}></button>
+          <button className="btn-close" onClick={onClose}>
+            <span className="close-icon">✕</span>
+          </button>
         </div>
 
         <form onSubmit={handleSubmit} className="trip-form">
