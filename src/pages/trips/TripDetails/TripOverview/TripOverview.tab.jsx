@@ -82,10 +82,6 @@ const TripOverview = ({ tripData }) => {
             <span className="info-label">Assigned Employee</span>
             <span className="info-value"><span className="icon-user"></span> {tripData.assignedEmployee}</span>
           </div>
-          <div className="info-card-box">
-            <span className="info-label">Status</span>
-            <span className="info-value"><span className={`badge ${getStatusClass(tripData.status)}`}>{tripData.status}</span></span>
-          </div>
         </div>
       </div>
 

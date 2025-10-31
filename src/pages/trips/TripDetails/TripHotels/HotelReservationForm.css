@@ -48,8 +48,8 @@
   justify-content: space-between;
   align-items: center;
   padding: var(--space-lg);
-  border-bottom: 2px solid #3b82f6;
-  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border-bottom: 2px solid #3baef6;
+  background: linear-gradient(135deg, #dbeffe, #bfeafe);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   position: sticky;
   top: 0;
