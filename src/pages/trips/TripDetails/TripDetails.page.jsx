@@ -93,28 +93,33 @@ const TripDetails = () => {
     <div className="trip-details-page">
       {/* Header */}
       <div className="trip-header">
-        <button className="btn-back" onClick={() => navigate('/trips')}>
-          ← Back to Trips
-        </button>
-        
         <div className="trip-header-content">
-          <div>
-            <div className="trip-meta">
+          <button className="btn-back" onClick={() => navigate('/trips')}>
+            ← Back to Trips
+          </button>
+          
+          <div className="trip-header-info">
+            <div>
+              <h1 className="trip-title">{tripData.name}</h1>
+              <p className="trip-meta-info">
+                <span><span className="icon-location"></span> {tripData.destinations.join(' → ')}</span>
+                <span>•</span>
+                <span><span className="icon-user"></span> Guide: {tripData.guide.name}</span>
+                <span>•</span>
+                <span><span className="icon-calendar"></span> {tripData.startDate} to {tripData.endDate} ({tripData.days}D/{tripData.nights}N)</span>
+                <span>•</span>
+                <span><span className="icon-users"></span> {tripData.numberOfClients} Guests from {tripData.countryOfClient}</span>
+              </p>
+            </div>
+          </div>
+
+          <div className="trip-header-bottom">
+            <div className="trip-header-bottom-left">
               <span className="tour-no-badge">{tripData.tourNo}</span>
               <span className="tour-type-badge">{tripData.tourType}</span>
             </div>
-            <h1 className="trip-title">{tripData.name}</h1>
-            <p className="trip-meta-info">
-              <span><span className="icon-location"></span> {tripData.destinations.join(' → ')}</span>
-              <span>•</span>
-              <span><span className="icon-user"></span> Guide: {tripData.guide.name}</span>
-              <span>•</span>
-              <span><span className="icon-calendar"></span> {tripData.startDate} to {tripData.endDate} ({tripData.days}D/{tripData.nights}N)</span>
-              <span>•</span>
-              <span><span className="icon-users"></span> {tripData.numberOfClients} Guests from {tripData.countryOfClient}</span>
-            </p>
+            <span className="badge status-planned">{tripData.status}</span>
           </div>
-          <span className="badge status-planned">{tripData.status}</span>
         </div>
       </div>
 

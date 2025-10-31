@@ -133,11 +133,7 @@ const TripOverview = ({ tripData }) => {
               <div className="day-badge">Day {item.day}</div>
               <div className="itinerary-content">
                 <h4 className="itinerary-title">{item.title}</h4>
-                <ul className="itinerary-activities">
-                  {item.activities.map((activity, index) => (
-                    <li key={index}>{activity}</li>
-                  ))}
-                </ul>
+                
               </div>
             </div>
           ))}
