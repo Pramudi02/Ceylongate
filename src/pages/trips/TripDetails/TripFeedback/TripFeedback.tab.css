@@ -20,11 +20,6 @@
   color: #1e3a8a;
 }
 
-.icon-document::before {
-  content: '�';
-  font-size: 1.5rem;
-}
-
 .btn-upload-feedback {
   padding: var(--space-sm) var(--space-lg);
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
@@ -48,7 +43,7 @@
 }
 
 .icon-plus::before {
-  content: '+';
+  content: '';
   font-size: 1.2rem;
   font-weight: bold;
 }
@@ -416,12 +411,31 @@
 }
 
 .icon-pdf-selected::before {
-  content: '';
-  display: inline-block;
+  content: 'PDF';
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 24px;
-  height: 24px;
+  height: 28px;
   background: linear-gradient(135deg, #ef4444, #dc2626);
   border-radius: var(--radius-sm);
+  color: white;
+  font-weight: bold;
+  font-size: 8px;
+  box-shadow: 0 1px 4px rgba(239, 68, 68, 0.3);
+  position: relative;
+}
+
+.icon-pdf-selected::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 6px 6px 0;
+  border-color: transparent white transparent transparent;
 }
 
 .file-selected-name {

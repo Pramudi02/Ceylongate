@@ -269,7 +269,7 @@
 }
 
 .itinerary-activities li::before {
-  content: '✓';
+  content: '';
   position: absolute;
   left: var(--space-md);
   color: var(--primary-color);

@@ -1010,19 +1010,4 @@
   }
 }
 
-/* Additional Icon Styles */
-.icon-history::before {
-  content: '🕒';
-}
-
-.icon-dollar::before {
-  content: '💵';
-}
-
-.icon-total::before {
-  content: '💰';
-}
-
-.icon-user::before {
-  content: '👤';
-}
+/* Additional Icon Styles - Using global SVG icons from icons.css */

@@ -162,28 +162,28 @@
 }
 
 .trip-meta-info .icon-location::before {
-  content: '●';
+  content: '';
   font-style: normal;
   font-size: 8px;
   color: #10b981;
 }
 
 .trip-meta-info .icon-user::before {
-  content: '●';
+  content: '';
   font-style: normal;
   font-size: 8px;
   color: #3b82f6;
 }
 
 .trip-meta-info .icon-calendar::before {
-  content: '●';
+  content: '';
   font-style: normal;
   font-size: 8px;
   color: #f59e0b;
 }
 
 .trip-meta-info .icon-users::before {
-  content: '●';
+  content: '';
   font-style: normal;
   font-size: 8px;
   color: #ec4899;
