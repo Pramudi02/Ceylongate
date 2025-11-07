@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './TripVouchers.tab.css';
 
 const TripVouchers = ({ tripData }) => {
+  const navigate = useNavigate();
   const vouchers = [
     {
       id: 1,
@@ -59,7 +61,12 @@ const TripVouchers = ({ tripData }) => {
             </div>
 
             <div className="voucher-actions">
-              <button className="btn-action">👁️ View</button>
+              <button
+                className="btn-action"
+                onClick={() => navigate(`/trips/${tripData?.id}/service-voucher`, { state: { tripData } })}
+              >
+                👁️ View
+              </button>
               <button className="btn-action">📥 Download</button>
               <button className="btn-action">🖨️ Print</button>
             </div>

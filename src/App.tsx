@@ -9,6 +9,7 @@ import Login from './pages/auth/Login/Login.page';
 import Dashboard from './pages/dashboard/Dashboard/Dashboard.page';
 import TripsList from './pages/trips/TripsList/TripsList.page';
 import TripDetails from './pages/trips/TripDetails/TripDetails.page';
+import ServiceVoucher from './pages/trips/TripDetails/ServiceVoucher.page';
 import CustomersList from './pages/customers/CustomersList/CustomersList.page';
 import CustomerDetails from './pages/customers/CustomerDetails/CustomerDetails.page';
 import UsersManagement from './pages/users/UsersManagement/UsersManagement.page';
@@ -31,6 +32,7 @@ function App() {
           {/* Trips */}
           <Route path="/trips" element={<TripsList />} />
           <Route path="/trips/:tripId" element={<TripDetails />} />
+          <Route path="/trips/:tripId/service-voucher" element={<ServiceVoucher />} />
           
           {/* Customers */}
           <Route path="/customers" element={<CustomersList />} />

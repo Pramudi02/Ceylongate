@@ -1,0 +1,154 @@
+/* Use global variables and card styles for visual consistency */
+.service-voucher-page {
+  padding: var(--space-2xl);
+}
+.voucher-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+.btn-back {
+  background: var(--white);
+  border: 2px solid var(--gray-300);
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  margin-bottom: var(--space-lg);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.btn-back:hover {
+  background: var(--gray-100);
+  border-color: var(--primary-color);
+}
+.voucher-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-2xl);
+  margin-bottom: var(--space-lg);
+  background: var(--white);
+  padding: var(--space-lg);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+.meta-item {
+  background: transparent;
+  padding: 6px 8px;
+  border-radius: var(--radius-md);
+  border: none;
+  box-shadow: none;
+}
+.voucher-table-wrap {
+  /* use the project's card look to match other trip pages */
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-md);
+}
+.voucher-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.voucher-table th,
+.voucher-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--gray-100);
+  text-align: left;
+}
+.date-range-cell .date-inputs {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 6px;
+}
+.date-range-cell .range-display {
+  font-weight: var(--font-weight-semibold);
+}
+.hotel-room {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.select-with-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.select-actions {
+  display: flex;
+  gap: 6px;
+}
+.input-field {
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+}
+.btn-add {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-light) 100%);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+}
+.calendar-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.nights-cell {
+  width: 90px;
+}
+
+.btn-secondary {
+  padding: 6px 8px;
+  min-width: 36px;
+}
+.btn-danger {
+  padding: 6px 8px;
+  min-width: 36px;
+}
+
+.details-section {
+  margin-top: var(--space-2xl);
+  background: var(--white);
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-sm);
+}
+.details-section h3 {
+  margin-bottom: var(--space-md);
+  font-size: var(--font-size-lg);
+}
+.details-row {
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+.selected-chips { display:flex; gap:8px; flex-wrap:wrap; align-items:center }
+.chip { background:var(--primary-lighter); padding:6px 8px; border-radius:999px; display:inline-flex; align-items:center; gap:8px }
+.chip.default { background:transparent; color:var(--gray-600); font-style:italic }
+.chip-remove { background:transparent; border:none; cursor:pointer }
+.entrance-controls { display:flex; gap:8px; align-items:center }
+.contacts-list { display:flex; gap:16px }
+.contacts-column { flex:1 }
+.contact-item { display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-bottom:1px dashed var(--gray-200) }
+.contact-text { color:var(--gray-800); font-weight:var(--font-weight-medium) }
+.contacts-controls { width:320px; display:flex; flex-direction:column; gap:8px }
+.contact-actions { display:flex; gap:6px }
+
+/* heading within voucher to match TripDetails' smaller title */
+.voucher-header h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--gray-900);
+}
