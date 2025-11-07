@@ -40,9 +40,9 @@ const TripInvoices = ({ tripData }) => {
 
   const getStatusClass = (status) => {
     switch(status) {
-      case 'Final': return 'status-completed';
-      case 'Draft': return 'status-planned';
-      case 'Cancelled': return 'status-cancelled';
+      case 'Final': return 'trip-status-completed';
+      case 'Draft': return 'trip-status-planned';
+      case 'Cancelled': return 'trip-status-cancelled';
       default: return '';
     }
   };

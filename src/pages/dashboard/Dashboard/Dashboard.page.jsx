@@ -99,7 +99,6 @@ const Dashboard = () => {
 
         {/* Quick Actions */}
         <div className="section">
-          <h3 className="section-title">Quick Actions</h3>
           <div className="quick-actions-grid">
             {quickActions.map((action, index) => (
               <button
