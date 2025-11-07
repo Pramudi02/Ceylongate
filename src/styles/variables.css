@@ -49,12 +49,18 @@
   --info-light: #dbeafe;
   
   /* Trip Status Colors */
-  --status-ongoing: #348bb4;
-  --status-ongoing-bg: #e8f4f8;
+  /* Status color mapping - keep semantic meanings stable across the app
+    Upcoming/Planned: blue (info)
+    Ongoing: orange (warning)
+    Completed: green (success)
+    Cancelled: red (danger)
+  */
+  --status-ongoing: #f59e0b;
+  --status-ongoing-bg: #fef3c7;
   --status-completed: #10b981;
   --status-completed-bg: #d1fae5;
-  --status-planned: #f59e0b;
-  --status-planned-bg: #fef3c7;
+  --status-planned: #3b82f6;
+  --status-planned-bg: #dbeafe;
   --status-cancelled: #ef4444;
   --status-cancelled-bg: #fee2e2;
   
