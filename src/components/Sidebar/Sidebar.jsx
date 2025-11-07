@@ -20,10 +20,16 @@ const Sidebar = () => {
       path: '/trips'
     },
     {
-      id: 'customers',
-      label: 'Customers',
-      icon: 'users',
-      path: '/customers'
+      id: 'agents',
+      label: 'Agents',
+      icon: 'briefcase',
+      path: '/agents'
+    },
+    {
+      id: 'guides',
+      label: 'Tour Guides',
+      icon: 'map',
+      path: '/guides'
     },
     {
       id: 'users',

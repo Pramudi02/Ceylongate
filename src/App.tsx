@@ -10,8 +10,10 @@ import Dashboard from './pages/dashboard/Dashboard/Dashboard.page';
 import TripsList from './pages/trips/TripsList/TripsList.page';
 import TripDetails from './pages/trips/TripDetails/TripDetails.page';
 import ServiceVoucher from './pages/trips/TripDetails/ServiceVoucher.page';
-import CustomersList from './pages/customers/CustomersList/CustomersList.page';
-import CustomerDetails from './pages/customers/CustomerDetails/CustomerDetails.page';
+import AgentsList from './pages/agents/AgentsList/AgentsList.page';
+import AgentDetails from './pages/agents/AgentDetails/AgentDetails.page';
+import GuidesList from './pages/guides/GuidesList/GuidesList.page';
+import GuideDetails from './pages/guides/GuideDetails/GuideDetails.page';
 import UsersManagement from './pages/users/UsersManagement/UsersManagement.page';
 import NotFound from './pages/not-found/NotFound/NotFound.page';
 
@@ -34,9 +36,11 @@ function App() {
           <Route path="/trips/:tripId" element={<TripDetails />} />
           <Route path="/trips/:tripId/service-voucher" element={<ServiceVoucher />} />
           
-          {/* Customers */}
-          <Route path="/customers" element={<CustomersList />} />
-          <Route path="/customers/:customerId" element={<CustomerDetails />} />
+          {/* Agents & Guides */}
+          <Route path="/agents" element={<AgentsList />} />
+          <Route path="/agents/:agentId" element={<AgentDetails />} />
+          <Route path="/guides" element={<GuidesList />} />
+          <Route path="/guides/:guideId" element={<GuideDetails />} />
           
           {/* Users */}
           <Route path="/users" element={<UsersManagement />} />
