@@ -2,13 +2,50 @@ import React, { useState } from 'react';
 import '../../trips/TripDetails/TripOverview/TripOverview.tab.css';
 
 const CreateGuideForm = ({ onClose }) => {
-  const [form, setForm] = useState({ name: '', email: '', contact: '', languages: '' });
+  const [form, setForm] = useState({
+    full_name: '',
+    primary_email: '',
+    phone_number: '',
+    address_line1: '',
+    city: '',
+    country: 'Sri Lanka',
+    description: '',
+    languages_input: '',
+    specialties_input: '',
+    service_regions_input: ''
+  });
 
-  const handleChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Create guide', form);
+    // parse inputs into JSON structures
+    const languages_spoken = form.languages_input
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
+      .map(lang => ({ language: lang, proficiency: 'fluent' }));
+
+    const specialties = form.specialties_input.split(',').map(s => s.trim()).filter(Boolean);
+    const service_regions = form.service_regions_input.split(',').map(s => s.trim()).filter(Boolean);
+
+    const payload = {
+      full_name: form.full_name,
+      primary_email: form.primary_email,
+      phone_number: form.phone_number,
+      address_line1: form.address_line1,
+      city: form.city,
+      country: form.country,
+      description: form.description,
+      languages_spoken,
+      specialties,
+      service_regions
+    };
+
+    console.log('Create guide payload', payload);
     // TODO: call API
     onClose && onClose();
   };
@@ -24,19 +61,52 @@ const CreateGuideForm = ({ onClose }) => {
           <div className="form-grid">
             <div className="form-group">
               <label>Full Name</label>
-              <input name="name" value={form.name} onChange={handleChange} required />
+              <input name="full_name" value={form.full_name} onChange={handleChange} required />
             </div>
+
             <div className="form-group">
-              <label>Email</label>
-              <input name="email" value={form.email} onChange={handleChange} type="email" required />
+              <label>Primary Email</label>
+              <input name="primary_email" value={form.primary_email} onChange={handleChange} type="email" required />
             </div>
+
             <div className="form-group">
-              <label>Contact</label>
-              <input name="contact" value={form.contact} onChange={handleChange} />
+              <label>Phone Number</label>
+              <input name="phone_number" value={form.phone_number} onChange={handleChange} required />
             </div>
+
             <div className="form-group">
+              <label>Address Line 1</label>
+              <input name="address_line1" value={form.address_line1} onChange={handleChange} />
+            </div>
+
+            <div className="form-group">
+              <label>City</label>
+              <input name="city" value={form.city} onChange={handleChange} />
+            </div>
+
+            <div className="form-group">
+              <label>Country</label>
+              <input name="country" value={form.country} onChange={handleChange} required />
+            </div>
+
+            <div className="form-group" style={{gridColumn: '1 / -1'}}>
               <label>Languages (comma separated)</label>
-              <input name="languages" value={form.languages} onChange={handleChange} />
+              <input name="languages_input" value={form.languages_input} onChange={handleChange} required />
+            </div>
+
+            <div className="form-group">
+              <label>Specialties (comma separated)</label>
+              <input name="specialties_input" value={form.specialties_input} onChange={handleChange} />
+            </div>
+
+            <div className="form-group">
+              <label>Service Regions (comma separated)</label>
+              <input name="service_regions_input" value={form.service_regions_input} onChange={handleChange} />
+            </div>
+
+            <div className="form-group" style={{gridColumn: '1 / -1'}}>
+              <label>Description</label>
+              <textarea name="description" value={form.description} onChange={handleChange} rows={3} />
             </div>
           </div>
 
