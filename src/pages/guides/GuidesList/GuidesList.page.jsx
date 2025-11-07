@@ -8,8 +8,30 @@ const GuidesList = () => {
   const [showCreate, setShowCreate] = useState(false);
 
   const guides = [
-    { id: 'g1', name: 'K. Perera', languages: ['English', 'Sinhala'], contact: '+94 77 3456789' },
-    { id: 'g2', name: 'M. Silva', languages: ['English'], contact: '+94 77 4567890' }
+    {
+      id: 'g1',
+      full_name: 'K. Perera',
+      primary_email: 'k.perera@guides.lk',
+      phone_number: '+94773456789',
+      address_line1: '',
+      city: 'Kandy',
+      country: 'Sri Lanka',
+      languages_spoken: [{ language: 'English', proficiency: 'fluent' }, { language: 'Sinhala', proficiency: 'native' }],
+      specialties: ['heritage', 'culture'],
+      service_regions: ['Kandy', 'Nuwara Eliya']
+    },
+    {
+      id: 'g2',
+      full_name: 'M. Silva',
+      primary_email: 'm.silva@guides.lk',
+      phone_number: '+94774567890',
+      address_line1: '',
+      city: 'Colombo',
+      country: 'Sri Lanka',
+      languages_spoken: [{ language: 'English', proficiency: 'fluent' }],
+      specialties: ['wildlife'],
+      service_regions: ['Yala', 'Udawalawe']
+    }
   ];
 
   return (
@@ -27,8 +49,9 @@ const GuidesList = () => {
         <div className="info-grid-boxes">
           {guides.map(g => (
             <div key={g.id} className="info-card-box" style={{cursor: 'pointer'}} onClick={() => navigate(`/guides/${g.id}`)}>
-              <span className="info-label">{g.name}</span>
-              <span className="info-value">{g.languages.join(', ')} • {g.contact}</span>
+              <span className="info-label">{g.full_name}</span>
+              <span className="info-value">{g.city ? g.city + ', ' : ''}{g.country} • <a href={`mailto:${g.primary_email}`}>{g.primary_email}</a></span>
+              <div className="info-sub">{g.languages_spoken.map(l => l.language).join(', ')} • {g.phone_number}</div>
             </div>
           ))}
         </div>
