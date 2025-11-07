@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../trips/TripDetails/TripOverview/TripOverview.tab.css';
+import '../../trips/TripsList/CreateTripForm.css';
 
 const CreateGuideForm = ({ onClose }) => {
   const [form, setForm] = useState({
@@ -59,60 +59,75 @@ const CreateGuideForm = ({ onClose }) => {
         </div>
         <form className="trip-form" onSubmit={handleSubmit}>
           <div className="form-grid">
-            <div className="form-group">
-              <label>Full Name</label>
-              <input name="full_name" value={form.full_name} onChange={handleChange} required />
+            <div className="form-section">
+              <h3 className="section-title">Basic Information</h3>
+              <div className="form-group">
+                <label>Full Name</label>
+                <input name="full_name" value={form.full_name} onChange={handleChange} required />
+              </div>
+
+              <div className="form-group">
+                <label>License / ID</label>
+                <input name="license" value={form.license} onChange={handleChange} placeholder="e.g. TG-2023-001" />
+              </div>
+
+              <div className="form-group">
+                <label>Primary Email</label>
+                <input name="primary_email" value={form.primary_email} onChange={handleChange} type="email" required />
+              </div>
+
+              <div className="form-group">
+                <label>Phone Number</label>
+                <input name="phone_number" value={form.phone_number} onChange={handleChange} required />
+              </div>
+
+              <div className="form-group">
+                <label>Experience</label>
+                <input name="experience" value={form.experience} onChange={handleChange} placeholder="e.g. 5 years" />
+              </div>
+
+              <div className="form-group">
+                <label>Languages (comma separated)</label>
+                <input name="languages_input" value={form.languages_input} onChange={handleChange} />
+              </div>
             </div>
 
-            <div className="form-group">
-              <label>Primary Email</label>
-              <input name="primary_email" value={form.primary_email} onChange={handleChange} type="email" required />
+            <div className="form-section">
+              <h3 className="section-title">Address</h3>
+              <div className="form-group">
+                <label>Street / Address Line</label>
+                <input name="address_line1" value={form.address_line1} onChange={handleChange} />
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>City</label>
+                  <input name="city" value={form.city} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                  <label>Country</label>
+                  <input name="country" value={form.country} onChange={handleChange} />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Service Regions (comma separated)</label>
+                <input name="service_regions_input" value={form.service_regions_input} onChange={handleChange} />
+              </div>
             </div>
 
-            <div className="form-group">
-              <label>Phone Number</label>
-              <input name="phone_number" value={form.phone_number} onChange={handleChange} required />
-            </div>
-
-            <div className="form-group">
-              <label>Address Line 1</label>
-              <input name="address_line1" value={form.address_line1} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>City</label>
-              <input name="city" value={form.city} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>Country</label>
-              <input name="country" value={form.country} onChange={handleChange} required />
-            </div>
-
-            <div className="form-group" style={{gridColumn: '1 / -1'}}>
-              <label>Languages (comma separated)</label>
-              <input name="languages_input" value={form.languages_input} onChange={handleChange} required />
-            </div>
-
-            <div className="form-group">
-              <label>Specialties (comma separated)</label>
-              <input name="specialties_input" value={form.specialties_input} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>Service Regions (comma separated)</label>
-              <input name="service_regions_input" value={form.service_regions_input} onChange={handleChange} />
-            </div>
-
-            <div className="form-group" style={{gridColumn: '1 / -1'}}>
-              <label>Description</label>
-              <textarea name="description" value={form.description} onChange={handleChange} rows={3} />
+            <div className="form-section full-width">
+              <h3 className="section-title">About / Notes</h3>
+              <div className="form-group full-width">
+                <label>Description</label>
+                <textarea name="description" value={form.description} onChange={handleChange} rows={3} />
+              </div>
             </div>
           </div>
 
           <div className="form-actions">
-            <button type="button" className="btn-secondary" onClick={onClose}>Cancel</button>
-            <button type="submit" className="btn-primary">Create Guide</button>
+            <button type="button" className="btn-cancel" onClick={onClose}>Cancel</button>
+            <button type="submit" className="btn-submit">Create Guide</button>
           </div>
         </form>
       </div>

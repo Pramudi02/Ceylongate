@@ -1,21 +1,17 @@
 import React, { useState } from 'react';
-import '../../trips/TripDetails/TripOverview/TripOverview.tab.css';
+import '../../trips/TripsList/CreateTripForm.css';
 
-const CreateAgentForm = ({ onClose }) => {
+const CreateAgentForm = ({ onClose, onSubmit, initialData = null, isEditMode = false }) => {
   const [form, setForm] = useState({
-    full_name: '',
-    primary_email: '',
-    support_email: '',
-    phone_number: '',
-    secondary_phone: '',
-    address_line1: '',
-    address_line2: '',
-    city: '',
-    state: '',
-    country: '',
-    postal_code: '',
-    description: '',
-    commission_rate: ''
+    name: initialData?.name || '',
+    company: initialData?.company || '',
+    contact: initialData?.contact || '',
+    email: initialData?.email || '',
+    street: initialData?.address?.street || '',
+    city: initialData?.address?.city || '',
+    postal: initialData?.address?.postal || '',
+    country: initialData?.address?.country || '',
+    notes: initialData?.notes || ''
   });
 
   const handleChange = (e) => {
@@ -25,94 +21,93 @@ const CreateAgentForm = ({ onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // assemble payload
     const payload = {
-      ...form,
-      commission_rate: form.commission_rate ? parseFloat(form.commission_rate) : null
+      name: form.name,
+      company: form.company,
+      contact: form.contact,
+      email: form.email,
+      address: {
+        street: form.street,
+        city: form.city,
+        postal: form.postal,
+        country: form.country
+      },
+      notes: form.notes
     };
-    console.log('Create agent payload', payload);
-    // TODO: call API to create agent
-    onClose && onClose();
+    if (onSubmit) onSubmit(payload);
+    if (onClose) onClose();
   };
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <h2>Create New Travel Agent</h2>
-          <button className="btn-close" onClick={onClose}>×</button>
+          <h2>{isEditMode ? 'Edit Travel Agent' : 'Create New Travel Agent'}</h2>
+          <button className="btn-close" onClick={onClose}>&times;</button>
         </div>
+
         <form className="trip-form" onSubmit={handleSubmit}>
           <div className="form-grid">
-            <div className="form-group">
-              <label>Full Name</label>
-              <input name="full_name" value={form.full_name} onChange={handleChange} required />
+            <div className="form-section">
+              <h3 className="section-title">Basic Information</h3>
+              <div className="form-group">
+                <label>Agency / Agent Name</label>
+                <input name="name" value={form.name} onChange={handleChange} placeholder="e.g. London Historic Tours" />
+              </div>
+
+              <div className="form-group">
+                <label>Company</label>
+                <input name="company" value={form.company} onChange={handleChange} placeholder="Company or legal name" />
+              </div>
+
+              <div className="form-group">
+                <label>Contact Number</label>
+                <input name="contact" value={form.contact} onChange={handleChange} placeholder="+44 20 7123456" />
+              </div>
+
+              <div className="form-group">
+                <label>Email</label>
+                <input name="email" value={form.email} onChange={handleChange} placeholder="agent@example.com" />
+              </div>
             </div>
 
-            <div className="form-group">
-              <label>Primary Email</label>
-              <input name="primary_email" value={form.primary_email} onChange={handleChange} type="email" required />
+            <div className="form-section">
+              <h3 className="section-title">Address</h3>
+              <div className="form-group">
+                <label>Street / Address Line</label>
+                <input name="street" value={form.street} onChange={handleChange} placeholder="Street address" />
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>City</label>
+                  <input name="city" value={form.city} onChange={handleChange} placeholder="City" />
+                </div>
+                <div className="form-group">
+                  <label>Postal Code</label>
+                  <input name="postal" value={form.postal} onChange={handleChange} placeholder="Postal / ZIP" />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Country</label>
+                <input name="country" value={form.country} onChange={handleChange} placeholder="Country" />
+              </div>
+
             </div>
 
-            <div className="form-group">
-              <label>Support Email</label>
-              <input name="support_email" value={form.support_email} onChange={handleChange} type="email" />
-            </div>
-
-            <div className="form-group">
-              <label>Phone Number</label>
-              <input name="phone_number" value={form.phone_number} onChange={handleChange} required />
-            </div>
-
-            <div className="form-group">
-              <label>Secondary Phone</label>
-              <input name="secondary_phone" value={form.secondary_phone} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>Address Line 1</label>
-              <input name="address_line1" value={form.address_line1} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>Address Line 2</label>
-              <input name="address_line2" value={form.address_line2} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>City</label>
-              <input name="city" value={form.city} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>State</label>
-              <input name="state" value={form.state} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>Country</label>
-              <input name="country" value={form.country} onChange={handleChange} required />
-            </div>
-
-            <div className="form-group">
-              <label>Postal Code</label>
-              <input name="postal_code" value={form.postal_code} onChange={handleChange} />
-            </div>
-
-            <div className="form-group">
-              <label>Commission Rate (%)</label>
-              <input name="commission_rate" value={form.commission_rate} onChange={handleChange} type="number" step="0.01" min="0" max="100" />
-            </div>
-
-            <div className="form-group" style={{gridColumn: '1 / -1'}}>
-              <label>Description</label>
-              <textarea name="description" value={form.description} onChange={handleChange} rows={4} />
+            <div className="form-section full-width">
+              <h3 className="section-title">Notes & Preferences</h3>
+              <div className="form-group full-width">
+                <label>Notes</label>
+                <textarea name="notes" value={form.notes} onChange={handleChange} placeholder="Any notes about this agent" />
+              </div>
             </div>
           </div>
 
           <div className="form-actions">
-            <button type="button" className="btn-secondary" onClick={onClose}>Cancel</button>
-            <button type="submit" className="btn-primary">Create Agent</button>
+            <button type="button" className="btn-cancel" onClick={onClose}>Cancel</button>
+            <button type="submit" className="btn-submit">{isEditMode ? 'Save Changes' : 'Create Agent'}</button>
           </div>
         </form>
       </div>
