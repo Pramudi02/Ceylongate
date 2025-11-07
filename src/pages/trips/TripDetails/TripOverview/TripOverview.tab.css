@@ -495,6 +495,28 @@
   background: #dc2626;
 }
 
+/* View Details button - blue rounded style used in agents table */
+.btn-view {
+  background: linear-gradient(90deg, #3cc8ff 0%, #5aafff 100%);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all 160ms ease;
+  box-shadow: 0 6px 18px rgba(59,130,246,0.12);
+}
+
+.btn-view:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(59,130,246,0.18);
+}
+
+.btn-view:active {
+  transform: translateY(0);
+}
+
 @media (max-width: 768px) {
   .split-section {
     grid-template-columns: 1fr;

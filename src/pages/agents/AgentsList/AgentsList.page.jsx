@@ -18,7 +18,8 @@ const AgentsList = () => {
       address_line1: 'No 12, Galle Rd',
       city: 'Colombo',
       country: 'Sri Lanka',
-      commission_rate: 10.0
+      commission_rate: 10.0,
+      last_trip_date: '2025-10-22'
     },
     {
       id: 'a2',
@@ -58,6 +59,13 @@ const AgentsList = () => {
     }
   ];
 
+  // sort agents by last_trip_date (most recent first). If missing date, push to end.
+  const sortedAgents = agents.slice().sort((a, b) => {
+    const da = a.last_trip_date ? new Date(a.last_trip_date) : new Date(0);
+    const db = b.last_trip_date ? new Date(b.last_trip_date) : new Date(0);
+    return db - da; // descending: most recent first
+  });
+
   return (
     <div className="trip-overview">
       <div className="list-banner">
@@ -72,14 +80,39 @@ const AgentsList = () => {
       </div>
 
       <div className="info-section">
-        <div className="info-grid-boxes">
-          {agents.map(agent => (
-            <div key={agent.id} className="info-card-box" style={{cursor: 'pointer'}} onClick={() => navigate(`/agents/${agent.id}`)}>
-              <span className="info-label">{agent.full_name}</span>
-              <span className="info-value">{agent.country} • <a href={`mailto:${agent.primary_email}`}>{agent.primary_email}</a></span>
-              <div className="info-sub">{agent.phone_number} • Comm: {agent.commission_rate ? agent.commission_rate + '%' : '—'}</div>
-            </div>
-          ))}
+        <div className="section-header-with-button">
+          <h1 className="section-title">Agents</h1>
+        </div>
+
+        <div className="passengers-table-container" style={{marginTop: '12px'}}>
+          <table className="passengers-table agents-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Country</th>
+                <th>Primary Email</th>
+                <th>Last Trip</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedAgents.map(agent => (
+                <tr key={agent.id}>
+                  <td>
+                    <span className="passenger-name">{agent.full_name}</span>
+                  </td>
+                  <td>{agent.country}</td>
+                  <td><a href={`mailto:${agent.primary_email}`} className="passenger-email">{agent.primary_email}</a></td>
+                  <td>{agent.last_trip_date ? new Date(agent.last_trip_date).toLocaleDateString() : '—'}</td>
+                  <td>
+                    <div className="action-buttons">
+                      <button className="btn-view" onClick={() => navigate(`/agents/${agent.id}`)}>View Details</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
