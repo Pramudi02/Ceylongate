@@ -51,7 +51,7 @@ const TripInvoices = ({ tripData }) => {
     <div className="trip-invoices">
       <div className="invoices-header">
         <h3 className="section-title">Invoices</h3>
-        <button className="btn-primary">➕ Create Invoice</button>
+        <button className="btn-primary">+ Create Invoice</button>
       </div>
 
       <div className="invoices-list">

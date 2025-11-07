@@ -1,82 +1,180 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './TripOverview.tab.css';
+import CreateTripForm from '../../TripsList/CreateTripForm';
 
 const TripOverview = ({ tripData }) => {
-  const passengers = [
-    { id: 1, name: 'John Smith', email: 'john@email.com', phone: '+94 771234567', room: '101' },
-    { id: 2, name: 'Sarah Johnson', email: 'sarah@email.com', phone: '+94 771234568', room: '102' },
-    { id: 3, name: 'Michael Brown', email: 'michael@email.com', phone: '+94 771234569', room: '103' },
-    { id: 4, name: 'Emily Davis', email: 'emily@email.com', phone: '+94 771234570', room: '104' },
-    { id: 5, name: 'David Wilson', email: 'david@email.com', phone: '+94 771234571', room: '105' }
-  ];
+  const [showEditForm, setShowEditForm] = useState(false);
 
-  const itinerary = [
-    { day: 1, title: 'Arrival & Check-in', description: 'Arrive at Maldives International Airport, transfer to resort, welcome dinner' },
-    { day: 2, title: 'Island Exploration', description: 'Morning beach walk, snorkeling session, sunset cruise' },
-    { day: 3, title: 'Water Sports Day', description: 'Jet skiing, parasailing, kayaking, beach BBQ' },
-    { day: 4, title: 'Spa & Relaxation', description: 'Full day spa treatments, yoga session, meditation' },
-    { day: 5, title: 'Dolphin Watching', description: 'Early morning dolphin cruise, island hopping, local cuisine' },
-    { day: 6, title: 'Diving Experience', description: 'Scuba diving lessons, coral reef exploration, underwater photography' },
-    { day: 7, title: 'Departure', description: 'Breakfast, check-out, transfer to airport' }
-  ];
+  // Helper function to get status class based on status value
+  const getStatusClass = (status) => {
+    switch(status) {
+      case 'Ongoing': return 'status-ongoing';
+      case 'Completed': return 'status-completed';
+      case 'Upcoming': return 'status-planned';
+      case 'Cancelled': return 'status-cancelled';
+      default: return 'status-planned';
+    }
+  };
+
+  const handleEditClick = () => {
+    setShowEditForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setShowEditForm(false);
+  };
+
+  const handleSubmitEdit = (editedData) => {
+    console.log('Edited trip data:', editedData);
+    // Here you would update the trip data in your backend/state management
+    setShowEditForm(false);
+    // You might want to refresh the trip data here
+  };
 
   return (
     <div className="trip-overview">
       {/* Trip Information */}
       <div className="info-section">
-        <h3 className="section-title">Trip Information</h3>
-        <div className="info-grid">
-          <div className="info-card">
-            <span className="info-label">Destination</span>
-            <span className="info-value"><span className="icon-location"></span> {tripData.destination}</span>
+        <div className="section-header-with-button">
+          <h3 className="section-title">Trip Information</h3>
+          <button className="btn-edit-trip" onClick={handleEditClick}>
+            <span className="icon-edit"></span> Edit Trip Details
+          </button>
+        </div>
+        <div className="info-grid-boxes">
+          <div className="info-card-box">
+            <span className="info-label">Tour Number</span>
+            <span className="info-value"><strong>{tripData.tourNo}</strong></span>
           </div>
-          <div className="info-card">
-            <span className="info-label">Tour Guide</span>
-            <span className="info-value"><span className="icon-user"></span> {tripData.guide}</span>
+          <div className="info-card-box">
+            <span className="info-label">Trip Name</span>
+            <span className="info-value">{tripData.name}</span>
           </div>
-          <div className="info-card">
-            <span className="info-label">Start Date</span>
-            <span className="info-value"><span className="icon-calendar"></span> {tripData.startDate}</span>
+          <div className="info-card-box">
+            <span className="info-label">Client Country</span>
+            <span className="info-value"><span className="icon-location"></span> {tripData.countryOfClient}</span>
           </div>
-          <div className="info-card">
-            <span className="info-label">End Date</span>
-            <span className="info-value"><span className="icon-calendar"></span> {tripData.endDate}</span>
+          <div className="info-card-box">
+            <span className="info-label">Trip Country</span>
+            <span className="info-value"><span className="icon-location"></span> {tripData.tripCountry}</span>
           </div>
-          <div className="info-card">
-            <span className="info-label">Total Guests</span>
-            <span className="info-value"><span className="icon-users"></span> {tripData.guests} passengers</span>
+          <div className="info-card-box">
+            <span className="info-label">Tour Type</span>
+            <span className="info-value">{tripData.tourType}</span>
           </div>
-          <div className="info-card">
+          <div className="info-card-box">
+            <span className="info-label">Travel Period</span>
+            <span className="info-value"><span className="icon-calendar"></span> {tripData.startDate} to {tripData.endDate}</span>
+          </div>
+          <div className="info-card-box">
             <span className="info-label">Duration</span>
-            <span className="info-value"><span className="icon-clock"></span> 7 days / 6 nights</span>
+            <span className="info-value"><span className="icon-clock"></span> {tripData.days} days / {tripData.nights} nights</span>
+          </div>
+          <div className="info-card-box">
+            <span className="info-label">Total Clients</span>
+            <span className="info-value"><span className="icon-users"></span> {tripData.numberOfClients} passengers</span>
+          </div>
+          <div className="info-card-box">
+            <span className="info-label">Destinations</span>
+            <span className="info-value">{tripData.destinations.join(', ')}</span>
+          </div>
+          <div className="info-card-box">
+            <span className="info-label">Assigned Employee</span>
+            <span className="info-value"><span className="icon-user"></span> {tripData.assignedEmployee}</span>
           </div>
         </div>
-        <button className="btn-primary" style={{marginTop: '20px'}}>
-          <span className="icon-edit"></span> Edit Trip Info
-        </button>
+      </div>
+
+      {/* Agent Details & Guide Details - Side by Side */}
+      <div className="split-section">
+        {/* Agent Details */}
+        <div className="info-section">
+          <h3 className="section-title">Agent Details</h3>
+          <div className="info-grid">
+            <div className="info-card">
+              <span className="info-label">Agency Name</span>
+              <span className="info-value">{tripData.agent.name}</span>
+            </div>
+            <div className="info-card">
+              <span className="info-label">Company</span>
+              <span className="info-value">{tripData.agent.company}</span>
+            </div>
+            <div className="info-card">
+              <span className="info-label">Contact</span>
+              <span className="info-value">{tripData.agent.contact}</span>
+            </div>
+            <div className="info-card">
+              <span className="info-label">Email</span>
+              <span className="info-value"><a href={`mailto:${tripData.agent.email}`}>{tripData.agent.email}</a></span>
+            </div>
+            <div className="info-card">
+              <span className="info-label">Address</span>
+              <span className="info-value">{tripData.agent.address}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Guide Details */}
+        <div className="info-section">
+          <h3 className="section-title">Tour Guide Details</h3>
+          <div className="info-grid">
+            <div className="info-card">
+              <span className="info-label">Guide Name</span>
+              <span className="info-value"><span className="icon-user"></span> {tripData.guide.name}</span>
+            </div>
+            <div className="info-card">
+              <span className="info-label">License ID</span>
+              <span className="info-value">{tripData.guide.license}</span>
+            </div>
+            <div className="info-card">
+              <span className="info-label">Contact</span>
+              <span className="info-value">{tripData.guide.contact}</span>
+            </div>
+            <div className="info-card">
+              <span className="info-label">Email</span>
+              <span className="info-value"><a href={`mailto:${tripData.guide.email}`}>{tripData.guide.email}</a></span>
+            </div>
+            <div className="info-card">
+              <span className="info-label">Experience</span>
+              <span className="info-value">{tripData.guide.experience}</span>
+            </div>
+            <div className="info-card">
+              <span className="info-label">Languages</span>
+              <span className="info-value">{tripData.guide.languages.join(', ')}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Notes / Remarks */}
+      <div className="info-section">
+        <h3 className="section-title">Notes & Remarks</h3>
+        <div className="notes-box">
+          <p>{tripData.notes}</p>
+        </div>
       </div>
 
       {/* Itinerary */}
       <div className="info-section">
         <h3 className="section-title">Daily Itinerary</h3>
         <div className="itinerary-list">
-          {itinerary.map(item => (
+          {tripData.itinerary.map(item => (
             <div key={item.day} className="itinerary-item">
               <div className="day-badge">Day {item.day}</div>
               <div className="itinerary-content">
                 <h4 className="itinerary-title">{item.title}</h4>
-                <p className="itinerary-description">{item.description}</p>
+                
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Passengers List */}
+      {/* Client Details */}
       <div className="info-section">
         <div className="section-header">
-          <h3 className="section-title">Passengers ({passengers.length})</h3>
-          <button className="btn-secondary"><span className="icon-plus"></span> Add Passenger</button>
+          <h3 className="section-title">Client Details ({tripData.clients.length} of {tripData.numberOfClients})</h3>
+          <button className="btn-secondary"><span className="icon-plus"></span> Add Client</button>
         </div>
 
         <div className="passengers-table-container">
@@ -84,26 +182,24 @@ const TripOverview = ({ tripData }) => {
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Passport Number</th>
+                <th>Contact</th>
                 <th>Email</th>
-                <th>Phone</th>
-                <th>Room</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {passengers.map(passenger => (
-                <tr key={passenger.id}>
+              {tripData.clients.map((client, index) => (
+                <tr key={index}>
                   <td>
-                    <span className="passenger-name"><span className="icon-user"></span> {passenger.name}</span>
+                    <span className="passenger-name"><span className="icon-user"></span> {client.name}</span>
                   </td>
+                  <td>{client.passport}</td>
+                  <td>{client.contact}</td>
                   <td>
-                    <a href={`mailto:${passenger.email}`} className="passenger-email">
-                      {passenger.email}
+                    <a href={`mailto:${client.email}`} className="passenger-email">
+                      {client.email}
                     </a>
-                  </td>
-                  <td>{passenger.phone}</td>
-                  <td>
-                    <span className="room-badge">Room {passenger.room}</span>
                   </td>
                   <td>
                     <div className="action-buttons">
@@ -117,6 +213,35 @@ const TripOverview = ({ tripData }) => {
           </table>
         </div>
       </div>
+
+      {/* Financial Summary */}
+      <div className="info-section">
+        <h3 className="section-title">Financial Summary</h3>
+        <div className="info-grid">
+          <div className="info-card">
+            <span className="info-label">Total Cost</span>
+            <span className="info-value">{tripData.currency} {tripData.totalCost.toLocaleString()}</span>
+          </div>
+          <div className="info-card">
+            <span className="info-label">Paid Amount</span>
+            <span className="info-value" style={{color: 'var(--success)'}}>{tripData.currency} {tripData.paidAmount.toLocaleString()}</span>
+          </div>
+          <div className="info-card">
+            <span className="info-label">Balance</span>
+            <span className="info-value" style={{color: 'var(--danger)'}}>{tripData.currency} {tripData.balance.toLocaleString()}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Edit Trip Form Modal */}
+      {showEditForm && (
+        <CreateTripForm 
+          onClose={handleCloseForm}
+          onSubmit={handleSubmitEdit}
+          initialData={tripData}
+          isEditMode={true}
+        />
+      )}
     </div>
   );
 };

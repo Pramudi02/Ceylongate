@@ -1,113 +1,215 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './TripFeedback.tab.css';
 
 const TripFeedback = ({ tripData }) => {
-  const feedbacks = [
+  const [showUploadForm, setShowUploadForm] = useState(false);
+  const [feedbackFiles, setFeedbackFiles] = useState([
     {
       id: 1,
-      customerName: 'John Smith',
-      rating: 5,
-      comment: 'Absolutely amazing experience! The guide was knowledgeable and the itinerary was perfect.',
-      date: '2025-10-18',
-      verified: true
+      customerName: 'Marco Rossi',
+      fileName: 'Feedback_Marco_Rossi.pdf',
+      uploadDate: '2025-10-18',
+      fileSize: '1.2 MB',
+      uploadedBy: 'Admin User'
     },
     {
       id: 2,
-      customerName: 'Sarah Johnson',
-      rating: 4,
-      comment: 'Great trip overall, but would have liked more free time to explore on our own.',
-      date: '2025-10-17',
-      verified: true
+      customerName: 'Sofia Romano',
+      fileName: 'Feedback_Sofia_Romano.pdf',
+      uploadDate: '2025-10-17',
+      fileSize: '890 KB',
+      uploadedBy: 'Sarah Johnson'
     },
     {
       id: 3,
-      customerName: 'Michael Brown',
-      rating: 5,
-      comment: 'Best vacation ever! Highly recommend CEYLONGATE for anyone planning a trip to Maldives.',
-      date: '2025-10-16',
-      verified: false
+      customerName: 'Giovanni Bianchi',
+      fileName: 'Feedback_Giovanni_Bianchi.pdf',
+      uploadDate: '2025-10-16',
+      fileSize: '1.5 MB',
+      uploadedBy: 'Tour Guide Team'
     }
-  ];
+  ]);
 
-  const averageRating = (feedbacks.reduce((sum, f) => sum + f.rating, 0) / feedbacks.length).toFixed(1);
+  const [uploadForm, setUploadForm] = useState({
+    customerName: '',
+    file: null,
+    uploadedBy: ''
+  });
 
-  const renderStars = (rating) => {
-    return [...Array(5)].map((_, i) => (
-      <span key={i} className={`star ${i < rating ? 'filled' : ''}`}>
-        {i < rating ? '⭐' : '☆'}
-      </span>
-    ));
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      setUploadForm({ ...uploadForm, file });
+    } else {
+      alert('Please select a PDF file');
+    }
   };
 
-  const getRatingDistribution = () => {
-    const distribution = [0, 0, 0, 0, 0];
-    feedbacks.forEach(f => distribution[f.rating - 1]++);
-    return distribution.reverse();
+  const handleUpload = (e) => {
+    e.preventDefault();
+    if (!uploadForm.customerName || !uploadForm.file || !uploadForm.uploadedBy) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    const newFeedback = {
+      id: feedbackFiles.length + 1,
+      customerName: uploadForm.customerName,
+      fileName: uploadForm.file.name,
+      uploadDate: new Date().toISOString().split('T')[0],
+      fileSize: (uploadForm.file.size / (1024 * 1024)).toFixed(2) + ' MB',
+      uploadedBy: uploadForm.uploadedBy
+    };
+
+    setFeedbackFiles([newFeedback, ...feedbackFiles]);
+    setUploadForm({ customerName: '', file: null, uploadedBy: '' });
+    setShowUploadForm(false);
+    alert('Feedback uploaded successfully!');
   };
 
-  const ratingDist = getRatingDistribution();
+  const handleDownloadPDF = (feedback) => {
+    // In real implementation, this would download the PDF
+    alert(`Downloading ${feedback.fileName}...`);
+    console.log('Download PDF:', feedback);
+  };
+
+  const handleDeleteFeedback = (id) => {
+    if (window.confirm('Are you sure you want to delete this feedback?')) {
+      setFeedbackFiles(feedbackFiles.filter(f => f.id !== id));
+    }
+  };
 
   return (
     <div className="trip-feedback">
       <div className="feedback-header">
-        <h3 className="section-title">Customer Feedback</h3>
-        <button className="btn-secondary">📥 Export Feedback</button>
+        <h3 className="section-title">
+          <span className="icon-document"></span> Customer Feedback Forms
+        </h3>
+        <button className="btn-upload-feedback" onClick={() => setShowUploadForm(true)}>
+          <span className="icon-plus"></span> Upload New Feedback
+        </button>
       </div>
 
-      {/* Rating Summary */}
-      <div className="rating-summary">
-        <div className="average-rating">
-          <div className="rating-number">{averageRating}</div>
-          <div className="rating-stars">{renderStars(Math.round(parseFloat(averageRating)))}</div>
-          <div className="rating-count">{feedbacks.length} reviews</div>
-        </div>
-
-        <div className="rating-breakdown">
-          {[5, 4, 3, 2, 1].map((star, index) => (
-            <div key={star} className="rating-row">
-              <span className="rating-label">{star} ⭐</span>
-              <div className="rating-bar">
-                <div
-                  className="rating-bar-fill"
-                  style={{ width: `${(ratingDist[index] / feedbacks.length) * 100}%` }}
-                />
-              </div>
-              <span className="rating-percent">{ratingDist[index]}</span>
+      {/* Feedback Files List */}
+      <div className="feedback-files-list">
+        {feedbackFiles.map(feedback => (
+          <div key={feedback.id} className="feedback-file-card">
+            <div className="file-icon">
+              <span className="icon-pdf"></span>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Feedback List */}
-      <div className="feedbacks-list">
-        {feedbacks.map(feedback => (
-          <div key={feedback.id} className="feedback-card">
-            <div className="feedback-header-row">
-              <div className="customer-info">
-                <div className="customer-avatar">
-                  {feedback.customerName.charAt(0)}
-                </div>
-                <div>
-                  <h4 className="customer-name">
-                    {feedback.customerName}
-                    {feedback.verified && <span className="verified-badge">✓ Verified</span>}
-                  </h4>
-                  <p className="feedback-date">{feedback.date}</p>
-                </div>
+            
+            <div className="file-info">
+              <h4 className="file-customer-name">{feedback.customerName}</h4>
+              <p className="file-name">{feedback.fileName}</p>
+              <div className="file-meta">
+                <span><span className="icon-calendar"></span> {feedback.uploadDate}</span>
+                <span>•</span>
+                <span><span className="icon-file-size"></span> {feedback.fileSize}</span>
+                <span>•</span>
+                <span><span className="icon-user"></span> Uploaded by: {feedback.uploadedBy}</span>
               </div>
-              <div className="feedback-rating">{renderStars(feedback.rating)}</div>
             </div>
 
-            <p className="feedback-comment">{feedback.comment}</p>
+            <div className="file-actions">
+              <button 
+                className="btn-action btn-download" 
+                onClick={() => handleDownloadPDF(feedback)}
+                title="Download PDF"
+              >
+                <span className="icon-download"></span> Download
+              </button>
+              <button 
+                className="btn-action btn-delete-feedback" 
+                onClick={() => handleDeleteFeedback(feedback.id)}
+                title="Delete"
+              >
+                <span className="icon-trash"></span>
+              </button>
+            </div>
           </div>
         ))}
       </div>
 
-      {feedbacks.length === 0 && (
+      {feedbackFiles.length === 0 && (
         <div className="empty-state">
-          <span className="empty-icon">⭐</span>
-          <h3>No Feedback Yet</h3>
-          <p>Customer reviews will appear here after the trip is completed</p>
+          <span className="empty-icon"></span>
+          <h3>No Feedback Forms Yet</h3>
+          <p>Upload customer feedback PDFs to keep track of their responses</p>
+          <button className="btn-primary" onClick={() => setShowUploadForm(true)}>
+            <span className="icon-plus"></span> Upload First Feedback
+          </button>
+        </div>
+      )}
+
+      {/* Upload Form Modal */}
+      {showUploadForm && (
+        <div className="modal-overlay" onClick={() => setShowUploadForm(false)}>
+          <div className="modal-content upload-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Upload Customer Feedback</h2>
+              <button className="btn-close" onClick={() => setShowUploadForm(false)}>
+                <span className="close-icon">✕</span>
+              </button>
+            </div>
+
+            <form onSubmit={handleUpload} className="upload-form">
+              <div className="form-group">
+                <label htmlFor="customerName">Customer Name *</label>
+                <input
+                  type="text"
+                  id="customerName"
+                  value={uploadForm.customerName}
+                  onChange={(e) => setUploadForm({ ...uploadForm, customerName: e.target.value })}
+                  placeholder="Enter customer name"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="uploadedBy">Uploaded By *</label>
+                <input
+                  type="text"
+                  id="uploadedBy"
+                  value={uploadForm.uploadedBy}
+                  onChange={(e) => setUploadForm({ ...uploadForm, uploadedBy: e.target.value })}
+                  placeholder="Enter your name or team name"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="feedbackFile">Feedback PDF File *</label>
+                <div className="file-upload-area">
+                  <input
+                    type="file"
+                    id="feedbackFile"
+                    accept=".pdf"
+                    onChange={handleFileChange}
+                    required
+                  />
+                  {uploadForm.file && (
+                    <div className="file-selected">
+                      <span className="icon-pdf-selected"></span>
+                      <span className="file-selected-name">{uploadForm.file.name}</span>
+                      <span className="file-selected-size">
+                        ({(uploadForm.file.size / (1024 * 1024)).toFixed(2)} MB)
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <p className="file-help-text">Only PDF files are accepted. Maximum size: 10MB</p>
+              </div>
+
+              <div className="form-actions">
+                <button type="button" className="btn-cancel" onClick={() => setShowUploadForm(false)}>
+                  Cancel
+                </button>
+                <button type="submit" className="btn-submit">
+                  <span className="icon-upload"></span> Upload Feedback
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
