@@ -31,21 +31,47 @@ const AgentsList = () => {
       city: '',
       country: 'Maldives',
       commission_rate: 12.5
+    },
+    {
+      id: 'a3',
+      full_name: 'Global Getaways Ltd',
+      primary_email: 'hello@globalgetaways.com',
+      support_email: 'help@globalgetaways.com',
+      phone_number: '+442071234567',
+      secondary_phone: '+447701234567',
+      address_line1: '22 Baker Street',
+      city: 'London',
+      country: 'United Kingdom',
+      commission_rate: 8.5
+    },
+    {
+      id: 'a4',
+      full_name: 'Nordic Routes',
+      primary_email: 'contact@nordicroutes.se',
+      support_email: '',
+      phone_number: '+46701234567',
+      secondary_phone: '',
+      address_line1: 'Sodra Hamngatan 21',
+      city: 'Stockholm',
+      country: 'Sweden',
+      commission_rate: 9.0
     }
   ];
 
   return (
     <div className="trip-overview">
-      <div className="info-section">
-        <div className="section-header-with-button">
-          <h1 className="section-title">Travel Agents</h1>
-          <div>
-            <button className="btn-primary" onClick={() => setShowCreate(true)}>
-              + Add New Agent
-            </button>
-          </div>
+      <div className="list-banner">
+        <div className="banner-left">
+          <h2 className="banner-title">Travel Agents</h2>
+          <div className="banner-subtitle">Manage partnered agencies and their commission settings</div>
         </div>
+        <div className="banner-right">
+          <div className="banner-pill">{agents.length} Agents</div>
+          <button className="btn-primary btn-large" onClick={() => setShowCreate(true)}>+ Add New Agent</button>
+        </div>
+      </div>
 
+      <div className="info-section">
         <div className="info-grid-boxes">
           {agents.map(agent => (
             <div key={agent.id} className="info-card-box" style={{cursor: 'pointer'}} onClick={() => navigate(`/agents/${agent.id}`)}>

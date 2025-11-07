@@ -4,6 +4,103 @@
   gap: var(--space-lg);
 }
 
+/* Large banner used on list pages (Agents/Guides) */
+
+.list-banner {
+  /* Match TripOverview header exact sizing and feel */
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #1e70af 0%, #3baef6 100%);
+  color: white;
+  /* Use the same padding and radius as .trip-header-content to get identical height */
+  padding: 80px;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 8px 24px rgba(30, 64, 175, 0.35);
+  border: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+
+.list-banner::before,
+.list-banner::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.list-banner::before {
+  /* match TripOverview decorative orb sizes */
+  width: 400px;
+  height: 400px;
+  background: rgba(255,255,255,0.1);
+  top: -50%;
+  right: -10%;
+}
+.list-banner::after {
+  width: 300px;
+  height: 300px;
+  background: rgba(255,255,255,0.08);
+  bottom: -30%;
+  left: -5%;
+}
+
+.list-banner .banner-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-banner .banner-title {
+  font-size: 36px;
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  color: white;
+}
+
+.list-banner .banner-subtitle {
+  color: rgba(255,255,255,0.9);
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.list-banner .banner-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: calc(var(--space-sm));
+}
+
+.list-banner .banner-pill {
+  background: rgba(255,255,255,0.12);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: var(--font-weight-semibold);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.08);
+  align-self: flex-end;
+}
+
+.list-banner .btn-primary.btn-large {
+  background: linear-gradient(90deg,#ff7a18 0%,#ff9900 100%);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(255,122,24,0.18);
+  border: none;
+  /* keep the button compact but full width up to its content */
+  min-width: 160px;
+}
+
+.list-banner .btn-primary.btn-large:hover {
+  transform: translateY(-3px);
+}
+
+.info-card-box .info-sub {
+  margin-top: 6px;
+  font-size: var(--font-size-xs);
+  color: #64748b;
+}
+
 .split-section {
   display: grid;
   grid-template-columns: 1fr 1fr;

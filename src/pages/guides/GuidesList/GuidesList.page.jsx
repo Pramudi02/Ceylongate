@@ -31,21 +31,47 @@ const GuidesList = () => {
       languages_spoken: [{ language: 'English', proficiency: 'fluent' }],
       specialties: ['wildlife'],
       service_regions: ['Yala', 'Udawalawe']
+    },
+    {
+      id: 'g3',
+      full_name: 'A. Fernando',
+      primary_email: 'a.fernando@guides.lk',
+      phone_number: '+94771234568',
+      address_line1: '',
+      city: 'Galle',
+      country: 'Sri Lanka',
+      languages_spoken: [{ language: 'English', proficiency: 'fluent' }, { language: 'Tamil', proficiency: 'conversational' }],
+      specialties: ['beach', 'heritage'],
+      service_regions: ['Galle', 'Mirissa']
+    },
+    {
+      id: 'g4',
+      full_name: 'S. Wijesekara',
+      primary_email: 's.wijesekara@guides.lk',
+      phone_number: '+94772345679',
+      address_line1: '',
+      city: 'Nuwara Eliya',
+      country: 'Sri Lanka',
+      languages_spoken: [{ language: 'English', proficiency: 'fluent' }],
+      specialties: ['nature', 'trekking'],
+      service_regions: ['Nuwara Eliya', 'Horton Plains']
     }
   ];
 
   return (
     <div className="trip-overview">
-      <div className="info-section">
-        <div className="section-header-with-button">
-          <h1 className="section-title">Tour Guides</h1>
-          <div>
-            <button className="btn-primary" onClick={() => setShowCreate(true)}>
-              + Add New Guide
-            </button>
-          </div>
+      <div className="list-banner">
+        <div className="banner-left">
+          <h2 className="banner-title">Tour Guides</h2>
+          <div className="banner-subtitle">Add and manage local tour guides, languages and service regions</div>
         </div>
+        <div className="banner-right">
+          <div className="banner-pill">{guides.length} Guides</div>
+          <button className="btn-primary btn-large" onClick={() => setShowCreate(true)}>+ Add New Guide</button>
+        </div>
+      </div>
 
+      <div className="info-section">
         <div className="info-grid-boxes">
           {guides.map(g => (
             <div key={g.id} className="info-card-box" style={{cursor: 'pointer'}} onClick={() => navigate(`/guides/${g.id}`)}>
