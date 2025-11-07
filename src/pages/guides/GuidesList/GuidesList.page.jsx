@@ -10,7 +10,7 @@ const GuidesList = () => {
   const guides = [
     {
       id: 'g1',
-      full_name: 'K. Perera',
+      full_name: 'Kamal Nuwan Perera',
       primary_email: 'k.perera@guides.lk',
       phone_number: '+94773456789',
       address_line1: '',
@@ -18,11 +18,12 @@ const GuidesList = () => {
       country: 'Sri Lanka',
       languages_spoken: [{ language: 'English', proficiency: 'fluent' }, { language: 'Sinhala', proficiency: 'native' }],
       specialties: ['heritage', 'culture'],
-      service_regions: ['Kandy', 'Nuwara Eliya']
+      service_regions: ['Kandy', 'Nuwara Eliya'],
+      last_trip_date: '2025-09-11'
     },
     {
       id: 'g2',
-      full_name: 'M. Silva',
+      full_name: 'Mayura Ranil Silva',
       primary_email: 'm.silva@guides.lk',
       phone_number: '+94774567890',
       address_line1: '',
@@ -30,11 +31,12 @@ const GuidesList = () => {
       country: 'Sri Lanka',
       languages_spoken: [{ language: 'English', proficiency: 'fluent' }],
       specialties: ['wildlife'],
-      service_regions: ['Yala', 'Udawalawe']
+      service_regions: ['Yala', 'Udawalawe'],
+      last_trip_date: '2025-08-02'
     },
     {
       id: 'g3',
-      full_name: 'A. Fernando',
+      full_name: 'Amaya Hiruni Fernando',
       primary_email: 'a.fernando@guides.lk',
       phone_number: '+94771234568',
       address_line1: '',
@@ -42,11 +44,12 @@ const GuidesList = () => {
       country: 'Sri Lanka',
       languages_spoken: [{ language: 'English', proficiency: 'fluent' }, { language: 'Tamil', proficiency: 'conversational' }],
       specialties: ['beach', 'heritage'],
-      service_regions: ['Galle', 'Mirissa']
+      service_regions: ['Galle', 'Mirissa'],
+      last_trip_date: '2025-11-01'
     },
     {
       id: 'g4',
-      full_name: 'S. Wijesekara',
+      full_name: 'Sujeewa Nirmal Wijesekara',
       primary_email: 's.wijesekara@guides.lk',
       phone_number: '+94772345679',
       address_line1: '',
@@ -54,9 +57,17 @@ const GuidesList = () => {
       country: 'Sri Lanka',
       languages_spoken: [{ language: 'English', proficiency: 'fluent' }],
       specialties: ['nature', 'trekking'],
-      service_regions: ['Nuwara Eliya', 'Horton Plains']
+      service_regions: ['Nuwara Eliya', 'Horton Plains'],
+      last_trip_date: '2025-10-10'
     }
   ];
+
+  // sort guides by last_trip_date (most recent first)
+  const sortedGuides = guides.slice().sort((a, b) => {
+    const da = a.last_trip_date ? new Date(a.last_trip_date) : new Date(0);
+    const db = b.last_trip_date ? new Date(b.last_trip_date) : new Date(0);
+    return db - da;
+  });
 
   return (
     <div className="trip-overview">
@@ -72,14 +83,36 @@ const GuidesList = () => {
       </div>
 
       <div className="info-section">
-        <div className="info-grid-boxes">
-          {guides.map(g => (
-            <div key={g.id} className="info-card-box" style={{cursor: 'pointer'}} onClick={() => navigate(`/guides/${g.id}`)}>
-              <span className="info-label">{g.full_name}</span>
-              <span className="info-value">{g.city ? g.city + ', ' : ''}{g.country} • <a href={`mailto:${g.primary_email}`}>{g.primary_email}</a></span>
-              <div className="info-sub">{g.languages_spoken.map(l => l.language).join(', ')} • {g.phone_number}</div>
-            </div>
-          ))}
+        <div className="section-header-with-button">
+        </div>
+
+        <div className="passengers-table-container" style={{marginTop: '12px'}}>
+          <table className="passengers-table guides-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Languages</th>
+                <th>Last Trip</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedGuides.map(g => (
+                <tr key={g.id}>
+                  <td><span className="passenger-name">{g.full_name}</span></td>
+                  <td>{g.city ? g.city + ', ' : ''}{g.country}</td>
+                  <td>{g.languages_spoken.map(l => l.language).join(', ')}</td>
+                  <td>{g.last_trip_date ? new Date(g.last_trip_date).toLocaleDateString() : '—'}</td>
+                  <td>
+                    <div className="action-buttons">
+                      <button className="btn-view" onClick={() => navigate(`/guides/${g.id}`)}>View Details</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 

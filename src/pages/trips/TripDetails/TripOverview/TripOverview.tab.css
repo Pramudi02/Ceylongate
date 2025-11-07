@@ -422,6 +422,54 @@
   color: #1e293b;
 }
 
+/* Ensure header and data cells align vertically and columns keep predictable widths */
+.passengers-table th,
+.passengers-table td {
+  vertical-align: middle;
+}
+
+/* Make name/location/languages/last trip/actions widths predictable for Agents/Guides tables */
+.passengers-table.agents-table th:nth-child(1),
+.passengers-table.guides-table th:nth-child(1) {
+  width: 30%;
+}
+.passengers-table.agents-table th:nth-child(2),
+.passengers-table.guides-table th:nth-child(2) {
+  width: 18%;
+}
+.passengers-table.agents-table th:nth-child(3),
+.passengers-table.guides-table th:nth-child(3) {
+  width: 22%;
+}
+.passengers-table.agents-table th:nth-child(4),
+.passengers-table.guides-table th:nth-child(4) {
+  width: 16%;
+}
+.passengers-table.agents-table th:nth-child(5),
+.passengers-table.guides-table th:nth-child(5) {
+  width: 14%;
+}
+
+/* Ensure content inside name cell is vertically centered */
+.passengers-table td .passenger-name {
+  align-items: center; /* flex alignment */
+}
+
+/* Center align all table headers and cells except the first column */
+.passengers-table.agents-table th,
+.passengers-table.agents-table td,
+.passengers-table.guides-table th,
+.passengers-table.guides-table td {
+  text-align: center;
+}
+
+.passengers-table.agents-table th:first-child,
+.passengers-table.agents-table td:first-child,
+.passengers-table.guides-table th:first-child,
+.passengers-table.guides-table td:first-child {
+  text-align: left;
+}
+
 .passengers-table tbody tr {
   transition: background var(--transition-base);
 }
