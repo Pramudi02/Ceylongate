@@ -87,12 +87,13 @@
   border-radius: 999px;
   box-shadow: 0 8px 24px rgba(255,122,24,0.18);
   border: none;
-  /* keep the button compact but full width up to its content */
   min-width: 160px;
 }
 
 .list-banner .btn-primary.btn-large:hover {
   transform: translateY(-3px);
+  color: white !important;
+  text-decoration: none;
 }
 
 .info-card-box .info-sub {
@@ -263,28 +264,41 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Upcoming/Planned - Blue */
-.badge.status-planned {
-  background: #f59e0b !important;
-  color: white !important;
+/* Status badges - use central design tokens (variables) so colors are consistent */
+.badge.status-planned,
+.badge.trip-status-planned,
+.trip-status-planned {
+  /* Upcoming/Planned - blue */
+  background: #dbeafe; /* light blue */
+  color: #3b82f6; /* blue */
+  border: 1px solid #3b82f6;
 }
 
-/* Ongoing - Orange */
-.badge.status-ongoing {
-  background: #e0ff43 !important;
-  color: white !important;
+.badge.status-ongoing,
+.badge.trip-status-ongoing,
+.trip-status-ongoing {
+  /* Ongoing - orange */
+  background: #fef3c7; /* light orange */
+  color: #f59e0b; /* orange */
+  border: 1px solid #f59e0b;
 }
 
-/* Completed - Green */
-.badge.status-completed {
-  background: #10b981 !important;
-  color: white !important;
+.badge.status-completed,
+.badge.trip-status-completed,
+.trip-status-completed {
+  /* Completed - green */
+  background: #d1fae5; /* light green */
+  color: #10b981; /* green */
+  border: 1px solid #10b981;
 }
 
-/* Cancelled - Red */
-.badge.status-cancelled {
-  background: #ef4444 !important;
-  color: white !important;
+.badge.status-cancelled,
+.badge.trip-status-cancelled,
+.trip-status-cancelled {
+  /* Cancelled - red */
+  background: #fee2e2; /* light red */
+  color: #ef4444; /* red */
+  border: 1px solid #ef4444;
 }
 
 .itinerary-list {
