@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import '../../trips/TripsList/CreateTripForm.css';
 
-const CreateGuideForm = ({ onClose }) => {
+const CreateGuideForm = ({ onClose, onSubmit, initialData = null, isEditMode = false }) => {
   const [form, setForm] = useState({
-    full_name: '',
-    primary_email: '',
-    phone_number: '',
-    address_line1: '',
-    city: '',
-    country: 'Sri Lanka',
-    description: '',
-    languages_input: '',
-    specialties_input: '',
-    service_regions_input: ''
+    full_name: initialData?.full_name || '',
+    license: initialData?.license || '',
+    primary_email: initialData?.primary_email || '',
+    phone_number: initialData?.phone_number || '',
+    address_line1: initialData?.address_line1 || '',
+    city: initialData?.city || '',
+    country: initialData?.country || 'Sri Lanka',
+    description: initialData?.description || '',
+    languages_input: initialData?.languages_spoken ? initialData.languages_spoken.map(l => l.language).join(', ') : '',
+    specialties_input: initialData?.specialties ? initialData.specialties.join(', ') : '',
+    service_regions_input: initialData?.service_regions ? initialData.service_regions.join(', ') : ''
   });
 
   const handleChange = (e) => {
@@ -45,9 +46,9 @@ const CreateGuideForm = ({ onClose }) => {
       service_regions
     };
 
-    console.log('Create guide payload', payload);
-    // TODO: call API
-    onClose && onClose();
+  if (onSubmit) onSubmit(payload);
+  // close modal
+  onClose && onClose();
   };
 
   return (

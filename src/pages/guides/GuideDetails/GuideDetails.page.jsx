@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../trips/TripDetails/TripOverview/TripOverview.tab.css';
 import { sampleTrips } from '../../../data/trips.sample';
+import CreateGuideForm from '../CreateGuideForm/CreateGuideForm';
 
 const GuideDetails = () => {
   const navigate = useNavigate();
   const { guideId } = useParams();
 
-  const guide = {
+  const [guide, setGuide] = useState({
     id: guideId,
     full_name: 'K. Perera',
     primary_email: 'k.perera@guides.lk',
@@ -19,7 +20,9 @@ const GuideDetails = () => {
     languages_spoken: [{ language: 'English', proficiency: 'fluent' }, { language: 'Sinhala', proficiency: 'native' }],
     specialties: ['heritage', 'culture'],
     service_regions: ['Kandy', 'Nuwara Eliya']
-  };
+  });
+
+  const [showEdit, setShowEdit] = useState(false);
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -33,10 +36,15 @@ const GuideDetails = () => {
 
   return (
     <div className="trip-overview">
-      <button className="btn-back" onClick={() => navigate('/guides')}>← Back to Guides</button>
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+        <button className="btn-back" onClick={() => navigate('/guides')}>← Back to Guides</button>
+        <div>
+          <button className="btn-view" style={{marginRight: '8px'}} onClick={() => setShowEdit(true)}>Edit</button>
+        </div>
+      </div>
 
       <div className="info-section">
-        <h1 className="section-title">{guide.full_name}</h1>
+  <h1 className="section-title">{guide.full_name}</h1>
         <div className="info-grid">
           <div className="info-card">
             <span className="info-label">Primary Email</span>
@@ -74,6 +82,42 @@ const GuideDetails = () => {
           </div>
         </div>
       </div>
+
+      {showEdit && (
+        <CreateGuideForm
+          isEditMode={true}
+          initialData={{
+            full_name: guide.full_name,
+            license: guide.license || '',
+            primary_email: guide.primary_email,
+            phone_number: guide.phone_number,
+            address_line1: guide.address_line1,
+            city: guide.city,
+            country: guide.country,
+            description: guide.description,
+            languages_spoken: guide.languages_spoken,
+            specialties: guide.specialties,
+            service_regions: guide.service_regions
+          }}
+          onSubmit={(payload) => {
+            setGuide(prev => ({
+              ...prev,
+              full_name: payload.full_name || prev.full_name,
+              primary_email: payload.primary_email || prev.primary_email,
+              phone_number: payload.phone_number || prev.phone_number,
+              address_line1: payload.address_line1 || prev.address_line1,
+              city: payload.city || prev.city,
+              country: payload.country || prev.country,
+              description: payload.description || prev.description,
+              languages_spoken: payload.languages_spoken || prev.languages_spoken,
+              specialties: payload.specialties || prev.specialties,
+              service_regions: payload.service_regions || prev.service_regions
+            }));
+            setShowEdit(false);
+          }}
+          onClose={() => setShowEdit(false)}
+        />
+      )}
 
       {/* compact timestamps */}
       <div className="info-section" style={{marginTop: '6px'}}>

@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../trips/TripDetails/TripOverview/TripOverview.tab.css';
 import { sampleTrips } from '../../../data/trips.sample';
+import CreateAgentForm from '../CreateAgentForm/CreateAgentForm';
 
 const AgentDetails = () => {
   const navigate = useNavigate();
   const { agentId } = useParams();
 
-  // mock data (matches compact travel_agents schema)
-  const agent = {
+  // mock data (matches compact travel_agents schema) — now editable
+  const [agent, setAgent] = useState({
     id: agentId,
     full_name: 'Ceylon Travel Pvt Ltd',
     primary_email: 'sales@ceylongate.com',
@@ -25,7 +26,9 @@ const AgentDetails = () => {
     commission_rate: 10.0,
     created_at: '2025-01-10T10:00:00Z',
     updated_at: '2025-09-01T12:00:00Z'
-  };
+  });
+
+  const [showEdit, setShowEdit] = useState(false);
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -39,10 +42,15 @@ const AgentDetails = () => {
 
   return (
     <div className="trip-overview">
-      <button className="btn-back" onClick={() => navigate('/agents')}>← Back to Agents</button>
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+        <button className="btn-back" onClick={() => navigate('/agents')}>← Back to Agents</button>
+        <div>
+          <button className="btn-view" style={{marginRight: '8px'}} onClick={() => setShowEdit(true)}>Edit</button>
+        </div>
+      </div>
 
       <div className="info-section">
-        <h1 className="section-title">{agent.full_name}</h1>
+  <h1 className="section-title">{agent.full_name}</h1>
         <div className="info-grid">
           <div className="info-card">
             <span className="info-label">Primary Email</span>
@@ -85,6 +93,37 @@ const AgentDetails = () => {
           </div>
         </div>
       </div>
+
+      {showEdit && (
+        <CreateAgentForm
+          isEditMode={true}
+          initialData={{
+            name: agent.full_name,
+            company: '',
+            contact: agent.phone_number,
+            email: agent.primary_email,
+            address: { street: agent.address_line1, city: agent.city, postal: agent.postal_code, country: agent.country },
+            notes: agent.description
+          }}
+          onSubmit={(payload) => {
+            // merge submitted payload into agent state
+            setAgent(prev => ({
+              ...prev,
+              full_name: payload.name || prev.full_name,
+              primary_email: payload.email || prev.primary_email,
+              phone_number: payload.contact || prev.phone_number,
+              address_line1: payload.address?.street || prev.address_line1,
+              city: payload.address?.city || prev.city,
+              postal_code: payload.address?.postal || prev.postal_code,
+              country: payload.address?.country || prev.country,
+              description: payload.notes || prev.description,
+              updated_at: new Date().toISOString()
+            }));
+            setShowEdit(false);
+          }}
+          onClose={() => setShowEdit(false)}
+        />
+      )}
 
       {/* compact timestamps (no Metadata section needed) */}
       <div className="info-section" style={{marginTop: '6px'}}>
