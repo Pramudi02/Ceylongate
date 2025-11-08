@@ -48,30 +48,7 @@ const Login = () => {
         {/* Left Side - Branding */}
         <div className="login-branding">
           <div className="brand-content">
-            <h1 className="brand-logo">CEYLONGATE</h1>
-            <p className="brand-tagline">Your Gate to Paradise</p>
-            <p className="brand-description">
-              Professional travel management system for tour operators and travel agencies
-            </p>
-            
-            <div className="features-list">
-              <div className="feature-item">
-                <span className="feature-icon icon-plane"></span>
-                <span>Trip Management</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-icon icon-hotel"></span>
-                <span>Hotel Reservations</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-icon icon-users"></span>
-                <span>Customer Database</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-icon icon-chart"></span>
-                <span>Analytics & Reports</span>
-              </div>
-            </div>
+            <img src="/logo1.png" alt="Ceylongate Logo" className="brand-logo-image" />
           </div>
         </div>
 
