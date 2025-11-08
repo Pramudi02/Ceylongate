@@ -80,9 +80,6 @@ const AgentsList = () => {
       </div>
 
       <div className="info-section">
-        <div className="section-header-with-button">
-          <h1 className="section-title">Agents</h1>
-        </div>
 
         <div className="passengers-table-container" style={{marginTop: '12px'}}>
           <table className="passengers-table agents-table">
