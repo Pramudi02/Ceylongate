@@ -45,33 +45,13 @@ const Login = () => {
   return (
     <div className="login-page">
       <div className="login-container">
-        {/* Left Side - Branding */}
+        {/* Left Side - Visual Branding (simplified) */}
         <div className="login-branding">
           <div className="brand-content">
-            <h1 className="brand-logo">CEYLONGATE</h1>
-            <p className="brand-tagline">Your Gate to Paradise</p>
-            <p className="brand-description">
-              Professional travel management system for tour operators and travel agencies
-            </p>
-            
-            <div className="features-list">
-              <div className="feature-item">
-                <span className="feature-icon icon-plane"></span>
-                <span>Trip Management</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-icon icon-hotel"></span>
-                <span>Hotel Reservations</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-icon icon-users"></span>
-                <span>Customer Database</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-icon icon-chart"></span>
-                <span>Analytics & Reports</span>
-              </div>
+            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px'}}>
+              <img src="/logo_white.png" alt="Logo" className="brand-logo-img" />
             </div>
+            <div style={{height: 8}} />
           </div>
         </div>
 
