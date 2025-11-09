@@ -58,8 +58,8 @@ const Login = () => {
         {/* Right Side - Login Form */}
         <div className="login-form-section">
           <div className="login-form-container">
-            <h2 className="login-title">Welcome Back</h2>
-            <p className="login-subtitle">Sign in to your admin account</p>
+            <h1 className="login-title">Welcome!!</h1>
+            <p className="login-subtitle">Login with Email</p>
 
             {error && (
               <div className="error-message">
@@ -71,57 +71,54 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="login-form">
               <div className="form-group">
                 <label htmlFor="email">Email Address</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="input-field"
-                  placeholder="admin@ceylongate.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
+                <div className="input-with-icon">
+                  <span className="input-icon" aria-hidden>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8.5v7A2.5 2.5 0 005.5 18h13a2.5 2.5 0 002.5-2.5v-7" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/><path d="M21 6.5l-9 6-9-6" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </span>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    className="input-field"
+                    placeholder="you@company.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
 
               <div className="form-group">
                 <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  className="input-field"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
+                <div className="input-with-icon">
+                  <span className="input-icon" aria-hidden>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="11" width="18" height="9" rx="2" stroke="#6B7280" strokeWidth="1.2"/><path d="M7 11V8a5 5 0 0110 0v3" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </span>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    className="input-field"
+                    placeholder="Enter your password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
 
-              <div className="form-options">
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    name="rememberMe"
-                    checked={formData.rememberMe}
-                    onChange={handleChange}
-                  />
-                  <span>Remember me</span>
-                </label>
-                <a href="#" className="forgot-password">Forgot password?</a>
-              </div>
+              
 
               <button
                 type="submit"
-                className="btn-primary btn-block"
+                className="btn-block login-cta"
                 disabled={loading}
               >
-                {loading ? 'Signing in...' : 'Sign In'}
+                {loading ? 'Logging in...' : 'LOGIN'}
               </button>
             </form>
 
-            <p className="login-footer">
-              Admin access only • Contact IT support for assistance
-            </p>
+           
           </div>
         </div>
       </div>
