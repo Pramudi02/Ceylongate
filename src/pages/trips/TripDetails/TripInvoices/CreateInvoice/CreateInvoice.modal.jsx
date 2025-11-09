@@ -59,7 +59,11 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
   const [travelFrom, setTravelFrom] = useState('');
   const [travelTo, setTravelTo] = useState('');
 
-  const [rows, setRows] = useState(() => defaultRowsForCountry('Sri Lanka', 'USD'));
+  const [rowsByCountry, setRowsByCountry] = useState(() => ({
+    'Sri Lanka': defaultRowsForCountry('Sri Lanka', 'USD'),
+    'Maldives': defaultRowsForCountry('Maldives', 'USD')
+  }));
+  const [activeTab, setActiveTab] = useState('Sri Lanka');
 
   const [tourLeaderDiscount, setTourLeaderDiscount] = useState(0);
   const [amountPaid, setAmountPaid] = useState(0);
@@ -73,29 +77,46 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
 
   useEffect(() => {
-    // reset rows when country changes
-    if (country === 'Both') {
-      setRows([...defaultRowsForCountry('Sri Lanka', invoiceCurrency), ...defaultRowsForCountry('Maldives', invoiceCurrency)]);
-    } else {
-      setRows(defaultRowsForCountry(country, invoiceCurrency));
-    }
+    // ensure rowsByCountry reflect currency changes or initial country selection
+    setRowsByCountry(prev => ({
+      'Sri Lanka': prev['Sri Lanka'] && prev['Sri Lanka'].length ? prev['Sri Lanka'] : defaultRowsForCountry('Sri Lanka', invoiceCurrency),
+      'Maldives': prev['Maldives'] && prev['Maldives'].length ? prev['Maldives'] : defaultRowsForCountry('Maldives', invoiceCurrency)
+    }));
+    // set active tab depending on selected country
+    if (country === 'Both') setActiveTab('Sri Lanka');
+    else setActiveTab(country);
   }, [country, invoiceCurrency]);
 
   const currencySymbol = currencySymbols[invoiceCurrency] || '';
 
-  const updateRow = (id, field, value) => {
-    setRows(prev => prev.map(r => r.id === id ? { ...r, [field]: field === 'description' ? value : Number(value) } : r));
+  const updateRow = (countryKey, id, field, value) => {
+    setRowsByCountry(prev => ({
+      ...prev,
+      [countryKey]: prev[countryKey].map(r => r.id === id ? { ...r, [field]: field === 'description' ? value : Number(value) } : r)
+    }));
   };
 
-  const addRow = () => {
-    setRows(prev => [...prev, { id: Date.now() + '-r' + prev.length, description: '', unit: 1, rate: 0 }]);
+  const addRow = (countryKey) => {
+    setRowsByCountry(prev => ({
+      ...prev,
+      [countryKey]: [...(prev[countryKey] || []), { id: Date.now() + '-r' + ((prev[countryKey] || []).length), description: '', unit: 1, rate: 0 }]
+    }));
   };
 
-  const removeRow = (id) => {
-    setRows(prev => prev.filter(r => r.id !== id));
+  const removeRow = (countryKey, id) => {
+    setRowsByCountry(prev => ({
+      ...prev,
+      [countryKey]: prev[countryKey].filter(r => r.id !== id)
+    }));
   };
 
-  const total = useMemo(() => rows.reduce((s, r) => s + (Number(r.unit || 0) * Number(r.rate || 0)), 0), [rows]);
+  const total = useMemo(() => {
+    if (country === 'Both') {
+      return Object.values(rowsByCountry).reduce((sum, arr) => sum + arr.reduce((s, r) => s + (Number(r.unit || 0) * Number(r.rate || 0)), 0), 0);
+    }
+    const arr = rowsByCountry[country] || [];
+    return arr.reduce((s, r) => s + (Number(r.unit || 0) * Number(r.rate || 0)), 0);
+  }, [rowsByCountry, country]);
   const totalWithDiscount = total - Number(tourLeaderDiscount || 0);
   const balance = totalWithDiscount - Number(amountPaid || 0);
 
@@ -110,7 +131,18 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
     return '';
   };
 
-  const generateInvoiceObject = () => ({
+  const reimbursementTextFor = (cKey) => {
+    if (cKey === 'Sri Lanka') return 'Being cost of group round tour in Sri Lanka';
+    if (cKey === 'Maldives') return 'Being cost of group round tour in Maldives';
+    return '';
+  };
+
+  const generateInvoiceObject = () => {
+    const flattenedRows = country === 'Both'
+      ? [...(rowsByCountry['Sri Lanka'] || []), ...(rowsByCountry['Maldives'] || [])]
+      : (rowsByCountry[country] || []);
+
+    return ({
     id: invoiceNo,
     status: 'Draft',
     total: `${currencySymbol}${total.toFixed(2)}`,
@@ -121,13 +153,14 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
     agent: { name: agentName, address, email, telephone },
     invoiceDetails: { invoiceNo, invoiceDate, country, tourNo, invoiceCurrency },
     reimbursement: { reimbursementText: reimbursementText(), clientName, travelFrom, travelTo },
-    rows,
+    rows: flattenedRows,
     totals: { total, tourLeaderDiscount: Number(tourLeaderDiscount || 0), totalWithDiscount, amountPaid: Number(amountPaid || 0), balance },
     payment: { paymentMode, paymentText, bankId: selectedBank },
     prepared: preparedBy,
     checked: checkedBy,
     tripRef: tripData?.id || null
-  });
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -213,9 +246,35 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
             <h3>Reimbursement & Tour Details</h3>
             <div className="grid-2">
               <div className="full">
-                <label>Reimbursement For</label>
-                <div className="static-text">{reimbursementText()}</div>
-              </div>
+                  <label>Reimbursement For</label>
+                  <div className="country-checkboxes">
+                    <label className="chk"><input type="checkbox" checked={country === 'Sri Lanka' || country === 'Both'} onChange={() => {
+                      // toggle Sri Lanka
+                      const currently = country === 'Both' ? new Set(['Sri Lanka','Maldives']) : new Set([country]);
+                      if (currently.has('Sri Lanka')) {
+                        if (currently.size === 1) return; // prevent clearing both
+                        currently.delete('Sri Lanka');
+                      } else {
+                        currently.add('Sri Lanka');
+                      }
+                      const next = currently.size === 2 ? 'Both' : Array.from(currently)[0];
+                      setCountry(next);
+                    }} /> Sri Lanka</label>
+
+                    <label className="chk"><input type="checkbox" checked={country === 'Maldives' || country === 'Both'} onChange={() => {
+                      // toggle Maldives
+                      const currently = country === 'Both' ? new Set(['Sri Lanka','Maldives']) : new Set([country]);
+                      if (currently.has('Maldives')) {
+                        if (currently.size === 1) return; // prevent clearing both
+                        currently.delete('Maldives');
+                      } else {
+                        currently.add('Maldives');
+                      }
+                      const next = currently.size === 2 ? 'Both' : Array.from(currently)[0];
+                      setCountry(next);
+                    }} /> Maldives</label>
+                  </div>
+                </div>
               <div>
                 <label>Client Name</label>
                 <input value={clientName} onChange={e => setClientName(e.target.value)} />
@@ -234,24 +293,42 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
           <section className="ci-section card-sm">
             <h3>Description & Amount</h3>
             <div className="desc-table">
-              <div className="desc-header">
+              <div className="ci-tabs">
+                  {country === 'Both' ? (
+                    <div className="tab-buttons">
+                      <button type="button" className={`tab-btn ${activeTab === 'Sri Lanka' ? 'active' : ''}`} onClick={() => setActiveTab('Sri Lanka')}>Sri Lanka</button>
+                      <button type="button" className={`tab-btn ${activeTab === 'Maldives' ? 'active' : ''}`} onClick={() => setActiveTab('Maldives')}>Maldives</button>
+                    </div>
+                  ) : null}
+              </div>
+
+                {/* show reimbursement static text inside the Description & Amount area */}
+                <div className="full">
+                  {country === 'Both' ? (
+                    <div className="static-text">{reimbursementTextFor(activeTab)}</div>
+                  ) : (
+                    <div className="static-text">{reimbursementText()}</div>
+                  )}
+                </div>
+
+                <div className="desc-header">
                 <div>Description</div>
                 <div>Unit</div>
                 <div>Rate ({currencySymbol})</div>
                 <div>Amount ({currencySymbol})</div>
                 <div></div>
               </div>
-              {rows.map(r => (
+              {(rowsByCountry[activeTab] || []).map(r => (
                 <div key={r.id} className="desc-row">
-                  <textarea className="desc-desc" value={r.description} onChange={e => updateRow(r.id, 'description', e.target.value)} />
-                  <input className="desc-unit" type="number" value={r.unit} onChange={e => updateRow(r.id, 'unit', e.target.value)} />
-                  <input className="desc-rate" type="number" value={r.rate} onChange={e => updateRow(r.id, 'rate', e.target.value)} />
+                  <textarea className="desc-desc" value={r.description} onChange={e => updateRow(activeTab, r.id, 'description', e.target.value)} />
+                  <input className="desc-unit" type="number" value={r.unit} onChange={e => updateRow(activeTab, r.id, 'unit', e.target.value)} />
+                  <input className="desc-rate" type="number" value={r.rate} onChange={e => updateRow(activeTab, r.id, 'rate', e.target.value)} />
                   <div className="desc-amount">{(Number(r.unit || 0) * Number(r.rate || 0)).toFixed(2)}</div>
-                  <div className="desc-actions"><button type="button" className="btn-danger" onClick={() => removeRow(r.id)}>Remove</button></div>
+                  <div className="desc-actions"><button type="button" className="btn-danger" onClick={() => removeRow(activeTab, r.id)}>Remove</button></div>
                 </div>
               ))}
               <div className="desc-controls">
-                <button type="button" className="btn-primary" onClick={addRow}>+ Add Row</button>
+                <button type="button" className="btn-primary" onClick={() => addRow(activeTab)}>+ Add Row</button>
               </div>
 
               <div className="desc-footer">
@@ -350,12 +427,26 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
               <div>{address}</div>
               <hr />
               <div className="preview-rows">
-                {rows.map(r => (
-                  <div key={r.id} className="preview-row">
-                    <div className="preview-desc">{r.description}</div>
-                    <div className="preview-amt">{currencySymbol}{(Number(r.unit || 0) * Number(r.rate || 0)).toFixed(2)}</div>
-                  </div>
-                ))}
+                {country === 'Both' ? (
+                  Object.entries(rowsByCountry).map(([cKey, arr]) => (
+                    <div key={cKey} className="preview-section">
+                      <h4>{cKey}</h4>
+                      {arr.map(r => (
+                        <div key={r.id} className="preview-row">
+                          <div className="preview-desc">{r.description}</div>
+                          <div className="preview-amt">{currencySymbol}{(Number(r.unit || 0) * Number(r.rate || 0)).toFixed(2)}</div>
+                        </div>
+                      ))}
+                    </div>
+                  ))
+                ) : (
+                  (rowsByCountry[country] || []).map(r => (
+                    <div key={r.id} className="preview-row">
+                      <div className="preview-desc">{r.description}</div>
+                      <div className="preview-amt">{currencySymbol}{(Number(r.unit || 0) * Number(r.rate || 0)).toFixed(2)}</div>
+                    </div>
+                  ))
+                )}
               </div>
               <div className="preview-total">Total: {currencySymbol}{total.toFixed(2)}</div>
             </div>

@@ -31,6 +31,12 @@
 .ci-section textarea{min-height:44px}
 .static-text{background:#fff;padding:8px;border-radius:6px;border:1px solid #eee}
 .desc-table{border-top:1px solid #eee;padding-top:8px}
+.ci-tabs{margin-bottom:8px}
+.tab-buttons{display:flex;gap:8px;margin-bottom:8px}
+.tab-btn{padding:6px 10px;border-radius:6px;border:1px solid #e6eefc;background:#fff;cursor:pointer}
+.tab-btn.active{background:#0b66ff;color:#fff;border-color:#0b66ff}
+.country-checkboxes{display:flex;gap:12px;align-items:center}
+.country-checkboxes .chk{display:flex;align-items:center;gap:6px;font-size:14px}
 .desc-header{display:grid;grid-template-columns:2fr 80px 120px 120px 80px;gap:8px;font-weight:600;padding:8px 0}
 .desc-row{display:grid;grid-template-columns:2fr 80px 120px 120px 80px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed #f1f1f1}
 .desc-desc{width:100%;height:48px;padding:6px}
