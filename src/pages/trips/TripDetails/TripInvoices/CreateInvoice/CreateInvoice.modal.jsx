@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import '../../../TripsList/CreateTripForm.css';
 import './CreateInvoice.modal.css';
 
 const currencySymbols = { USD: '$', EUR: '€', LKR: 'Rs' };
@@ -15,6 +16,18 @@ const sampleBankAccounts = [
     branchName: 'Kochchikade',
     swift: 'CCEYLKLX',
     bankAddress: 'No 96-A, Chilaw Road, Kochchikade.'
+  }
+  ,{
+    id: 'acc-2',
+    accountName: 'CEYLON GATE TRAVELS - Savings',
+    bankName: 'Hatton National Bank PLC',
+    accountNumber: '1234567890',
+    accountType: 'Savings Account LKR',
+    bankCode: '7012',
+    branchCode: '12',
+    branchName: 'Colombo',
+    swift: 'HNBKLK',
+    bankAddress: 'No 479, Galle Road, Colombo'
   }
 ];
 
@@ -52,6 +65,7 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
   const [invoiceNo] = useState(genInvoiceNo());
   const [invoiceDate, setInvoiceDate] = useState(new Date().toISOString().slice(0, 10));
   const [country, setCountry] = useState('Sri Lanka');
+  const [clientCountry, setClientCountry] = useState('Italy');
   const [tourNo, setTourNo] = useState('');
   const [invoiceCurrency, setInvoiceCurrency] = useState('USD');
 
@@ -71,6 +85,15 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
   const [paymentMode, setPaymentMode] = useState('Advance');
   const [selectedBank, setSelectedBank] = useState(sampleBankAccounts[0].id);
 
+  const defaultPaymentTextFor = (mode) => (
+    mode === 'Advance'
+      ? '40% advance payment on confirmation, balance 45 days prior to travel.'
+      : 'Full payment prior to 14 days of arrival date - Sri Lanka/Maldives.'
+  );
+
+  const [paymentText, setPaymentText] = useState(defaultPaymentTextFor(paymentMode));
+  const [paymentTextEdited, setPaymentTextEdited] = useState(false);
+
   const [preparedBy, setPreparedBy] = useState(() => localStorage.getItem('currentUser') || sampleEmployees[0]);
   const [checkedBy, setCheckedBy] = useState(sampleEmployees[1]);
 
@@ -86,6 +109,28 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
     if (country === 'Both') setActiveTab('Sri Lanka');
     else setActiveTab(country);
   }, [country, invoiceCurrency]);
+
+  // Auto-fill Agent Details, Tour No, Client Country and Client Name from tripData when available
+  useEffect(() => {
+    if (!tripData) return;
+    // Agent information might be under tripData.agent or direct fields
+    setAgentName(prev => prev || tripData.agent?.name || tripData.agentName || '');
+    setAddress(prev => prev || tripData.agent?.address || tripData.agentAddress || '');
+    setEmail(prev => prev || tripData.agent?.email || tripData.agentEmail || '');
+    setTelephone(prev => prev || tripData.agent?.telephone || tripData.agentTelephone || tripData.agent?.phone || '');
+
+    // Tour number and client info
+    setTourNo(prev => prev || tripData.tourNo || tripData.tour_number || tripData.tour || '');
+    setClientCountry(prev => prev || tripData.clientCountry || tripData.client?.country || tripData.clientCountry || prev);
+    setClientName(prev => prev || tripData.clientName || tripData.client?.name || tripData.clientName || prev);
+  }, [tripData]);
+
+  // update paymentText when paymentMode changes unless user has edited it
+  useEffect(() => {
+    if (!paymentTextEdited) {
+      setPaymentText(defaultPaymentTextFor(paymentMode));
+    }
+  }, [paymentMode]);
 
   const currencySymbol = currencySymbols[invoiceCurrency] || '';
 
@@ -120,9 +165,7 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
   const totalWithDiscount = total - Number(tourLeaderDiscount || 0);
   const balance = totalWithDiscount - Number(amountPaid || 0);
 
-  const paymentText = paymentMode === 'Advance'
-    ? '40% advance payment on confirmation, balance 45 days prior to travel.'
-    : 'Full payment prior to 14 days of arrival date - Sri Lanka/Maldives.';
+  // paymentText is stateful and editable; default is based on payment mode
 
   const reimbursementText = () => {
     if (country === 'Sri Lanka') return 'Being cost of group round tour in Sri Lanka';
@@ -151,7 +194,7 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
     versions: 1,
     versionHistory: [{ version: 1, date: invoiceDate, amount: `${currencySymbol}${total.toFixed(2)}`, changes: 'Invoice created' }],
     agent: { name: agentName, address, email, telephone },
-    invoiceDetails: { invoiceNo, invoiceDate, country, tourNo, invoiceCurrency },
+    invoiceDetails: { invoiceNo, invoiceDate, country, clientCountry, tourNo, invoiceCurrency },
     reimbursement: { reimbursementText: reimbursementText(), clientName, travelFrom, travelTo },
     rows: flattenedRows,
     totals: { total, tourLeaderDiscount: Number(tourLeaderDiscount || 0), totalWithDiscount, amountPaid: Number(amountPaid || 0), balance },
@@ -176,83 +219,84 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
   };
 
   return (
-    <div className="ci-modal-backdrop">
-      <div className="ci-modal card">
-        <div className="ci-header">
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <div className="modal-header">
           <h2>Create New Invoice</h2>
-          <div className="ci-actions">
-            <button className="btn-secondary" onClick={onClose}>Close</button>
-          </div>
+          <button className="btn-close" onClick={onClose}>×</button>
         </div>
 
-        <form className="ci-form" onSubmit={handleSubmit}>
-          <section className="ci-section card-sm">
-            <h3>Agent Details</h3>
-            <div className="grid-2">
-              <div>
-                <label>Agent Name</label>
-                <input value={agentName} onChange={e => setAgentName(e.target.value)} placeholder="Fuada Tour" />
+        <form className="trip-form" onSubmit={handleSubmit}>
+          <div className="form-grid">
+            <section className="form-section">
+              <h3 className="section-title">Agent Details</h3>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Agent Name</label>
+                  <input value={agentName} onChange={e => setAgentName(e.target.value)} placeholder="Fuada Tour" />
+                </div>
+                <div className="form-group">
+                  <label>Email</label>
+                  <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="info@fuadatour.com" />
+                </div>
+                <div className="form-group full-width">
+                  <label>Address</label>
+                  <textarea value={address} onChange={e => setAddress(e.target.value)} placeholder="Via del Forte Tiburtino, 160-00159, Roma" />
+                </div>
+                <div className="form-group">
+                  <label>Telephone</label>
+                  <input value={telephone} onChange={e => setTelephone(e.target.value)} placeholder="06/40501946" />
+                </div>
               </div>
-              <div>
-                <label>Email</label>
-                <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="info@fuadatour.com" />
-              </div>
-              <div className="full">
-                <label>Address</label>
-                <textarea value={address} onChange={e => setAddress(e.target.value)} placeholder="Via del Forte Tiburtino, 160-00159, Roma" />
-              </div>
-              <div>
-                <label>Telephone</label>
-                <input value={telephone} onChange={e => setTelephone(e.target.value)} placeholder="06/40501946" />
-              </div>
-            </div>
-          </section>
+            </section>
 
-          <section className="ci-section card-sm">
-            <h3>Invoice Details</h3>
-            <div className="grid-3">
-              <div>
-                <label>Invoice No</label>
-                <input value={invoiceNo} readOnly />
+            <section className="form-section">
+              <h3 className="section-title">Invoice Details</h3>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Invoice No</label>
+                  <input value={invoiceNo} readOnly />
+                </div>
+                <div className="form-group">
+                  <label>Invoice Date</label>
+                  <input type="date" value={invoiceDate} onChange={e => setInvoiceDate(e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label>Client Country</label>
+                  <select value={clientCountry} onChange={e => setClientCountry(e.target.value)}>
+                    <option>Italy</option>
+                    <option>Netherlands</option>
+                    <option>England</option>
+                    <option>Germany</option>
+                    <option>France</option>
+                    <option>Spain</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>Tour No</label>
+                  <input value={tourNo} onChange={e => setTourNo(e.target.value)} placeholder="CGT 2024-34" />
+                </div>
+                <div className="form-group">
+                  <label>Invoice Currency</label>
+                  <select value={invoiceCurrency} onChange={e => setInvoiceCurrency(e.target.value)}>
+                    <option>USD</option>
+                    <option>EUR</option>
+                    <option>LKR</option>
+                  </select>
+                </div>
               </div>
-              <div>
-                <label>Invoice Date</label>
-                <input type="date" value={invoiceDate} onChange={e => setInvoiceDate(e.target.value)} />
-              </div>
-              <div>
-                <label>Country</label>
-                <select value={country} onChange={e => setCountry(e.target.value)}>
-                  <option>Sri Lanka</option>
-                  <option>Maldives</option>
-                  <option>Both</option>
-                </select>
-              </div>
-              <div>
-                <label>Tour No</label>
-                <input value={tourNo} onChange={e => setTourNo(e.target.value)} placeholder="CGT 2024-34" />
-              </div>
-              <div>
-                <label>Invoice Currency</label>
-                <select value={invoiceCurrency} onChange={e => setInvoiceCurrency(e.target.value)}>
-                  <option>USD</option>
-                  <option>EUR</option>
-                  <option>LKR</option>
-                </select>
-              </div>
-            </div>
-          </section>
+            </section>
 
-          <section className="ci-section card-sm">
-            <h3>Reimbursement & Tour Details</h3>
-            <div className="grid-2">
-              <div className="full">
+            <section className={`form-section ${paymentMode ? 'full-width' : ''}`}>
+              <h3 className="section-title">Reimbursement & Tour Details</h3>
+              <div className="form-row">
+                <div className="form-group full-width">
                   <label>Reimbursement For</label>
                   <div className="country-checkboxes">
                     <label className="chk"><input type="checkbox" checked={country === 'Sri Lanka' || country === 'Both'} onChange={() => {
-                      // toggle Sri Lanka
                       const currently = country === 'Both' ? new Set(['Sri Lanka','Maldives']) : new Set([country]);
                       if (currently.has('Sri Lanka')) {
-                        if (currently.size === 1) return; // prevent clearing both
+                        if (currently.size === 1) return;
                         currently.delete('Sri Lanka');
                       } else {
                         currently.add('Sri Lanka');
@@ -262,10 +306,9 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
                     }} /> Sri Lanka</label>
 
                     <label className="chk"><input type="checkbox" checked={country === 'Maldives' || country === 'Both'} onChange={() => {
-                      // toggle Maldives
                       const currently = country === 'Both' ? new Set(['Sri Lanka','Maldives']) : new Set([country]);
                       if (currently.has('Maldives')) {
-                        if (currently.size === 1) return; // prevent clearing both
+                        if (currently.size === 1) return;
                         currently.delete('Maldives');
                       } else {
                         currently.add('Maldives');
@@ -275,31 +318,44 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
                     }} /> Maldives</label>
                   </div>
                 </div>
-              <div>
-                <label>Client Name</label>
-                <input value={clientName} onChange={e => setClientName(e.target.value)} />
+                <div className="form-group">
+                  <label>Client Name</label>
+                  <input value={clientName} onChange={e => setClientName(e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label>Travel Period From</label>
+                  <input type="date" value={travelFrom} onChange={e => setTravelFrom(e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label>Travel Period To</label>
+                  <input type="date" value={travelTo} onChange={e => setTravelTo(e.target.value)} />
+                </div>
               </div>
-              <div>
-                <label>Travel Period From</label>
-                <input type="date" value={travelFrom} onChange={e => setTravelFrom(e.target.value)} />
-              </div>
-              <div>
-                <label>Travel Period To</label>
-                <input type="date" value={travelTo} onChange={e => setTravelTo(e.target.value)} />
-              </div>
-            </div>
-          </section>
+            </section>
 
-          <section className="ci-section card-sm">
-            <h3>Description & Amount</h3>
-            <div className="desc-table">
+            <section className={`form-section ${paymentMode ? 'full-width' : ''}`}>
+              <h3 className="section-title">Description & Amount</h3>
+              <div className="desc-table">
               <div className="ci-tabs">
-                  {country === 'Both' ? (
-                    <div className="tab-buttons">
-                      <button type="button" className={`tab-btn ${activeTab === 'Sri Lanka' ? 'active' : ''}`} onClick={() => setActiveTab('Sri Lanka')}>Sri Lanka</button>
-                      <button type="button" className={`tab-btn ${activeTab === 'Maldives' ? 'active' : ''}`} onClick={() => setActiveTab('Maldives')}>Maldives</button>
-                    </div>
-                  ) : null}
+                <div className="tab-buttons">
+                  {['Sri Lanka', 'Maldives'].map(cKey => {
+                    const selected = (country === 'Both') ? true : (country === cKey);
+                    const disabled = !selected;
+                    return (
+                      <button
+                        key={cKey}
+                        type="button"
+                        className={`tab-btn ${activeTab === cKey ? 'active' : ''} ${disabled ? 'disabled' : ''}`}
+                        onClick={() => {
+                          if (disabled) return; // don't switch to unselected country
+                          setActiveTab(cKey);
+                        }}
+                      >
+                        {cKey}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
                 {/* show reimbursement static text inside the Description & Amount area */}
@@ -354,65 +410,64 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
             </div>
           </section>
 
-          <section className="ci-section card-sm">
-            <h3>Payment Conditions</h3>
-            <div className="grid-2">
-              <div>
-                <label>Payment Mode</label>
-                <select value={paymentMode} onChange={e => setPaymentMode(e.target.value === 'Advance' ? 'Advance' : 'Full')}>
-                  <option value="Advance">Advance Payment</option>
-                  <option value="Full">Full Payment</option>
-                </select>
+            <section className="form-section">
+              <h3 className="section-title">Payment Conditions</h3>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Payment Mode</label>
+                  <select value={paymentMode} onChange={e => setPaymentMode(e.target.value === 'Advance' ? 'Advance' : 'Full')}>
+                    <option value="Advance">Advance Payment</option>
+                    <option value="Full">Full Payment</option>
+                  </select>
+                </div>
+                <div className="form-group full-width">
+                  <label>Payment Text (editable)</label>
+                  <textarea value={paymentText} onChange={e => { setPaymentText(e.target.value); setPaymentTextEdited(true); }} />
+                </div>
+                <div className="form-group full-width static-text">Additional bank charge of 3.25% of the total amount will be applied for online & card payments.</div>
               </div>
-              <div>
-                <label>Payment Text</label>
-                <div className="static-text">{paymentText}</div>
-              </div>
-              <div className="full static-text">Additional bank charge of 3.25% of the total amount will be applied for online & card payments.</div>
-            </div>
-          </section>
+            </section>
 
-          <section className="ci-section card-sm">
-            <h3>Bank Details</h3>
-            <div className="bank-list">
-              {sampleBankAccounts.map(acc => (
-                <label key={acc.id} className="bank-option">
-                  <input type="radio" name="bank" checked={selectedBank === acc.id} onChange={() => setSelectedBank(acc.id)} />
-                  <div>
-                    <strong>{acc.accountName}</strong>
-                    <div>{acc.bankName} • {acc.accountNumber}</div>
-                    <div className="muted">{acc.accountType} • SWIFT: {acc.swift}</div>
-                  </div>
-                </label>
-              ))}
-            </div>
-          </section>
-
-          <section className="ci-section card-sm">
-            <h3>Prepared & Checked By</h3>
-            <div className="grid-2">
-              <div>
-                <label>Prepared By</label>
-                <select value={preparedBy} onChange={e => setPreparedBy(e.target.value)}>
-                  {sampleEmployees.map(emp => (<option key={emp}>{emp}</option>))}
-                </select>
+            <section className="form-section">
+              <h3 className="section-title">Bank Details</h3>
+              <div className="bank-list">
+                {sampleBankAccounts.map(acc => (
+                  <label key={acc.id} className="bank-option">
+                    <input type="radio" name="bank" checked={selectedBank === acc.id} onChange={() => setSelectedBank(acc.id)} />
+                    <div>
+                      <strong>{acc.accountName}</strong>
+                      <div>{acc.bankName} • {acc.accountNumber}</div>
+                      <div className="muted">{acc.accountType} • SWIFT: {acc.swift}</div>
+                    </div>
+                  </label>
+                ))}
               </div>
-              <div>
-                <label>Checked By</label>
-                <select value={checkedBy} onChange={e => setCheckedBy(e.target.value)}>
-                  {sampleEmployees.map(emp => (<option key={emp}>{emp}</option>))}
-                </select>
-              </div>
-            </div>
-          </section>
+            </section>
 
-          <div className="ci-footer">
-            <div className="ci-left">
-              <button type="button" className="btn-secondary" onClick={() => setPreviewOpen(prev => !prev)}>{previewOpen ? 'Hide Preview' : 'Preview'}</button>
-            </div>
-            <div className="ci-right">
-              <button type="button" className="btn-outline" onClick={handleGeneratePDF}>Generate PDF</button>
-              <button type="submit" className="btn-primary">Save Invoice</button>
+            <section className="form-section">
+              <h3 className="section-title">Prepared & Checked By</h3>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Prepared By</label>
+                  <select value={preparedBy} onChange={e => setPreparedBy(e.target.value)}>
+                    {sampleEmployees.map(emp => (<option key={emp}>{emp}</option>))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>Checked By</label>
+                  <select value={checkedBy} onChange={e => setCheckedBy(e.target.value)}>
+                    {sampleEmployees.map(emp => (<option key={emp}>{emp}</option>))}
+                  </select>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div className="form-actions">
+            <button type="button" className="btn-cancel" onClick={() => setPreviewOpen(prev => !prev)}>{previewOpen ? 'Hide Preview' : 'Preview'}</button>
+            <div style={{display:'flex',gap:12}}>
+              <button type="button" className="btn-add-new" onClick={handleGeneratePDF}>Generate PDF</button>
+              <button type="submit" className="btn-submit">Save Invoice</button>
             </div>
           </div>
         </form>
@@ -425,6 +480,8 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
               <div>{invoiceDate} • {invoiceCurrency}</div>
               <div>To: {agentName}</div>
               <div>{address}</div>
+              <div>Client Country: {clientCountry}</div>
+              <div>Travel Countries: {country}</div>
               <hr />
               <div className="preview-rows">
                 {country === 'Both' ? (
