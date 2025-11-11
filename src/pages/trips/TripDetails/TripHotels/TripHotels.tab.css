@@ -1,7 +1,16 @@
 .trip-hotels {
+  background: white;
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 1200px;
+  overflow-y: auto;
+  animation: modalSlideIn 0.3s ease-out;
+  margin: 0 auto;
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
+  padding: var(--space-lg);
 }
 
 /* Icon Styles */

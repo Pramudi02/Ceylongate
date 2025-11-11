@@ -28,6 +28,7 @@
   max-width: 100% !important;
   flex: 0 0 100% !important;
   grid-column: 1 / -1 !important;
+  background-color: #a8d8f5;
 }
 .card-sm{background:#fafafa;padding:12px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
