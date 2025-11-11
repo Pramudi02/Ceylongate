@@ -48,15 +48,40 @@ const IconChevronRight = ({className}) => (
 );
 import './TripInvoices.tab.css';
 import CreateInvoiceModal from './CreateInvoice/CreateInvoice.modal';
+import InvoiceDetailsView from './InvoiceDetailsView';
 
 const TripInvoices = ({ tripData }) => {
   const [expandedInvoices, setExpandedInvoices] = useState({});
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingInvoice, setEditingInvoice] = useState(null);
   const [modalMode, setModalMode] = useState('create'); // 'create' | 'edit' | 'view'
+  const [showDetailsView, setShowDetailsView] = useState(false);
+  const [viewingInvoice, setViewingInvoice] = useState(null);
 
   // Sample invoices in the full structure used by the CreateInvoice modal
   const initialInvoices = [
+    (() => {
+      const base = {
+        id: 'INV-1002',
+        status: 'Draft',
+        created: '2025-10-22',
+        finalized: '-',
+        agent: { name: 'Green Holidays', address: 'Rue de Provence 12, Paris', email: 'sales@greenholidays.com', telephone: '+33 1 23 45 67' },
+        invoiceDetails: { invoiceNo: 'INV-1002', invoiceDate: '2025-10-22', country: 'Sri Lanka', clientCountry: 'France', tourNo: 'GH-2025-08', invoiceCurrency: 'EUR' },
+        reimbursement: { reimbursementText: 'Being cost of group round tour in Sri Lanka', clientName: 'Marie Curie', travelFrom: '2025-12-01', travelTo: '2025-12-10' },
+        rows: [
+          { id: 'r1', country: 'Sri Lanka', description: 'Per person sharing DBL/TWIN room in HB basis - Sri Lanka', unit: 8, rate: 400 },
+        ],
+        totals: { total: 8*400, tourLeaderDiscount: 0, totalWithDiscount: (8*400), amountPaid: 0, balance: (8*400) },
+        payment: { paymentMode: 'Advance', paymentText: '40% advance payment on confirmation, balance 45 days prior to travel.', bankId: 'acc-2' },
+        prepared: 'Admin User',
+        checked: 'Gayana Soisa',
+        tripRef: 'TRIP-002'
+      };
+
+      const history = [ { version: 1, date: '2025-10-22', amount: `$${base.totals.total.toFixed(2)}`, changes: 'Draft invoice created', snapshot: JSON.parse(JSON.stringify(base)) } ];
+      return { ...base, versions: 1, total: `$${base.totals.total.toFixed(2)}`, versionHistory: history };
+    })(),
     (() => {
       const base = {
         id: 'INV-1001',
@@ -95,29 +120,6 @@ const TripInvoices = ({ tripData }) => {
       history.push({ version: 3, date: '2025-10-20', amount: `$${edit2.totals.total.toFixed(2)}`, changes: 'Added Maldives activity', snapshot: edit2 });
 
       return { ...edit2, versions: history.length, total: `$${edit2.totals.total.toFixed(2)}`, versionHistory: history };
-    })(),
-
-    (() => {
-      const base = {
-        id: 'INV-1002',
-        status: 'Draft',
-        created: '2025-10-22',
-        finalized: '-',
-        agent: { name: 'Green Holidays', address: 'Rue de Provence 12, Paris', email: 'sales@greenholidays.com', telephone: '+33 1 23 45 67' },
-        invoiceDetails: { invoiceNo: 'INV-1002', invoiceDate: '2025-10-22', country: 'Sri Lanka', clientCountry: 'France', tourNo: 'GH-2025-08', invoiceCurrency: 'EUR' },
-        reimbursement: { reimbursementText: 'Being cost of group round tour in Sri Lanka', clientName: 'Marie Curie', travelFrom: '2025-12-01', travelTo: '2025-12-10' },
-        rows: [
-          { id: 'r1', country: 'Sri Lanka', description: 'Per person sharing DBL/TWIN room in HB basis - Sri Lanka', unit: 8, rate: 400 },
-        ],
-        totals: { total: 8*400, tourLeaderDiscount: 0, totalWithDiscount: (8*400), amountPaid: 0, balance: (8*400) },
-        payment: { paymentMode: 'Advance', paymentText: '40% advance payment on confirmation, balance 45 days prior to travel.', bankId: 'acc-2' },
-        prepared: 'Admin User',
-        checked: 'Gayana Soisa',
-        tripRef: 'TRIP-002'
-      };
-
-      const history = [ { version: 1, date: '2025-10-22', amount: `$${base.totals.total.toFixed(2)}`, changes: 'Draft invoice created', snapshot: JSON.parse(JSON.stringify(base)) } ];
-      return { ...base, versions: 1, total: `$${base.totals.total.toFixed(2)}`, versionHistory: history };
     })()
   ];
 
@@ -253,7 +255,10 @@ const TripInvoices = ({ tripData }) => {
                     <button className="trip-invoices-btn-action trip-invoices-btn-edit" onClick={() => { setEditingInvoice(invoice); setModalMode('edit'); setShowCreateModal(true); }}><IconEdit /> Edit</button>
                   )}
 
-                  <button className="trip-invoices-btn-action trip-invoices-btn-view" onClick={() => { setEditingInvoice(invoice); setModalMode('view'); setShowCreateModal(true); }}><IconView /> View</button>
+                  <button className="trip-invoices-btn-action trip-invoices-btn-view" onClick={() => { 
+                    setViewingInvoice(invoice); 
+                    setShowDetailsView(true); 
+                  }}><IconView /> View</button>
 
                   {invoice.status === 'Draft' && (
                     <button className="trip-invoices-btn-action trip-invoices-btn-finalize" onClick={() => finalizeInvoice(invoice.id)}><IconCheck /> Finalize</button>
@@ -288,11 +293,10 @@ const TripInvoices = ({ tripData }) => {
                       </div>
                       <div className="trip-invoices-version-actions">
                         <button className="trip-invoices-btn-view-version" onClick={() => {
-                          // open the modal in view mode for this specific version snapshot
-                          const initialForVersion = { ...invoice, versionHistory: [version] };
-                          setEditingInvoice(initialForVersion);
-                          setModalMode('view');
-                          setShowCreateModal(true);
+                          // open the details view for this specific version snapshot
+                          const versionSnapshot = { ...invoice, ...version.snapshot };
+                          setViewingInvoice(versionSnapshot);
+                          setShowDetailsView(true);
                         }}><IconView /></button>
                         <button className="trip-invoices-btn-download-version" onClick={() => downloadInvoiceSnapshot(invoice, idx)}><IconDownload /></button>
                       </div>
