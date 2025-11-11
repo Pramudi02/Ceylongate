@@ -82,11 +82,9 @@ const TripFeedback = ({ tripData }) => {
   return (
     <div className="trip-feedback">
       <div className="feedback-header">
-        <h3 className="section-title">
-          <span className="icon-document"></span> Customer Feedback Forms
-        </h3>
+        <h3 className="section-title">Customer Feedback Forms</h3>
         <button className="btn-upload-feedback" onClick={() => setShowUploadForm(true)}>
-          <span className="icon-plus"></span> Upload New Feedback
+          Upload New Feedback
         </button>
       </div>
 
@@ -102,11 +100,11 @@ const TripFeedback = ({ tripData }) => {
               <h4 className="file-customer-name">{feedback.customerName}</h4>
               <p className="file-name">{feedback.fileName}</p>
               <div className="file-meta">
-                <span><span className="icon-calendar"></span> {feedback.uploadDate}</span>
+                <span>{feedback.uploadDate}</span>
                 <span>•</span>
-                <span><span className="icon-file-size"></span> {feedback.fileSize}</span>
+                <span>{feedback.fileSize}</span>
                 <span>•</span>
-                <span><span className="icon-user"></span> Uploaded by: {feedback.uploadedBy}</span>
+                <span>Uploaded by: {feedback.uploadedBy}</span>
               </div>
             </div>
 
@@ -116,14 +114,14 @@ const TripFeedback = ({ tripData }) => {
                 onClick={() => handleDownloadPDF(feedback)}
                 title="Download PDF"
               >
-                <span className="icon-download"></span> Download
+                Download
               </button>
               <button 
                 className="btn-action btn-delete-feedback" 
                 onClick={() => handleDeleteFeedback(feedback.id)}
                 title="Delete"
               >
-                <span className="icon-trash"></span>
+                Delete
               </button>
             </div>
           </div>
@@ -136,7 +134,7 @@ const TripFeedback = ({ tripData }) => {
           <h3>No Feedback Forms Yet</h3>
           <p>Upload customer feedback PDFs to keep track of their responses</p>
           <button className="btn-primary" onClick={() => setShowUploadForm(true)}>
-            <span className="icon-plus"></span> Upload First Feedback
+            Upload First Feedback
           </button>
         </div>
       )}
@@ -205,7 +203,7 @@ const TripFeedback = ({ tripData }) => {
                   Cancel
                 </button>
                 <button type="submit" className="btn-submit">
-                  <span className="icon-upload"></span> Upload Feedback
+                  Upload Feedback
                 </button>
               </div>
             </form>
