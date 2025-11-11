@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import TripOverview from './TripOverview/TripOverview.tab';
 import TripInvoices from './TripInvoices/TripInvoices.tab';
 import TripHotels from './TripHotels/TripHotels.tab';
 import TripVouchers from './TripVouchers/TripVouchers.tab';
 import TripFeedback from './TripFeedback/TripFeedback.tab';
 import './TripDetails.page.css';
+import { sampleTrips } from '../../../data/trips.sample';
 
 const TripDetails = () => {
   const navigate = useNavigate();
   const { tripId } = useParams();
   const [activeTab, setActiveTab] = useState('overview');
 
-  const tripData = {
+  const location = useLocation();
+
+  const sampleTripData = {
     id: tripId,
     tourNo: 'CGT-2025-001',
     name: 'Sri Lanka Heritage Tour',
@@ -64,6 +67,10 @@ const TripDetails = () => {
     currency: 'USD'
   };
 
+  // Try to get trip from navigation state first, then lookup by tripId from shared sample data
+  const tripFromData = sampleTrips.find(t => String(t.id) === String(tripId));
+  const tripData = location.state?.trip || tripFromData || sampleTripData;
+
   const tabs = [
     { id: 'overview', label: 'Overview', icon: 'file' },
     { id: 'invoices', label: 'Invoices', icon: 'dollar' },
@@ -86,6 +93,16 @@ const TripDetails = () => {
         return <TripFeedback tripData={tripData} />;
       default:
         return <TripOverview tripData={tripData} />;
+    }
+  };
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'Ongoing': return 'trip-status-ongoing';
+      case 'Completed': return 'trip-status-completed';
+      case 'Upcoming': return 'trip-status-planned';
+      case 'Cancelled': return 'trip-status-cancelled';
+      default: return 'trip-status-planned';
     }
   };
 
@@ -118,7 +135,7 @@ const TripDetails = () => {
               <span className="tour-no-badge">{tripData.tourNo}</span>
               <span className="tour-type-badge">{tripData.tourType}</span>
             </div>
-            <span className="badge status-planned">{tripData.status}</span>
+            <span className={`badge ${getStatusClass(tripData.status)}`}>{tripData.status}</span>
           </div>
         </div>
       </div>

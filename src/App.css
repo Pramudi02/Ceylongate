@@ -40,3 +40,23 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Global modal sizing — ensure all modals open at 75% of viewport width */
+.modal-content {
+  width: 75vw !important;
+  max-width: 1400px !important;
+}
+
+@media (max-width: 992px) {
+  .modal-content {
+    width: 95vw !important;
+    max-width: 95vw !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: 98vw !important;
+    max-width: 98vw !important;
+  }
+}

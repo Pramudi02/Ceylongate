@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './TripInvoices.tab.css';
+import CreateInvoiceModal from './CreateInvoice/CreateInvoice.modal';
 
 const TripInvoices = ({ tripData }) => {
   const [expandedInvoices, setExpandedInvoices] = useState({});
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
-  const invoices = [
+  const initialInvoices = [
     {
       id: 'INV-1001',
       status: 'Final',
@@ -31,6 +33,8 @@ const TripInvoices = ({ tripData }) => {
     }
   ];
 
+  const [invoices, setInvoices] = useState(initialInvoices);
+
   const toggleVersions = (invoiceId) => {
     setExpandedInvoices(prev => ({
       ...prev,
@@ -40,9 +44,9 @@ const TripInvoices = ({ tripData }) => {
 
   const getStatusClass = (status) => {
     switch(status) {
-      case 'Final': return 'status-completed';
-      case 'Draft': return 'status-planned';
-      case 'Cancelled': return 'status-cancelled';
+      case 'Final': return 'trip-status-completed';
+      case 'Draft': return 'trip-status-planned';
+      case 'Cancelled': return 'trip-status-cancelled';
       default: return '';
     }
   };
@@ -51,7 +55,7 @@ const TripInvoices = ({ tripData }) => {
     <div className="trip-invoices">
       <div className="invoices-header">
         <h3 className="section-title">Invoices</h3>
-        <button className="btn-primary">+ Create Invoice</button>
+        <button className="btn-primary" onClick={() => setShowCreateModal(true)}>+ Create Invoice</button>
       </div>
 
       <div className="invoices-list">
@@ -128,8 +132,19 @@ const TripInvoices = ({ tripData }) => {
           <span className="empty-icon">💰</span>
           <h3>No Invoices Yet</h3>
           <p>Create your first invoice for this trip</p>
-          <button className="btn-primary">Create Invoice</button>
+          <button className="btn-primary" onClick={() => setShowCreateModal(true)}>Create Invoice</button>
         </div>
+      )}
+
+      {showCreateModal && (
+        <CreateInvoiceModal
+          tripData={tripData}
+          onClose={() => setShowCreateModal(false)}
+          onCreate={(newInvoice) => {
+            setInvoices(prev => [newInvoice, ...prev]);
+            setShowCreateModal(false);
+          }}
+        />
       )}
     </div>
   );

@@ -106,9 +106,9 @@ const TripHotels = ({ tripData }) => {
 
   const getStatusClass = (status) => {
     switch(status) {
-      case 'Confirmed': return 'status-completed';
-      case 'Pending': return 'status-planned';
-      case 'Cancelled': return 'status-cancelled';
+      case 'Confirmed': return 'trip-status-completed';
+      case 'Pending': return 'trip-status-planned';
+      case 'Cancelled': return 'trip-status-cancelled';
       default: return '';
     }
   };

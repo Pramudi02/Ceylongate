@@ -4,6 +4,104 @@
   gap: var(--space-lg);
 }
 
+/* Large banner used on list pages (Agents/Guides) */
+
+.list-banner {
+  /* Match TripOverview header exact sizing and feel */
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #1e70af 0%, #3baef6 100%);
+  color: white;
+  /* Use the same padding and radius as .trip-header-content to get identical height */
+  padding: 80px;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 8px 24px rgba(30, 64, 175, 0.35);
+  border: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+
+.list-banner::before,
+.list-banner::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.list-banner::before {
+  /* match TripOverview decorative orb sizes */
+  width: 400px;
+  height: 400px;
+  background: rgba(255,255,255,0.1);
+  top: -50%;
+  right: -10%;
+}
+.list-banner::after {
+  width: 300px;
+  height: 300px;
+  background: rgba(255,255,255,0.08);
+  bottom: -30%;
+  left: -5%;
+}
+
+.list-banner .banner-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-banner .banner-title {
+  font-size: 36px;
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  color: white;
+}
+
+.list-banner .banner-subtitle {
+  color: rgba(255,255,255,0.9);
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.list-banner .banner-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: calc(var(--space-sm));
+}
+
+.list-banner .banner-pill {
+  background: rgba(255,255,255,0.12);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: var(--font-weight-semibold);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.08);
+  align-self: flex-end;
+}
+
+.list-banner .btn-primary.btn-large {
+  background: linear-gradient(90deg,#ff7a18 0%,#ff9900 100%);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(255,122,24,0.18);
+  border: none;
+  min-width: 160px;
+}
+
+.list-banner .btn-primary.btn-large:hover {
+  transform: translateY(-3px);
+  color: white !important;
+  text-decoration: none;
+}
+
+.info-card-box .info-sub {
+  margin-top: 6px;
+  font-size: var(--font-size-xs);
+  color: #64748b;
+}
+
 .split-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -166,28 +264,41 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Upcoming/Planned - Blue */
-.badge.status-planned {
-  background: #f59e0b !important;
-  color: white !important;
+/* Status badges - use central design tokens (variables) so colors are consistent */
+.badge.status-planned,
+.badge.trip-status-planned,
+.trip-status-planned {
+  /* Upcoming/Planned - blue */
+  background: #dbeafe; /* light blue */
+  color: #3b82f6; /* blue */
+  border: 1px solid #3b82f6;
 }
 
-/* Ongoing - Orange */
-.badge.status-ongoing {
-  background: #e0ff43 !important;
-  color: white !important;
+.badge.status-ongoing,
+.badge.trip-status-ongoing,
+.trip-status-ongoing {
+  /* Ongoing - orange */
+  background: #fef3c7; /* light orange */
+  color: #f59e0b; /* orange */
+  border: 1px solid #f59e0b;
 }
 
-/* Completed - Green */
-.badge.status-completed {
-  background: #10b981 !important;
-  color: white !important;
+.badge.status-completed,
+.badge.trip-status-completed,
+.trip-status-completed {
+  /* Completed - green */
+  background: #d1fae5; /* light green */
+  color: #10b981; /* green */
+  border: 1px solid #10b981;
 }
 
-/* Cancelled - Red */
-.badge.status-cancelled {
-  background: #ef4444 !important;
-  color: white !important;
+.badge.status-cancelled,
+.badge.trip-status-cancelled,
+.trip-status-cancelled {
+  /* Cancelled - red */
+  background: #fee2e2; /* light red */
+  color: #ef4444; /* red */
+  border: 1px solid #ef4444;
 }
 
 .itinerary-list {
@@ -325,6 +436,54 @@
   color: #1e293b;
 }
 
+/* Ensure header and data cells align vertically and columns keep predictable widths */
+.passengers-table th,
+.passengers-table td {
+  vertical-align: middle;
+}
+
+/* Make name/location/languages/last trip/actions widths predictable for Agents/Guides tables */
+.passengers-table.agents-table th:nth-child(1),
+.passengers-table.guides-table th:nth-child(1) {
+  width: 30%;
+}
+.passengers-table.agents-table th:nth-child(2),
+.passengers-table.guides-table th:nth-child(2) {
+  width: 18%;
+}
+.passengers-table.agents-table th:nth-child(3),
+.passengers-table.guides-table th:nth-child(3) {
+  width: 22%;
+}
+.passengers-table.agents-table th:nth-child(4),
+.passengers-table.guides-table th:nth-child(4) {
+  width: 16%;
+}
+.passengers-table.agents-table th:nth-child(5),
+.passengers-table.guides-table th:nth-child(5) {
+  width: 14%;
+}
+
+/* Ensure content inside name cell is vertically centered */
+.passengers-table td .passenger-name {
+  align-items: center; /* flex alignment */
+}
+
+/* Center align all table headers and cells except the first column */
+.passengers-table.agents-table th,
+.passengers-table.agents-table td,
+.passengers-table.guides-table th,
+.passengers-table.guides-table td {
+  text-align: center;
+}
+
+.passengers-table.agents-table th:first-child,
+.passengers-table.agents-table td:first-child,
+.passengers-table.guides-table th:first-child,
+.passengers-table.guides-table td:first-child {
+  text-align: left;
+}
+
 .passengers-table tbody tr {
   transition: background var(--transition-base);
 }
@@ -396,6 +555,28 @@
 
 .btn-delete:hover {
   background: #dc2626;
+}
+
+/* View Details button - blue rounded style used in agents table */
+.btn-view {
+  background: linear-gradient(90deg, #3cc8ff 0%, #5aafff 100%);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all 160ms ease;
+  box-shadow: 0 6px 18px rgba(59,130,246,0.12);
+}
+
+.btn-view:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(59,130,246,0.18);
+}
+
+.btn-view:active {
+  transform: translateY(0);
 }
 
 @media (max-width: 768px) {

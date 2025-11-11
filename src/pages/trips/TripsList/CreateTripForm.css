@@ -20,8 +20,9 @@
   background: var(--white);
   border-radius: var(--radius-xl);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  max-width: 1200px;
-  width: 1200px;
+  /* Open modals at 75% of viewport width, capped to 1400px for very large displays */
+  width: 75vw;
+  max-width: 1400px;
   max-height: 90vh;
   overflow-y: auto;
   animation: slideUp 0.3s ease-out;
@@ -730,6 +731,11 @@
 @media (max-width: 992px) {
   .form-grid {
     grid-template-columns: 1fr;
+  }
+  .modal-content {
+    width: 95vw;
+    max-width: 95vw;
+    margin: var(--space-sm);
   }
 }
 
