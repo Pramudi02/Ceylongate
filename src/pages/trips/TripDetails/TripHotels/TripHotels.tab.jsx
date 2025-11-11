@@ -525,7 +525,7 @@ const TripHotels = ({ tripData }) => {
                 <span className="icon"></span> Print
               </button>
               {selectedReservation.isLatestVersion && selectedReservation.status !== 'Cancelled' && (
-                <button className="btn-action-modal btn-edit" onClick={() => {
+                <button className="btn-action-modal btn-hotel-edit" onClick={() => {
                   handleCloseDetails();
                   handleEditReservation(selectedReservation);
                 }}>
