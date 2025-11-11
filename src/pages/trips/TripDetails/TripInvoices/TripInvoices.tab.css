@@ -40,13 +40,14 @@
 
 /* Trip Invoices - Card Styling */
 .trip-invoices-card {
-  background: var(--white);
+  background: #D3E6FE;
   border-radius: var(--radius-xl);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   animation: trip-invoices-slideUp 0.3s ease-out;
-  border: 1px solid #e2e8f0;
+  border: 2px solid #96c4ff;
 }
+
 
 @keyframes trip-invoices-slideUp {
   from {
