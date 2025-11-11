@@ -51,7 +51,7 @@ const TripVouchers = ({ tripData }) => {
       <div className="vouchers-header">
         <h3 className="section-title">Service Vouchers</h3>
         <button
-          className="btn-primary"
+          className="btn-primary-invoice "
           onClick={() => navigate(`/trips/${tripData?.id}/service-voucher`, { state: { tripData } })}
         >
           + Create Voucher

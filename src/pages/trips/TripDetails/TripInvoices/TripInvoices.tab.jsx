@@ -338,8 +338,22 @@ const TripInvoices = ({ tripData }) => {
         />
       )}
 
-      {/* helper: open printable view for a specific invoice version (index). If versionIndex omitted, use latest */}
-      {/* placed at bottom to avoid inline hoisting issues */}
+      {showDetailsView && viewingInvoice && (
+        <InvoiceDetailsView
+          invoice={viewingInvoice}
+          onClose={() => {
+            setShowDetailsView(false);
+            setViewingInvoice(null);
+          }}
+          onEdit={(invoice) => {
+            setShowDetailsView(false);
+            setEditingInvoice(invoice);
+            setModalMode('edit');
+            setShowCreateModal(true);
+          }}
+          onDownload={downloadInvoiceSnapshot}
+        />
+      )}
       
     </div>
   );
