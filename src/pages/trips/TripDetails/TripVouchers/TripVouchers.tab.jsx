@@ -11,20 +11,6 @@ const TripVouchers = ({ tripData }) => {
       customerName: 'John Smith',
       issuedDate: '2025-10-20',
       services: 'Airport Transfer, Hotel, Tour Guide'
-    },
-    {
-      id: 2,
-      voucherNo: 'VCH-2025-002',
-      customerName: 'Sarah Johnson',
-      issuedDate: '2025-10-20',
-      services: 'Hotel Accommodation, Breakfast, Spa Services'
-    },
-    {
-      id: 3,
-      voucherNo: 'VCH-2025-003',
-      customerName: 'Group Booking (15 pax)',
-      issuedDate: '2025-10-21',
-      services: 'Full Package - Transport, Hotel, Meals, Activities'
     }
   ];
 
@@ -32,7 +18,12 @@ const TripVouchers = ({ tripData }) => {
     <div className="trip-vouchers">
       <div className="vouchers-header">
         <h3 className="section-title">Service Vouchers</h3>
-        <button className="btn-primary">➕ Create Voucher</button>
+        <button
+          className="btn-primary"
+          onClick={() => navigate(`/trips/${tripData?.id}/service-voucher`, { state: { tripData } })}
+        >
+          ➕ Create Voucher
+        </button>
       </div>
 
       <div className="vouchers-grid">

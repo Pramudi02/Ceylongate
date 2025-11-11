@@ -1,154 +1,422 @@
-/* Use global variables and card styles for visual consistency */
-.service-voucher-page {
-  padding: var(--space-2xl);
-}
-.voucher-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-lg);
-  margin-bottom: var(--space-lg);
-}
-.btn-back {
-  background: var(--white);
-  border: 2px solid var(--gray-300);
-  padding: 10px 20px;
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  transition: all var(--transition-base);
-  margin-bottom: var(--space-lg);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
+/* Service Voucher - matches Create Invoice modal styling
+   Uses unique sv- prefixed classnames to avoid conflicts
+*/
+
+.sv-page {
+  padding: 24px 32px;
+  background: #f8fafc;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-.btn-back:hover {
-  background: var(--gray-100);
-  border-color: var(--primary-color);
-}
-.voucher-meta {
+.sv-header {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-md) var(--space-2xl);
-  margin-bottom: var(--space-lg);
-  background: var(--white);
-  padding: var(--space-lg);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  position: relative;
 }
-.meta-item {
-  background: transparent;
-  padding: 6px 8px;
-  border-radius: var(--radius-md);
+
+.sv-header .sv-btn-ghost {
+  position: absolute;
+  left: 0;
+}
+
+.sv-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* Button styles matching invoice */
+.sv-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 6px;
   border: none;
-  box-shadow: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s;
 }
-.voucher-table-wrap {
-  /* use the project's card look to match other trip pages */
-  background: var(--white);
-  border-radius: var(--radius-xl);
-  padding: var(--space-lg);
-  border: 1px solid var(--gray-200);
-  box-shadow: var(--shadow-md);
+
+.sv-btn-ghost {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  color: #475569;
 }
-.voucher-table {
-  width: 100%;
-  border-collapse: collapse;
+
+.sv-btn-ghost:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
 }
-.voucher-table th,
-.voucher-table td {
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--gray-100);
-  text-align: left;
+
+.sv-btn-primary {
+  background: #0b66ff;
+  color: #fff;
 }
-.date-range-cell .date-inputs {
+
+.sv-btn-primary:hover {
+  background: #0954d9;
+}
+
+.sv-btn-secondary {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 6px 10px;
+}
+
+.sv-btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+.sv-btn-danger {
+  background: #ff5252;
+  color: #fff;
+  padding: 6px 10px;
+}
+
+.sv-btn-danger:hover {
+  background: #e04545;
+}
+
+.sv-btn-add {
+  background: #0b66ff;
+  color: #fff;
+}
+
+.sv-btn-add:hover {
+  background: #0954d9;
+}
+
+/* Form grid layout matching invoice */
+.sv-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Section boxes matching invoice form sections */
+.sv-section {
+  background: #c0d8f5;
+  border-radius: 8px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
+}
+
+.sv-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 14px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Info grid for tour information */
+.sv-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.sv-info-item {
   display: flex;
   gap: 8px;
-  align-items: center;
-  margin-top: 6px;
+  align-items: baseline;
+  font-size: 14px;
 }
-.date-range-cell .range-display {
-  font-weight: var(--font-weight-semibold);
+
+.sv-label {
+  font-weight: 600;
+  color: #475569;
 }
-.hotel-room {
+
+.sv-value {
+  color: #1e293b;
+}
+
+/* Table styling */
+.sv-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.sv-table th {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+  padding: 10px 12px;
+  border-bottom: 2px solid #f1f5f9;
+  background: #f8fafc;
+}
+
+.sv-table td {
+  padding: 12px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: top;
+}
+
+.sv-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Date range styling */
+.sv-date-range {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-.select-with-actions {
+
+.sv-range-display {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.sv-date-inputs {
   display: flex;
   gap: 8px;
   align-items: center;
 }
-.select-actions {
-  display: flex;
-  gap: 6px;
+
+.sv-sep {
+  color: #94a3b8;
+  font-weight: 600;
 }
-.input-field {
-  padding: 8px 10px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--gray-200);
-}
-.btn-add {
-  margin-top: 10px;
-  padding: 8px 12px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-light) 100%);
-  color: var(--white);
-  border: none;
-  cursor: pointer;
-}
-.calendar-icon {
+
+.sv-calendar-btn {
   background: transparent;
   border: none;
   cursor: pointer;
-}
-.nights-cell {
-  width: 90px;
-}
-
-.btn-secondary {
-  padding: 6px 8px;
-  min-width: 36px;
-}
-.btn-danger {
-  padding: 6px 8px;
-  min-width: 36px;
+  font-size: 16px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
 }
 
-.details-section {
-  margin-top: var(--space-2xl);
-  background: var(--white);
-  padding: var(--space-lg);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--gray-200);
-  box-shadow: var(--shadow-sm);
+.sv-calendar-btn:hover {
+  opacity: 1;
 }
-.details-section h3 {
-  margin-bottom: var(--space-md);
-  font-size: var(--font-size-lg);
+
+.sv-nights {
+  font-weight: 700;
+  color: #0b66ff;
+  width: 70px;
+  text-align: center;
 }
-.details-row {
+
+/* Input fields matching invoice style */
+.sv-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+  transition: border-color 0.2s;
+}
+
+.sv-input:focus {
+  outline: none;
+  border-color: #0b66ff;
+  box-shadow: 0 0 0 3px rgba(11, 102, 255, 0.1);
+}
+
+.sv-input[type="date"] {
+  max-width: 160px;
+}
+
+/* Hotel/Room selection */
+.sv-hotel-room {
   display: flex;
-  gap: var(--space-md);
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sv-select-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.sv-select-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.sv-table-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 12px;
+  margin-top: 8px;
+  border-top: 1px solid #f1f5f9;
+}
+
+/* Row for other sections */
+.sv-row {
+  display: flex;
+  gap: 12px;
   align-items: flex-start;
 }
-.selected-chips { display:flex; gap:8px; flex-wrap:wrap; align-items:center }
-.chip { background:var(--primary-lighter); padding:6px 8px; border-radius:999px; display:inline-flex; align-items:center; gap:8px }
-.chip.default { background:transparent; color:var(--gray-600); font-style:italic }
-.chip-remove { background:transparent; border:none; cursor:pointer }
-.entrance-controls { display:flex; gap:8px; align-items:center }
-.contacts-list { display:flex; gap:16px }
-.contacts-column { flex:1 }
-.contact-item { display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-bottom:1px dashed var(--gray-200) }
-.contact-text { color:var(--gray-800); font-weight:var(--font-weight-medium) }
-.contacts-controls { width:320px; display:flex; flex-direction:column; gap:8px }
-.contact-actions { display:flex; gap:6px }
 
-/* heading within voucher to match TripDetails' smaller title */
-.voucher-header h2 {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--gray-900);
+.sv-row .sv-input {
+  flex: 1;
+}
+
+/* Entrance fees chips */
+.sv-selected-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  flex: 1;
+}
+
+.sv-chip {
+  background: #eff6ff;
+  color: #1e40af;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.sv-chip.default {
+  background: #f8fafc;
+  color: #64748b;
+  font-style: italic;
+}
+
+.sv-chip-remove {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #64748b;
+  line-height: 1;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sv-chip-remove:hover {
+  color: #ef4444;
+}
+
+.sv-entrance-controls {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.entrance-list {
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Contacts styling */
+.sv-contacts-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sv-contact-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px dashed #f1f5f9;
+  background: #f8fafc;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.sv-contact-text {
+  color: #1e293b;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.sv-contacts-controls {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sv-contact-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.contacts-list {
+  flex-direction: row;
+  gap: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .sv-page {
+    padding: 16px;
+  }
+
+  .sv-form-grid {
+    gap: 12px;
+  }
+
+  .sv-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sv-select-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sv-row {
+    flex-direction: column;
+  }
+
+  .sv-entrance-controls {
+    width: 100%;
+  }
+
+  .sv-contacts-controls {
+    width: 100%;
+  }
+
+  .contacts-list {
+    flex-direction: column;
+  }
+
+  .sv-table th,
+  .sv-table td {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .sv-date-inputs {
+    flex-wrap: wrap;
+  }
 }

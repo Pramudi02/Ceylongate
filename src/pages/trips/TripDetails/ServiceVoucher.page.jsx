@@ -270,235 +270,241 @@ const ServiceVoucher = () => {
   };
 
   return (
-    <div className="service-voucher-page">
-      <div className="voucher-header">
-        <button className="btn-back" onClick={() => navigate('/trips/2')}>← Back</button>
-        <h2>Service Voucher</h2>
+    <div className="sv-page">
+      <div className="sv-header">
+        <button className="sv-btn sv-btn-ghost" onClick={() => navigate('/trips/2')}>← Back</button>
+        <h2 className="sv-title">Service Voucher</h2>
       </div>
 
-      <div className="voucher-meta">
-        <div className="meta-item"><strong>Client:</strong> {meta.clientName}</div>
-        <div className="meta-item"><strong>Tour Name:</strong> {meta.tourName}</div>
-        <div className="meta-item"><strong>Tour No:</strong> {meta.tourNumber}</div>
-        <div className="meta-item"><strong>Tour Dates:</strong> {meta.startDate} — {meta.endDate}</div>
-        <div className="meta-item"><strong>Hotels Confirmed:</strong> {meta.hotelsConfirmed}</div>
-        <div className="meta-item"><strong>Arrival:</strong> {meta.arrivalDate}</div>
-        <div className="meta-item"><strong>Departure:</strong> {meta.departureDate}</div>
-      </div>
+      <div className="sv-form-grid">
+        <section className="sv-section">
+          <h3 className="sv-section-title">Tour Information</h3>
+          <div className="sv-info-grid">
+            <div className="sv-info-item"><span className="sv-label">Client:</span> <span className="sv-value">{meta.clientName}</span></div>
+            <div className="sv-info-item"><span className="sv-label">Tour Name:</span> <span className="sv-value">{meta.tourName}</span></div>
+            <div className="sv-info-item"><span className="sv-label">Tour No:</span> <span className="sv-value">{meta.tourNumber}</span></div>
+            <div className="sv-info-item"><span className="sv-label">Tour Dates:</span> <span className="sv-value">{meta.startDate} — {meta.endDate}</span></div>
+            <div className="sv-info-item"><span className="sv-label">Hotels Confirmed:</span> <span className="sv-value">{meta.hotelsConfirmed}</span></div>
+            <div className="sv-info-item"><span className="sv-label">Arrival:</span> <span className="sv-value">{meta.arrivalDate}</span></div>
+            <div className="sv-info-item"><span className="sv-label">Departure:</span> <span className="sv-value">{meta.departureDate}</span></div>
+          </div>
+        </section>
 
-      <div className="voucher-table-wrap">
-        <table className="voucher-table">
-          <thead>
-            <tr>
-              <th>Date Range</th>
-              <th>Nights</th>
-              <th>Hotel & Room</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map(row => (
-              <tr key={row.id}>
-                <td>
-                  <div className="date-range-cell">
-                    <div className="range-display">{row.startDate} - {row.endDate}</div>
-                    <div className="date-inputs">
-                      <input type="date" value={row.startDate} onChange={e => updateRow(row.id, 'startDate', e.target.value)} />
-                      <span className="sep">→</span>
-                      <input type="date" value={row.endDate} onChange={e => updateRow(row.id, 'endDate', e.target.value)} />
-                      <button className="calendar-icon" title="Edit dates">📅</button>
+        <section className="sv-section">
+          <h3 className="sv-section-title">Accommodation</h3>
+          <table className="sv-table">
+            <thead>
+              <tr>
+                <th>Date Range</th>
+                <th>Nights</th>
+                <th>Hotel & Room</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map(row => (
+                <tr key={row.id}>
+                  <td>
+                    <div className="sv-date-range">
+                      <div className="sv-range-display">{row.startDate} - {row.endDate}</div>
+                      <div className="sv-date-inputs">
+                        <input className="sv-input" type="date" value={row.startDate} onChange={e => updateRow(row.id, 'startDate', e.target.value)} />
+                        <span className="sv-sep">→</span>
+                        <input className="sv-input" type="date" value={row.endDate} onChange={e => updateRow(row.id, 'endDate', e.target.value)} />
+                        <button className="sv-calendar-btn" title="Edit dates">📅</button>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className="nights-cell">{row.nights > 0 ? `${row.nights}N` : '0N'}</td>
-                <td>
-                  <div className="hotel-room">
-                    <div className="select-with-actions">
-                      <select className="input-field" value={row.hotelName} onChange={e => {
-                        if (e.target.value === '__add__') {
-                          const added = addHotelOption();
-                          if (added) updateRow(row.id, 'hotelName', added);
-                        } else {
-                          updateRow(row.id, 'hotelName', e.target.value);
-                        }
-                      }}>
-                        <option value="">-- Select hotel --</option>
-                        {hotelsOptions.map(h => <option key={h} value={h}>{h}</option>)}
-                        <option value="__add__">+ Add new...</option>
-                      </select>
-                      <div className="select-actions">
-                        <button
-                          className="btn-secondary"
-                          title="Add hotel"
-                          onClick={() => {
+                  </td>
+                  <td className="sv-nights">{row.nights > 0 ? `${row.nights}N` : '0N'}</td>
+                  <td>
+                    <div className="sv-hotel-room">
+                      <div className="sv-select-row">
+                        <select className="sv-input" value={row.hotelName} onChange={e => {
+                          if (e.target.value === '__add__') {
                             const added = addHotelOption();
                             if (added) updateRow(row.id, 'hotelName', added);
-                          }}
-                        >＋</button>
-                        <button
-                          className="btn-danger"
-                          title="Remove selected hotel"
-                          onClick={() => removeHotelOption(row.hotelName)}
-                        >🗑</button>
+                          } else {
+                            updateRow(row.id, 'hotelName', e.target.value);
+                          }
+                        }}>
+                          <option value="">-- Select hotel --</option>
+                          {hotelsOptions.map(h => <option key={h} value={h}>{h}</option>)}
+                          <option value="__add__">+ Add new...</option>
+                        </select>
+                        <div className="sv-select-actions">
+                          <button
+                            className="sv-btn sv-btn-secondary"
+                            title="Add hotel"
+                            onClick={() => {
+                              const added = addHotelOption();
+                              if (added) updateRow(row.id, 'hotelName', added);
+                            }}
+                          >＋</button>
+                          <button
+                            className="sv-btn sv-btn-danger"
+                            title="Remove selected hotel"
+                            onClick={() => removeHotelOption(row.hotelName)}
+                          >🗑</button>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="select-with-actions">
-                      <select className="input-field" value={row.roomType} onChange={e => {
-                        if (e.target.value === '__add_room__') {
-                          const added = addRoomOption();
-                          if (added) updateRow(row.id, 'roomType', added);
-                        } else {
-                          updateRow(row.id, 'roomType', e.target.value);
-                        }
-                      }}>
-                        <option value="">-- Select room --</option>
-                        {roomsOptions.map(rm => <option key={rm} value={rm}>{rm}</option>)}
-                        <option value="__add_room__">+ Add new...</option>
-                      </select>
-                      <div className="select-actions">
-                        <button
-                          className="btn-secondary"
-                          title="Add room type"
-                          onClick={() => {
+                      <div className="sv-select-row">
+                        <select className="sv-input" value={row.roomType} onChange={e => {
+                          if (e.target.value === '__add_room__') {
                             const added = addRoomOption();
                             if (added) updateRow(row.id, 'roomType', added);
-                          }}
-                        >＋</button>
-                        <button
-                          className="btn-danger"
-                          title="Remove selected room type"
-                          onClick={() => removeRoomOption(row.roomType)}
-                        >🗑</button>
+                          } else {
+                            updateRow(row.id, 'roomType', e.target.value);
+                          }
+                        }}>
+                          <option value="">-- Select room --</option>
+                          {roomsOptions.map(rm => <option key={rm} value={rm}>{rm}</option>)}
+                          <option value="__add_room__">+ Add new...</option>
+                        </select>
+                        <div className="sv-select-actions">
+                          <button
+                            className="sv-btn sv-btn-secondary"
+                            title="Add room type"
+                            onClick={() => {
+                              const added = addRoomOption();
+                              if (added) updateRow(row.id, 'roomType', added);
+                            }}
+                          >＋</button>
+                          <button
+                            className="sv-btn sv-btn-danger"
+                            title="Remove selected room type"
+                            onClick={() => removeRoomOption(row.roomType)}
+                          >🗑</button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-        <div className="table-actions">
-          <button className="btn-add" onClick={addRow}>➕ Add row</button>
-        </div>
-      </div>
+          <div className="sv-table-actions">
+            <button className="sv-btn sv-btn-add" onClick={addRow}>➕ Add row</button>
+          </div>
+        </section>
       
-      {/* Additional details sections */}
-      <div className="details-section">
-        <h3>Meal Basis</h3>
-        <div className="details-row">
-          <select className="input-field" value={selectedMeal} onChange={e => setSelectedMeal(e.target.value)}>
-            <option value="">-- Select meal basis --</option>
-            {mealOptions.map(m => <option key={m} value={m}>{m}</option>)}
-            <option value="__add_meal__">+ Add new...</option>
-          </select>
-          <div className="select-actions">
-            <button className="btn-secondary" onClick={() => addMealOption()}>＋</button>
-            <button className="btn-danger" onClick={() => removeMealOption(selectedMeal)}>🗑</button>
-          </div>
-        </div>
-      </div>
-
-      <div className="details-section">
-        <h3>Entrance fees</h3>
-        <div className="details-row entrance-list">
-          <div className="selected-chips">
-            {selectedEntrances.map(e => (
-              <span key={e} className="chip">{e} <button className="chip-remove" onClick={() => setSelectedEntrances(s => s.filter(x => x !== e))}>×</button></span>
-            ))}
-            <span className="chip default">— pay by Ceylon Gate Travels</span>
-          </div>
-
-          <div className="entrance-controls">
-            <select className="input-field" onChange={e => {
-              if (!e.target.value) return;
-              if (e.target.value === '__add_entrance__') { addEntranceOption(); return; }
-              setSelectedEntrances(s => Array.from(new Set([...s, e.target.value])));
-            }}>
-              <option value="">-- Add place --</option>
-              {entranceOptions.map(p => <option key={p} value={p}>{p}</option>)}
-              <option value="__add_entrance__">+ Add new...</option>
+        {/* Additional details sections */}
+        <section className="sv-section">
+          <h3 className="sv-section-title">Meal Basis</h3>
+          <div className="sv-row">
+            <select className="sv-input" value={selectedMeal} onChange={e => setSelectedMeal(e.target.value)}>
+              <option value="">-- Select meal basis --</option>
+              {mealOptions.map(m => <option key={m} value={m}>{m}</option>)}
+              <option value="__add_meal__">+ Add new...</option>
             </select>
-            <div className="select-actions">
-              <button className="btn-secondary" onClick={() => addEntranceOption()}>＋</button>
-              <button className="btn-danger" onClick={() => {
-                const last = selectedEntrances[selectedEntrances.length - 1];
-                if (last) removeEntranceOption(last);
-              }}>🗑</button>
+            <div className="sv-select-actions">
+              <button className="sv-btn sv-btn-secondary" onClick={() => addMealOption()}>＋</button>
+              <button className="sv-btn sv-btn-danger" onClick={() => removeMealOption(selectedMeal)}>🗑</button>
             </div>
           </div>
-        </div>
-      </div>
+        </section>
 
-      <div className="details-section">
-        <h3>Mode of Transport</h3>
-        <div className="details-row">
-          <select className="input-field" value={selectedTransport} onChange={e => setSelectedTransport(e.target.value)}>
-            <option value="">-- Select transport --</option>
-            {transportOptions.map(t => <option key={t} value={t}>{t}</option>)}
-            <option value="__add_transport__">+ Add new...</option>
-          </select>
-          <div className="select-actions">
-            <button className="btn-secondary" onClick={() => addTransportOption()}>＋</button>
-            <button className="btn-danger" onClick={() => removeTransportOption(selectedTransport)}>🗑</button>
-          </div>
-        </div>
-      </div>
+        <section className="sv-section">
+          <h3 className="sv-section-title">Entrance fees</h3>
+          <div className="sv-row entrance-list">
+            <div className="sv-selected-chips">
+              {selectedEntrances.map(e => (
+                <span key={e} className="sv-chip">{e} <button className="sv-chip-remove" onClick={() => setSelectedEntrances(s => s.filter(x => x !== e))}>×</button></span>
+              ))}
+              <span className="sv-chip default">— pay by Ceylon Gate Travels</span>
+            </div>
 
-      <div className="details-section">
-        <h3>Driver / Guide type</h3>
-        <div className="details-row">
-          <select className="input-field" value={selectedGuide} onChange={e => setSelectedGuide(e.target.value)}>
-            <option value="">-- Select guide type --</option>
-            {guideOptions.map(g => <option key={g} value={g}>{g}</option>)}
-            <option value="__add_guide__">+ Add new...</option>
-          </select>
-          <div className="select-actions">
-            <button className="btn-secondary" onClick={() => addGuideOption()}>＋</button>
-            <button className="btn-danger" onClick={() => removeGuideOption(selectedGuide)}>🗑</button>
-          </div>
-        </div>
-      </div>
-
-      <div className="details-section">
-        <h3>Emergency Contact</h3>
-        <div className="details-row contacts-list">
-          <div className="contacts-column">
-            {selectedContacts.map((c, idx) => (
-              <div key={`${c.name}-${c.phone}-${idx}`} className="contact-item">
-                <div className="contact-text">{c.phone} ({c.name})</div>
-                <div className="contact-actions">
-                  <button className="btn-secondary" onClick={() => {
-                    const editedName = window.prompt('Edit name', c.name);
-                    if (!editedName) return;
-                    const editedPhone = window.prompt('Edit phone', c.phone);
-                    if (!editedPhone) return;
-                    const newItem = { name: editedName, phone: editedPhone };
-                    setContactsOptions(arr => arr.map(x => (x.name === c.name && x.phone === c.phone) ? newItem : x));
-                    setSelectedContacts(arr => arr.map(x => (x.name === c.name && x.phone === c.phone) ? newItem : x));
-                  }}>✎</button>
-                  <button className="btn-danger" onClick={() => removeContactOption(c)}>🗑</button>
-                </div>
+            <div className="sv-entrance-controls">
+              <select className="sv-input" onChange={e => {
+                if (!e.target.value) return;
+                if (e.target.value === '__add_entrance__') { addEntranceOption(); return; }
+                setSelectedEntrances(s => Array.from(new Set([...s, e.target.value])));
+              }}>
+                <option value="">-- Add place --</option>
+                {entranceOptions.map(p => <option key={p} value={p}>{p}</option>)}
+                <option value="__add_entrance__">+ Add new...</option>
+              </select>
+              <div className="sv-select-actions">
+                <button className="sv-btn sv-btn-secondary" onClick={() => addEntranceOption()}>＋</button>
+                <button className="sv-btn sv-btn-danger" onClick={() => {
+                  const last = selectedEntrances[selectedEntrances.length - 1];
+                  if (last) removeEntranceOption(last);
+                }}>🗑</button>
               </div>
-            ))}
-          </div>
-
-          <div className="contacts-controls">
-            <select className="input-field" onChange={e => {
-              if (!e.target.value) return;
-              if (e.target.value === '__add_contact__') { addContactOption(); return; }
-              const found = contactsOptions.find(x => `${x.name}__${x.phone}` === e.target.value);
-              if (found) setSelectedContacts(s => Array.from(new Set([...s, found])));
-            }}>
-              <option value="">-- Add contact --</option>
-              {contactsOptions.map(c => <option key={`${c.name}__${c.phone}`} value={`${c.name}__${c.phone}`}>{c.name} ({c.phone})</option>)}
-              <option value="__add_contact__">+ Add new...</option>
-            </select>
-            <div className="select-actions">
-              <button className="btn-secondary" onClick={() => addContactOption()}>＋</button>
             </div>
           </div>
-        </div>
+        </section>
+
+        <section className="sv-section">
+          <h3 className="sv-section-title">Mode of Transport</h3>
+          <div className="sv-row">
+            <select className="sv-input" value={selectedTransport} onChange={e => setSelectedTransport(e.target.value)}>
+              <option value="">-- Select transport --</option>
+              {transportOptions.map(t => <option key={t} value={t}>{t}</option>)}
+              <option value="__add_transport__">+ Add new...</option>
+            </select>
+            <div className="sv-select-actions">
+              <button className="sv-btn sv-btn-secondary" onClick={() => addTransportOption()}>＋</button>
+              <button className="sv-btn sv-btn-danger" onClick={() => removeTransportOption(selectedTransport)}>🗑</button>
+            </div>
+          </div>
+        </section>
+
+        <section className="sv-section">
+          <h3 className="sv-section-title">Driver / Guide type</h3>
+          <div className="sv-row">
+            <select className="sv-input" value={selectedGuide} onChange={e => setSelectedGuide(e.target.value)}>
+              <option value="">-- Select guide type --</option>
+              {guideOptions.map(g => <option key={g} value={g}>{g}</option>)}
+              <option value="__add_guide__">+ Add new...</option>
+            </select>
+            <div className="sv-select-actions">
+              <button className="sv-btn sv-btn-secondary" onClick={() => addGuideOption()}>＋</button>
+              <button className="sv-btn sv-btn-danger" onClick={() => removeGuideOption(selectedGuide)}>🗑</button>
+            </div>
+          </div>
+        </section>
+
+        <section className="sv-section">
+          <h3 className="sv-section-title">Emergency Contact</h3>
+          <div className="sv-row contacts-list">
+            <div className="sv-contacts-col">
+              {selectedContacts.map((c, idx) => (
+                <div key={`${c.name}-${c.phone}-${idx}`} className="sv-contact-item">
+                  <div className="sv-contact-text">{c.phone} ({c.name})</div>
+                  <div className="sv-contact-actions">
+                    <button className="sv-btn sv-btn-secondary" onClick={() => {
+                      const editedName = window.prompt('Edit name', c.name);
+                      if (!editedName) return;
+                      const editedPhone = window.prompt('Edit phone', c.phone);
+                      if (!editedPhone) return;
+                      const newItem = { name: editedName, phone: editedPhone };
+                      setContactsOptions(arr => arr.map(x => (x.name === c.name && x.phone === c.phone) ? newItem : x));
+                      setSelectedContacts(arr => arr.map(x => (x.name === c.name && x.phone === c.phone) ? newItem : x));
+                    }}>✎</button>
+                    <button className="sv-btn sv-btn-danger" onClick={() => removeContactOption(c)}>🗑</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="sv-contacts-controls">
+              <select className="sv-input" onChange={e => {
+                if (!e.target.value) return;
+                if (e.target.value === '__add_contact__') { addContactOption(); return; }
+                const found = contactsOptions.find(x => `${x.name}__${x.phone}` === e.target.value);
+                if (found) setSelectedContacts(s => Array.from(new Set([...s, found])));
+              }}>
+                <option value="">-- Add contact --</option>
+                {contactsOptions.map(c => <option key={`${c.name}__${c.phone}`} value={`${c.name}__${c.phone}`}>{c.name} ({c.phone})</option>)}
+                <option value="__add_contact__">+ Add new...</option>
+              </select>
+              <div className="sv-select-actions">
+                <button className="sv-btn sv-btn-secondary" onClick={() => addContactOption()}>＋</button>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
