@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { sampleTrips } from '../../../data/trips.sample';
 import { useNavigate } from 'react-router-dom';
 import './TripsList.page.css';
 import CreateTripForm from './CreateTripForm';
@@ -10,122 +11,7 @@ const TripsList = () => {
   const [monthFilter, setMonthFilter] = useState('All Months');
   const [yearFilter, setYearFilter] = useState('All Years');
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [trips, setTrips] = useState([
-    { 
-      id: 1, 
-      tourNo: 'CGT-2025-001',
-      name: 'Sri Lanka Heritage Tour', 
-      countryOfClient: 'Italy',
-      agent: { name: 'Rome Travel Agency', contact: '+39 06 1234567' },
-      guide: { name: 'Kamal Silva', contact: '+94 77 123 4567', license: 'TG-2023-001' },
-      tripCountry: 'Sri Lanka',
-      startDate: '2025-11-15', 
-      endDate: '2025-11-22',
-      days: 8,
-      nights: 7,
-      numberOfClients: 15,
-      destinations: ['Colombo', 'Kandy', 'Sigiriya', 'Ella'],
-      tourType: 'Cultural',
-      assignedEmployee: 'Admin User',
-      notes: 'VIP group, special dietary requirements',
-      status: 'Upcoming'
-    },
-    { 
-      id: 2, 
-      tourNo: 'CGT-2025-002',
-      name: 'Romantic Honeymoon Getaway', 
-      countryOfClient: 'France',
-      agent: { name: 'Paris Luxury Tours', contact: '+33 1 4567890' },
-      guide: { name: 'Nimal Perera', contact: '+94 77 234 5678', license: 'TG-2023-012' },
-      tripCountry: 'Sri Lanka',
-      startDate: '2025-10-28', 
-      endDate: '2025-11-05',
-      days: 9,
-      nights: 8,
-      numberOfClients: 2,
-      destinations: ['Bentota', 'Ella', 'Nuwara Eliya', 'Galle'],
-      tourType: 'Honeymoon',
-      assignedEmployee: 'Kamal Silva',
-      notes: 'Anniversary celebration, candlelight dinner arrangements',
-      status: 'Ongoing'
-    },
-    { 
-      id: 3, 
-      tourNo: 'CGT-2025-003',
-      name: 'Wildlife Safari Adventure', 
-      countryOfClient: 'Germany',
-      agent: { name: 'Berlin Adventure Tours', contact: '+49 30 987654' },
-      guide: { name: 'Sunil Fernando', contact: '+94 77 345 6789', license: 'TG-2023-025' },
-      tripCountry: 'Sri Lanka',
-      startDate: '2025-09-10', 
-      endDate: '2025-09-17',
-      days: 8,
-      nights: 7,
-      numberOfClients: 8,
-      destinations: ['Yala', 'Udawalawe', 'Minneriya', 'Wilpattu'],
-      tourType: 'Wildlife',
-      assignedEmployee: 'Nimal Perera',
-      notes: 'Photography focused group, early morning safaris requested',
-      status: 'Completed'
-    },
-    { 
-      id: 4, 
-      tourNo: 'CGT-2025-004',
-      name: 'Galle Fort Heritage Walk', 
-      countryOfClient: 'United Kingdom',
-      agent: { name: 'London Historic Tours', contact: '+44 20 7123456' },
-      guide: { name: 'Kamal Silva', contact: '+94 77 123 4567', license: 'TG-2023-001' },
-      tripCountry: 'Sri Lanka',
-      startDate: '2025-11-05', 
-      endDate: '2025-11-08',
-      days: 4,
-      nights: 3,
-      numberOfClients: 20,
-      destinations: ['Galle', 'Unawatuna', 'Mirissa'],
-      tourType: 'Cultural',
-      assignedEmployee: 'Admin User',
-      notes: 'Group tour, museum visits included',
-      status: 'Upcoming'
-    },
-    { 
-      id: 5, 
-      tourNo: 'CGT-2025-005',
-      name: 'Temple & Tea Country Explorer', 
-      countryOfClient: 'Australia',
-      agent: { name: 'Sydney Asia Tours', contact: '+61 2 9876543' },
-      guide: { name: 'Nimal Perera', contact: '+94 77 234 5678', license: 'TG-2023-012' },
-      tripCountry: 'Sri Lanka',
-      startDate: '2025-10-20', 
-      endDate: '2025-10-27',
-      days: 8,
-      nights: 7,
-      numberOfClients: 10,
-      destinations: ['Kandy', 'Nuwara Eliya', 'Dambulla', 'Polonnaruwa'],
-      tourType: 'Cultural',
-      assignedEmployee: 'Sunil Fernando',
-      notes: 'Tea plantation tour and temple visits',
-      status: 'Ongoing'
-    },
-    { 
-      id: 6, 
-      tourNo: 'CGT-2025-006',
-      name: 'Adventure Trekking Expedition', 
-      countryOfClient: 'United States',
-      agent: { name: 'New York Adventure Co', contact: '+1 212 5551234' },
-      guide: { name: 'Sunil Fernando', contact: '+94 77 345 6789', license: 'TG-2023-025' },
-      tripCountry: 'Sri Lanka',
-      startDate: '2025-09-01', 
-      endDate: '2025-09-10',
-      days: 10,
-      nights: 9,
-      numberOfClients: 16,
-      destinations: ['Ella', 'Horton Plains', 'Adams Peak', 'Knuckles Range'],
-      tourType: 'Adventure',
-      assignedEmployee: 'Admin User',
-      notes: 'Hiking group, camping equipment provided',
-      status: 'Completed'
-    }
-  ]);
+  const [trips, setTrips] = useState(sampleTrips);
 
   const handleCreateTrip = (newTrip) => {
     setTrips(prev => [...prev, newTrip]);
@@ -149,12 +35,22 @@ const TripsList = () => {
     return matchesSearch && matchesStatus && matchesMonth && matchesYear;
   });
 
+  // Sort by status priority (Upcoming -> Ongoing -> Completed -> Cancelled),
+  // then by startDate ascending within each group so upcoming trips are shown first and ordered by date.
+  const statusOrder = { 'Upcoming': 0, 'Ongoing': 1, 'Completed': 2, 'Cancelled': 3 };
+  const sortedTrips = filteredTrips.slice().sort((a, b) => {
+    const sa = statusOrder[a.status] ?? 99;
+    const sb = statusOrder[b.status] ?? 99;
+    if (sa !== sb) return sa - sb;
+    return new Date(a.startDate) - new Date(b.startDate);
+  });
+
   const getStatusClass = (status) => {
     switch(status) {
-      case 'Ongoing': return 'status-ongoing';
-      case 'Completed': return 'status-completed';
-      case 'Upcoming': return 'status-planned';
-      case 'Cancelled': return 'status-cancelled';
+      case 'Ongoing': return 'trip-status-ongoing';
+      case 'Completed': return 'trip-status-completed';
+      case 'Upcoming': return 'trip-status-planned';
+      case 'Cancelled': return 'trip-status-cancelled';
       default: return '';
     }
   };
@@ -256,7 +152,7 @@ const TripsList = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredTrips.map(trip => (
+            {sortedTrips.map(trip => (
               <tr key={trip.id}>
                 <td>
                   <div className="tour-no-cell">
@@ -295,7 +191,7 @@ const TripsList = () => {
                 <td>
                   <button
                     className="btn-view-more"
-                    onClick={() => navigate(`/trips/${trip.id}`)}
+                    onClick={() => navigate(`/trips/${trip.id}`, { state: { trip } })}
                   >
                     <span className="icon-eye"></span>
                     View More

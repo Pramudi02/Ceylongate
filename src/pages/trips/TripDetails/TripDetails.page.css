@@ -200,20 +200,7 @@
   height: 8px;
 }
 
-.badge.status-planned {
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-  color: white;
-  padding: 10px 24px;
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-bold);
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  position: relative;
-  z-index: 1;
-  white-space: nowrap;
-}
+
 
 .tabs-container {
   background: var(--white);

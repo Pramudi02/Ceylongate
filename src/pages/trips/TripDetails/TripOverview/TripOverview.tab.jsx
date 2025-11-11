@@ -7,12 +7,12 @@ const TripOverview = ({ tripData }) => {
 
   // Helper function to get status class based on status value
   const getStatusClass = (status) => {
-    switch(status) {
-      case 'Ongoing': return 'status-ongoing';
-      case 'Completed': return 'status-completed';
-      case 'Upcoming': return 'status-planned';
-      case 'Cancelled': return 'status-cancelled';
-      default: return 'status-planned';
+    switch (status) {
+      case 'Ongoing': return 'trip-status-ongoing';
+      case 'Completed': return 'trip-status-completed';
+      case 'Upcoming': return 'trip-status-planned';
+      case 'Cancelled': return 'trip-status-cancelled';
+      default: return 'trip-status-planned';
     }
   };
 
