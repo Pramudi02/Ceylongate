@@ -239,49 +239,49 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
 
   if (showPreview) {
     return (
-      <div className="hotel-reservation-modal">
-        <div className="reservation-preview-container">
-          <div className="preview-header">
+      <div className="hotel-reservation-preview-modal">
+        <div className="hotel-reservation-preview-container">
+          <div className="hotel-reservation-preview-header">
             <h2>Hotel Reservation Order Preview</h2>
-            <button className="btn-close-preview" onClick={() => setShowPreview(false)}>
+            <button className="hotel-reservation-btn-close-preview" onClick={() => setShowPreview(false)}>
               <span className="close-icon"></span>
             </button>
           </div>
 
-          <div className="reservation-document" id="reservation-document">
-            <div className="document-header">
+          <div className="hotel-reservation-preview-document" id="reservation-document">
+            <div className="hotel-reservation-document-header">
               <h1>HOTEL RESERVATION ORDER</h1>
             </div>
 
-            <div className="document-body">
-              <div className="hotel-info-block">
+            <div className="hotel-reservation-document-body">
+              <div className="hotel-reservation-hotel-info-block">
                 <strong>To:</strong> {formData.hotelName}, {formData.hotelAddress}
               </div>
 
-              <div className="reservation-details">
-                <div className="detail-row">
-                  <span className="detail-label">Requisition No:</span>
-                  <span className="detail-value">{formData.requisitionNo}</span>
+              <div className="hotel-reservation-reservation-details">
+                <div className="hotel-reservation-detail-row">
+                  <span className="hotel-reservation-detail-label">Requisition No:</span>
+                  <span className="hotel-reservation-detail-value">{formData.requisitionNo}</span>
                 </div>
-                <div className="detail-row">
-                  <span className="detail-label">Tour No:</span>
-                  <span className="detail-value">{formData.tourNo}</span>
+                <div className="hotel-reservation-detail-row">
+                  <span className="hotel-reservation-detail-label">Tour No:</span>
+                  <span className="hotel-reservation-detail-value">{formData.tourNo}</span>
                 </div>
-                <div className="detail-row">
-                  <span className="detail-label">Guest Name:</span>
-                  <span className="detail-value">{formData.guestName}</span>
+                <div className="hotel-reservation-detail-row">
+                  <span className="hotel-reservation-detail-label">Guest Name:</span>
+                  <span className="hotel-reservation-detail-value">{formData.guestName}</span>
                 </div>
-                <div className="detail-row">
-                  <span className="detail-label">No. Pax:</span>
-                  <span className="detail-value">{formData.noPax}</span>
+                <div className="hotel-reservation-detail-row">
+                  <span className="hotel-reservation-detail-label">No. Pax:</span>
+                  <span className="hotel-reservation-detail-value">{formData.noPax}</span>
                 </div>
-                <div className="detail-row">
-                  <span className="detail-label">Date:</span>
-                  <span className="detail-value">{formatDate(formData.checkInDate)}</span>
+                <div className="hotel-reservation-detail-row">
+                  <span className="hotel-reservation-detail-label">Date:</span>
+                  <span className="hotel-reservation-detail-value">{formatDate(formData.checkInDate)}</span>
                 </div>
               </div>
 
-              <table className="reservation-table">
+              <table className="hotel-reservation-reservation-table">
                 <thead>
                   <tr>
                     <th>Check-in</th>
@@ -304,42 +304,42 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
                 </tbody>
               </table>
 
-              <div className="reservation-footer">
-                <div className="footer-row">
-                  <span className="footer-label">Payment Term:</span>
-                  <span className="footer-value">{formData.paymentTerm}</span>
+              <div className="hotel-reservation-reservation-footer">
+                <div className="hotel-reservation-footer-row">
+                  <span className="hotel-reservation-footer-label">Payment Term:</span>
+                  <span className="hotel-reservation-footer-value">{formData.paymentTerm}</span>
                 </div>
-                <div className="footer-row">
-                  <span className="footer-label">Confirm By:</span>
-                  <span className="footer-value">{formData.confirmBy}</span>
+                <div className="hotel-reservation-footer-row">
+                  <span className="hotel-reservation-footer-label">Confirm By:</span>
+                  <span className="hotel-reservation-footer-value">{formData.confirmBy}</span>
                 </div>
-                <div className="footer-row">
-                  <span className="footer-label">Rate Applicable:</span>
-                  <span className="footer-value">${formData.rateApplicable}</span>
+                <div className="hotel-reservation-footer-row">
+                  <span className="hotel-reservation-footer-label">Rate Applicable:</span>
+                  <span className="hotel-reservation-footer-value">${formData.rateApplicable}</span>
                 </div>
               </div>
 
-              <div className="signature-section">
-                <div className="signature-box">
-                  <div className="signature-line"></div>
+              <div className="hotel-reservation-signature-section">
+                <div className="hotel-reservation-signature-box">
+                  <div className="hotel-reservation-signature-line"></div>
                   <p>Authorized Signature</p>
                 </div>
-                <div className="signature-box">
-                  <div className="signature-line"></div>
+                <div className="hotel-reservation-signature-box">
+                  <div className="hotel-reservation-signature-line"></div>
                   <p>Hotel Confirmation</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="preview-actions">
-            <button className="btn-preview-action btn-save" onClick={handleSave}>
+          <div className="hotel-reservation-preview-actions">
+            <button className="hotel-reservation-btn-preview-action hotel-reservation-btn-save" onClick={handleSave}>
               <span className="icon"></span> Save Document
             </button>
-            <button className="btn-preview-action btn-download" onClick={handleDownloadPDF}>
+            <button className="hotel-reservation-btn-preview-action hotel-reservation-btn-download" onClick={handleDownloadPDF}>
               <span className="icon"></span> Download PDF
             </button>
-            <button className="btn-preview-action btn-cancel" onClick={() => setShowPreview(false)}>
+            <button className="hotel-reservation-btn-preview-action btn-cancel" onClick={() => setShowPreview(false)}>
               <span className="icon"></span> Back to Edit
             </button>
           </div>
@@ -349,25 +349,25 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
   }
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
+    <div className="hotel-reservation-modal-overlay" onClick={onClose}>
+      <div className="hotel-reservation-modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="hotel-reservation-modal-header">
           <h2>{isEditMode ? 'Edit Hotel Reservation' : 'Create Hotel Reservation Order'}</h2>
-          <button className="btn-close" onClick={onClose}>
+          <button className="hotel-reservation-btn-close" onClick={onClose}>
             <span className="close-icon">✕</span>
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="trip-form">
-          <div className="form-grid">
+        <form onSubmit={handleSubmit} className="hotel-reservation-form">
+          <div className="hotel-reservation-form-grid">
             {/* Left Column: Trip & Guest Details */}
-            <div className="form-column">
-              <div className="form-section">
-                <h3 className="section-title">
+            <div className="hotel-reservation-form-column">
+              <div className="hotel-reservation-form-section">
+                <h3 className="hotel-reservation-section-title">
                   <span className="section-icon"></span> Hotel Information
                 </h3>
                 
-                <div className="form-group">
+                <div className="hotel-reservation-form-group">
                   <label>Hotel Name</label>
                   <select 
                     value={formData.hotelName}
@@ -383,7 +383,7 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
                   </select>
                 </div>
 
-                <div className="form-group">
+                <div className="hotel-reservation-form-group">
                   <label>Hotel Address</label>
                   <textarea
                     name="hotelAddress"
@@ -395,38 +395,38 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
                 </div>
               </div>
 
-              <div className="form-section">
-                <h3 className="section-title">
+              <div className="hotel-reservation-form-section">
+                <h3 className="hotel-reservation-section-title">
                   <span className="section-icon"></span> Document Information
                 </h3>
                 
-                <div className="form-group">
+                <div className="hotel-reservation-form-group">
                   <label>Requisition No</label>
                   <input
                     type="text"
                     name="requisitionNo"
                     value={formData.requisitionNo}
                     readOnly
-                    className="readonly-input"
+                    className="hotel-reservation-readonly-input"
                   />
                 </div>
 
-                <div className="form-group">
+                <div className="hotel-reservation-form-group">
                   <label>Tour No</label>
                   <input
                     type="text"
                     name="tourNo"
                     value={formData.tourNo}
                     readOnly
-                    className="readonly-input"
+                    className="hotel-reservation-readonly-input"
                   />
                 </div>
               </div>
 
-              <div className="form-section">
-                <h3 className="section-title">Guest Information</h3>
+              <div className="hotel-reservation-form-section">
+                <h3 className="hotel-reservation-section-title">Guest Information</h3>
                 
-                <div className="form-group">
+                <div className="hotel-reservation-form-group">
                   <label>Guest Name</label>
                   <input
                     type="text"
@@ -438,7 +438,7 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
                   />
                 </div>
 
-                <div className="form-group">
+                <div className="hotel-reservation-form-group">
                   <label>No. Pax</label>
                   <input
                     type="text"
@@ -453,12 +453,12 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
             </div>
 
             {/* Right Column: Stay & Rooms */}
-            <div className="form-column">
-              <div className="form-section">
-                <h3 className="section-title">Stay Information</h3>
+            <div className="hotel-reservation-form-column">
+              <div className="hotel-reservation-form-section">
+                <h3 className="hotel-reservation-section-title">Stay Information</h3>
                 
-                <div className="form-row">
-                  <div className="form-group">
+                <div className="hotel-reservation-form-row">
+                  <div className="hotel-reservation-form-group">
                     <label>Check-in Date</label>
                     <input
                       type="date"
@@ -469,7 +469,7 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
                     />
                   </div>
 
-                  <div className="form-group">
+                  <div className="hotel-reservation-form-group">
                     <label>Check-out Date</label>
                     <input
                       type="date"
@@ -481,22 +481,22 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
                   </div>
                 </div>
 
-                <div className="form-group">
+                <div className="hotel-reservation-form-group">
                   <label>No. of Nights</label>
                   <input
                     type="text"
                     value={formData.noOfNights}
                     readOnly
-                    className="readonly-input calculated-field"
+                    className="hotel-reservation-readonly-input calculated-field"
                   />
                 </div>
               </div>
 
-              <div className="form-section">
-                <h3 className="section-title">Basis & Wing</h3>
+              <div className="hotel-reservation-form-section">
+                <h3 className="hotel-reservation-section-title">Basis & Wing</h3>
                 
-                <div className="form-row">
-                  <div className="form-group">
+                <div className="hotel-reservation-form-row">
+                  <div className="hotel-reservation-form-group">
                     <label>Basis</label>
                     <select
                       name="basis"
@@ -510,7 +510,7 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
                     </select>
                   </div>
 
-                  <div className="form-group">
+                  <div className="hotel-reservation-form-group">
                     <label>Wing Type</label>
                     <select
                       name="wingType"
@@ -526,12 +526,12 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
                 </div>
               </div>
 
-              <div className="form-section">
-                <h3 className="section-title">Room Allocation</h3>
+              <div className="hotel-reservation-form-section">
+                <h3 className="hotel-reservation-section-title">Room Allocation</h3>
                 
-                <div className="room-allocation-grid">
+                <div className="hotel-reservation-room-allocation-grid">
                   {Object.keys(formData.rooms).map(roomType => (
-                    <div key={roomType} className="room-input-row">
+                    <div key={roomType} className="hotel-reservation-room-input-row">
                       <label>{roomType}</label>
                       <input
                         type="number"
@@ -545,23 +545,23 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
                 </div>
               </div>
 
-              <div className="form-section">
-                <h3 className="section-title">Payment & Rate</h3>
+              <div className="hotel-reservation-form-section">
+                <h3 className="hotel-reservation-section-title">Payment & Rate</h3>
                 
-                <div className="form-group">
+                <div className="hotel-reservation-form-group">
                   <label>Rate Applicable</label>
-                  <div className="duration-display">
-                    <span className="duration-badge">${formData.rateApplicable}</span>
+                  <div className="hotel-reservation-duration-display">
+                    <span className="hotel-reservation-duration-badge">${formData.rateApplicable}</span>
                   </div>
                 </div>
 
-                <div className="form-group">
+                <div className="hotel-reservation-form-group">
                   <label>Confirmed By</label>
                   <input
                     type="text"
                     value={formData.confirmBy}
                     readOnly
-                    className="readonly-input"
+                    className="hotel-reservation-readonly-input"
                     style={{ background: '#f1f5f9', cursor: 'not-allowed' }}
                   />
                   <small style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>
@@ -572,11 +572,11 @@ const HotelReservationForm = ({ trip, onClose, onSubmit, initialData = null }) =
             </div>
           </div>
 
-          <div className="form-actions">
-            <button type="button" className="btn-cancel" onClick={onClose}>
+          <div className="hotel-reservation-form-actions">
+            <button type="button" className="hotel-reservation-btn-cancel" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className="btn-submit">
+            <button type="submit" className="hotel-reservation-btn-submit">
               <span className="icon-check"></span>
               Generate Preview
             </button>

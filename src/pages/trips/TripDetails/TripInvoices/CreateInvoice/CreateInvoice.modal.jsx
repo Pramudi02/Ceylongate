@@ -56,13 +56,13 @@ const genInvoiceNo = () => {
   return `CGTLK ${year}-${randNum}-${letter}`;
 };
 
-const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
+const CreateInvoiceModal = ({ tripData, onClose, onCreate, initialInvoice, viewOnly = false }) => {
   const [agentName, setAgentName] = useState('');
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
   const [telephone, setTelephone] = useState('');
 
-  const [invoiceNo] = useState(genInvoiceNo());
+  const [invoiceNo, setInvoiceNo] = useState(genInvoiceNo());
   const [invoiceDate, setInvoiceDate] = useState(new Date().toISOString().slice(0, 10));
   const [country, setCountry] = useState('Sri Lanka');
   const [clientCountry, setClientCountry] = useState('Italy');
@@ -98,6 +98,8 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
   const [checkedBy, setCheckedBy] = useState(sampleEmployees[1]);
 
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [changeNote, setChangeNote] = useState('');
+  const isView = !!viewOnly;
 
   useEffect(() => {
     // ensure rowsByCountry reflect currency changes or initial country selection
@@ -131,6 +133,55 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
       setPaymentText(defaultPaymentTextFor(paymentMode));
     }
   }, [paymentMode]);
+
+  // Prefill form when editing an existing invoice (use latest snapshot if available)
+  useEffect(() => {
+    if (!initialInvoice) return;
+    const latest = (initialInvoice.versionHistory && initialInvoice.versionHistory.length)
+      ? initialInvoice.versionHistory[initialInvoice.versionHistory.length - 1].snapshot || initialInvoice
+      : initialInvoice;
+
+    // basic fields
+    setInvoiceNo(initialInvoice.id || latest.invoiceDetails?.invoiceNo || invoiceNo);
+    setInvoiceDate(latest.invoiceDetails?.invoiceDate || initialInvoice.created || invoiceDate);
+    setCountry(latest.invoiceDetails?.country || latest.country || country);
+    setClientCountry(latest.invoiceDetails?.clientCountry || latest.clientCountry || clientCountry);
+    setTourNo(latest.invoiceDetails?.tourNo || latest.tourNo || tourNo);
+    setInvoiceCurrency(latest.invoiceDetails?.invoiceCurrency || latest.invoiceCurrency || invoiceCurrency);
+
+    setAgentName(latest.agent?.name || latest.agentName || agentName);
+    setAddress(latest.agent?.address || latest.address || address);
+    setEmail(latest.agent?.email || latest.email || email);
+    setTelephone(latest.agent?.telephone || latest.telephone || telephone);
+
+    setClientName(latest.reimbursement?.clientName || latest.clientName || clientName);
+    setTravelFrom(latest.reimbursement?.travelFrom || latest.travelFrom || travelFrom);
+    setTravelTo(latest.reimbursement?.travelTo || latest.travelTo || travelTo);
+
+    setTourLeaderDiscount(latest.totals?.tourLeaderDiscount || latest.tourLeaderDiscount || tourLeaderDiscount);
+    setAmountPaid(latest.totals?.amountPaid || latest.amountPaid || amountPaid);
+
+    setPaymentMode(latest.payment?.paymentMode || latest.paymentMode || paymentMode);
+    setPaymentText(latest.payment?.paymentText || latest.paymentText || paymentText);
+    setSelectedBank(latest.payment?.bankId || latest.bankId || selectedBank);
+
+    setPreparedBy(latest.prepared || latest.preparedBy || preparedBy);
+    setCheckedBy(latest.checked || latest.checkedBy || checkedBy);
+
+    // reconstruct rowsByCountry from snapshot rows if present
+    if (Array.isArray(latest.rows)) {
+      const grouped = { 'Sri Lanka': [], 'Maldives': [] };
+      latest.rows.forEach(r => {
+        if (r.country === 'Maldives') grouped['Maldives'].push(r);
+        else grouped['Sri Lanka'].push(r);
+      });
+      setRowsByCountry(prev => ({
+        'Sri Lanka': grouped['Sri Lanka'].length ? grouped['Sri Lanka'] : prev['Sri Lanka'],
+        'Maldives': grouped['Maldives'].length ? grouped['Maldives'] : prev['Maldives']
+      }));
+      setActiveTab(grouped['Sri Lanka'].length ? 'Sri Lanka' : 'Maldives');
+    }
+  }, [initialInvoice]);
 
   const currencySymbol = currencySymbols[invoiceCurrency] || '';
 
@@ -180,34 +231,71 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
     return '';
   };
 
-  const generateInvoiceObject = () => {
+  const generateInvoiceObject = (opts = {}) => {
+    // opts.initialInvoice - if provided, we are creating a new version of existing invoice
     const flattenedRows = country === 'Both'
-      ? [...(rowsByCountry['Sri Lanka'] || []), ...(rowsByCountry['Maldives'] || [])]
-      : (rowsByCountry[country] || []);
+      ? [
+          ...(rowsByCountry['Sri Lanka'] || []).map(r => ({ ...r, country: 'Sri Lanka' })),
+          ...(rowsByCountry['Maldives'] || []).map(r => ({ ...r, country: 'Maldives' }))
+        ]
+      : (rowsByCountry[country] || []).map(r => ({ ...r, country }));
 
-    return ({
-    id: invoiceNo,
-    status: 'Draft',
-    total: `${currencySymbol}${total.toFixed(2)}`,
-    created: invoiceDate,
-    finalized: '-',
-    versions: 1,
-    versionHistory: [{ version: 1, date: invoiceDate, amount: `${currencySymbol}${total.toFixed(2)}`, changes: 'Invoice created' }],
-    agent: { name: agentName, address, email, telephone },
-    invoiceDetails: { invoiceNo, invoiceDate, country, clientCountry, tourNo, invoiceCurrency },
-    reimbursement: { reimbursementText: reimbursementText(), clientName, travelFrom, travelTo },
-    rows: flattenedRows,
-    totals: { total, tourLeaderDiscount: Number(tourLeaderDiscount || 0), totalWithDiscount, amountPaid: Number(amountPaid || 0), balance },
-    payment: { paymentMode, paymentText, bankId: selectedBank },
-    prepared: preparedBy,
-    checked: checkedBy,
-    tripRef: tripData?.id || null
-    });
+    const baseInvoice = {
+      id: invoiceNo,
+      status: opts.initialInvoice ? opts.initialInvoice.status || 'Draft' : 'Draft',
+      total: `${currencySymbol}${total.toFixed(2)}`,
+      created: opts.initialInvoice ? opts.initialInvoice.created || invoiceDate : invoiceDate,
+      finalized: opts.initialInvoice ? opts.initialInvoice.finalized || '-' : '-',
+      agent: { name: agentName, address, email, telephone },
+      invoiceDetails: { invoiceNo, invoiceDate, country, clientCountry, tourNo, invoiceCurrency },
+      reimbursement: { reimbursementText: reimbursementText(), clientName, travelFrom, travelTo },
+      rows: flattenedRows,
+      totals: { total, tourLeaderDiscount: Number(tourLeaderDiscount || 0), totalWithDiscount, amountPaid: Number(amountPaid || 0), balance },
+      payment: { paymentMode, paymentText, bankId: selectedBank },
+      prepared: preparedBy,
+      checked: checkedBy,
+      tripRef: tripData?.id || null
+    };
+
+    if (opts.initialInvoice) {
+      const newVersion = (opts.initialInvoice.versions || 1) + 1;
+      const newHistoryEntry = {
+        version: newVersion,
+        date: invoiceDate,
+        amount: `${currencySymbol}${total.toFixed(2)}`,
+        changes: opts.changeNote || 'Edited',
+        snapshot: baseInvoice
+      };
+      return {
+        ...opts.initialInvoice,
+        ...baseInvoice,
+        versions: newVersion,
+        versionHistory: [
+          ...(opts.initialInvoice.versionHistory || []),
+          newHistoryEntry
+        ]
+      };
+    }
+
+    // new invoice
+    const initialHistory = {
+      version: 1,
+      date: invoiceDate,
+      amount: `${currencySymbol}${total.toFixed(2)}`,
+      changes: 'Invoice created',
+      snapshot: baseInvoice
+    };
+
+    return {
+      ...baseInvoice,
+      versions: 1,
+      versionHistory: [initialHistory]
+    };
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const inv = generateInvoiceObject();
+    const inv = initialInvoice ? generateInvoiceObject({ initialInvoice, changeNote: changeNote || 'Edited' }) : generateInvoiceObject();
     onCreate && onCreate(inv);
   };
 
@@ -222,11 +310,13 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <h2>Create New Invoice</h2>
+          <h2>{isView ? 'View Invoice' : (initialInvoice ? 'Edit Invoice' : 'Create New Invoice')}</h2>
           <button className="btn-close" onClick={onClose}>×</button>
         </div>
 
         <form className="trip-form" onSubmit={handleSubmit}>
+          {/* disable all form controls when in view-only mode */}
+          <fieldset disabled={isView} style={{border:'none',padding:0,margin:0}}>
           <div className="form-grid">
             <section className="form-section">
               <h3 className="section-title">Agent Details</h3>
@@ -462,12 +552,19 @@ const CreateInvoiceModal = ({ tripData, onClose, onCreate }) => {
               </div>
             </section>
           </div>
+          </fieldset>
 
           <div className="form-actions">
             <button type="button" className="btn-cancel" onClick={() => setPreviewOpen(prev => !prev)}>{previewOpen ? 'Hide Preview' : 'Preview'}</button>
+            {initialInvoice && (
+              <div style={{marginLeft:12, marginRight:12}}>
+                <label style={{display:'block',fontSize:12,marginBottom:6}}>Change note (optional)</label>
+                <input value={changeNote} onChange={e => setChangeNote(e.target.value)} placeholder="What changed in this version" />
+              </div>
+            )}
             <div style={{display:'flex',gap:12}}>
-              <button type="button" className="btn-add-new" onClick={handleGeneratePDF}>Generate PDF</button>
-              <button type="submit" className="btn-submit">Save Invoice</button>
+              {/* In view mode, offer a direct Download/Print but hide Save */}
+              {!isView && <button type="submit" className="btn-submit">Save Invoice</button>}
             </div>
           </div>
         </form>
