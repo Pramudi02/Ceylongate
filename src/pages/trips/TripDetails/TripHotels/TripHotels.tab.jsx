@@ -237,7 +237,7 @@ const TripHotels = ({ tripData }) => {
         </h3>
         <div className="header-actions">
           <button className="btn-create-order" onClick={handleCreateReservation}>
-            + Create Hotel Order
+            + Create New Reservation
           </button>
         </div>
       </div>

@@ -1,4 +1,4 @@
-/* Trip Invoices - Modal-like View Styling */
+/* Trip Invoices - Main View Styling */
 .trip-invoices-view {
   display: flex;
   flex-direction: column;
@@ -6,47 +6,29 @@
 }
 
 /* Trip Invoices - Header */
-.trip-invoices-header {
+.invoices-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-xl) var(--space-2xl);
-  border-bottom: 2px solid var(--gray-200);
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
 
-.trip-invoices-header h3 {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--gray-900);
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.trip-invoices-create-btn {
-  background: transparent;
-  color: #3B82F6;
-  border: 2px solid #3B82F6;
-  padding: 9px 24px;
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-bold);
+.btn-create-order {
+  padding: var(--space-sm) var(--space-md);
+  background: white;
+  color: #1e3a8a;
+  border: 2px solid #3b82f6;
+  border-radius: var(--radius-sm);
   cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   transition: all var(--transition-base);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
 }
 
-.trip-invoices-create-btn:hover {
-  background:#3B82F6;
+.btn-create-order:hover {
+  background: #3b82f6;
   color: white;
-  border-color: #3B82F6;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(52, 139, 180, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 /* Trip Invoices - List Container */
@@ -54,7 +36,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
-  padding: var(--space-2xl);
 }
 
 /* Trip Invoices - Card Styling */

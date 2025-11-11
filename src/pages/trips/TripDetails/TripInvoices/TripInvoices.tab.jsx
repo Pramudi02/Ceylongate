@@ -211,9 +211,11 @@ const TripInvoices = ({ tripData }) => {
 
   return (
     <div className="trip-invoices-view">
-      <div className="trip-invoices-header">
-  <h3 className="section-title">Invoices</h3>
-  <button className="trip-invoices-create-btn" onClick={() => { setEditingInvoice(null); setShowCreateModal(true); }}>+ Create Invoice</button>
+      <div className="invoices-header">
+        <h3 className="section-title">Invoices</h3>
+        <button className="btn-create-order" onClick={() => { setEditingInvoice(null); setShowCreateModal(true); }}>
+          + Create Invoice
+        </button>
       </div>
 
         <div className="trip-invoices-list">

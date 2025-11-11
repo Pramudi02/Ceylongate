@@ -54,7 +54,7 @@ const TripVouchers = ({ tripData }) => {
           className="btn-primary-invoice "
           onClick={() => navigate(`/trips/${tripData?.id}/service-voucher`, { state: { tripData } })}
         >
-          + Create Voucher
+          + Create New Voucher
         </button>
       </div>
 
