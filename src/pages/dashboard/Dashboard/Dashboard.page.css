@@ -56,10 +56,36 @@
   }
 }
 
+@keyframes travel-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes travel-wave {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-20px) rotate(2deg);
+  }
+  75% {
+    transform: translateY(20px) rotate(-2deg);
+  }
+}
+
 /* Main Dashboard Container */
 .travel-dashboard-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #e0f2fe 100%);
+  background: linear-gradient(135deg, #e0f2fe, #f0f9ff, #dbeafe, #e0f2fe, #f0f9ff);
+  background-size: 400% 400%;
+  animation: travel-gradient-shift 15s ease infinite;
   padding: var(--space-lg);
   position: relative;
   overflow: hidden;
@@ -68,7 +94,7 @@
 /* Main Dashboard Container */
 .travel-dashboard-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #e0f2fe 100%);
+  background: transparent;
   padding: var(--space-lg);
   position: relative;
   overflow: hidden;
@@ -440,9 +466,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-light));
+  background-color: #4ba0c1cf;
   border-radius: 12px;
   flex-shrink: 0;
+  color: #000;
   box-shadow: 0 4px 16px rgba(52, 139, 180, 0.25);
   background-size: 24px 24px;
   background-repeat: no-repeat;

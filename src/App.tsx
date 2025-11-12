@@ -15,6 +15,7 @@ import AgentDetails from './pages/agents/AgentDetails/AgentDetails.page';
 import GuidesList from './pages/guides/GuidesList/GuidesList.page';
 import GuideDetails from './pages/guides/GuideDetails/GuideDetails.page';
 import UsersManagement from './pages/users/UsersManagement/UsersManagement.page';
+import Reports from './pages/reports/Reports.page';
 import NotFound from './pages/not-found/NotFound/NotFound.page';
 
 function App() {
@@ -44,6 +45,9 @@ function App() {
           
           {/* Users */}
           <Route path="/users" element={<UsersManagement />} />
+          
+          {/* Reports */}
+          <Route path="/reports" element={<Reports />} />
           
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
