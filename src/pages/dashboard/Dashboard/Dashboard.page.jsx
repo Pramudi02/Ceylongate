@@ -68,28 +68,33 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="dashboard-page">
-     
+    <div className="travel-dashboard-page">
+      {/* Animated Background */}
+      <div className="travel-dashboard-bg">
+        <div className="travel-bg-orb travel-bg-orb-1"></div>
+        <div className="travel-bg-orb travel-bg-orb-2"></div>
+        <div className="travel-bg-orb travel-bg-orb-3"></div>
+      </div>
 
       {/* Main Content */}
-      <div className="dashboard-content">
+      <div className="travel-dashboard-content">
         {/* Welcome Section */}
-        <div className="welcome-section">
-          <div>
-            <h2 className="welcome-title">Welcome back, Ravindu!</h2>
-            <p className="welcome-subtitle">Here's what's happening with your travel business today</p>
+        <div className="travel-welcome-section">
+          <div className="travel-welcome-text">
+            <h2 className="travel-welcome-title">Welcome back, Ravindu!</h2>
+            <p className="travel-welcome-subtitle">Here's what's happening with your travel business today</p>
           </div>
         </div>
 
         {/* Stats Grid */}
-        <div className="stats-grid">
+        <div className="travel-stats-grid">
           {stats.map((stat, index) => (
-              <div key={index} className={`stat-card stat-${stat.color}`}>
-              <div className={`stat-icon icon-${stat.icon}`}></div>
-              <div className="stat-content">
-                <p className="stat-title">{stat.title}</p>
-                <h3 className="stat-value">{stat.value}</h3>
-                <span className={`stat-trend ${stat.trendUp ? 'trend-up' : 'trend-down'}`}>
+            <div key={index} className={`travel-stat-card travel-stat-${stat.color}`} style={{ animationDelay: `${index * 0.1}s` }}>
+              <div className={`travel-stat-icon travel-icon-${stat.icon}`}></div>
+              <div className="travel-stat-content">
+                <p className="travel-stat-title">{stat.title}</p>
+                <h3 className="travel-stat-value">{stat.value}</h3>
+                <span className={`travel-stat-trend ${stat.trendUp ? 'travel-trend-up' : 'travel-trend-down'}`}>
                   {stat.trendUp ? '↑' : '↓'} {stat.trend}
                 </span>
               </div>
@@ -98,33 +103,34 @@ const Dashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="section">
-          <div className="quick-actions-grid">
+        <div className="travel-section">
+          <div className="travel-quick-actions-grid">
             {quickActions.map((action, index) => (
               <button
                 key={index}
-                className={`quick-action-btn action-${action.color}`}
+                className={`travel-quick-action-btn travel-action-${action.color}`}
                 onClick={action.action}
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <span className={`action-icon icon-${action.icon}`}></span>
-                <span className="action-label">{action.label}</span>
+                <span className={`travel-action-icon travel-icon-${action.icon}`}></span>
+                <span className="travel-action-label">{action.label}</span>
               </button>
             ))}
           </div>
         </div>
 
         {/* Two Column Layout */}
-        <div className="dashboard-grid">
+        <div className="travel-dashboard-grid">
           {/* Recent Activity */}
-          <div className="card">
-            <h3 className="card-title">Recent Activity</h3>
-            <div className="activity-list">
+          <div className="travel-card">
+            <h3 className="travel-card-title">Recent Activity</h3>
+            <div className="travel-activity-list">
               {recentActivities.map(activity => (
-                <div key={activity.id} className="activity-item">
-                  <span className={`activity-icon icon-${activity.icon}`}></span>
-                  <div className="activity-content">
-                    <p className="activity-message">{activity.message}</p>
-                    <span className="activity-time">{activity.time}</span>
+                <div key={activity.id} className="travel-activity-item">
+                  <span className={`travel-activity-icon travel-icon-${activity.icon}`}></span>
+                  <div className="travel-activity-content">
+                    <p className="travel-activity-message">{activity.message}</p>
+                    <span className="travel-activity-time">{activity.time}</span>
                   </div>
                 </div>
               ))}
@@ -132,21 +138,21 @@ const Dashboard = () => {
           </div>
 
           {/* Upcoming Trips */}
-          <div className="card">
-            <h3 className="card-title">Upcoming Trips</h3>
-            <div className="trips-list">
+          <div className="travel-card">
+            <h3 className="travel-card-title">Upcoming Trips</h3>
+            <div className="travel-trips-list">
               {upcomingTrips.map(trip => (
-                <div key={trip.id} className="trip-item">
-                  <div className="trip-info">
-                    <h4 className="trip-name">{trip.name}</h4>
-                    <p className="trip-details">
-                      <span><span className="icon-calendar"></span> {trip.date}</span>
-                      <span><span className="icon-users"></span> {trip.guests} guests</span>
+                <div key={trip.id} className="travel-trip-item">
+                  <div className="travel-trip-info">
+                    <h4 className="travel-trip-name">{trip.name}</h4>
+                    <p className="travel-trip-details">
+                      <span><span className="travel-icon-calendar"></span> {trip.date}</span>
+                      <span><span className="travel-icon-users"></span> {trip.guests} guests</span>
                     </p>
-                    <p className="trip-guide">Guide: {trip.guide}</p>
+                    <p className="travel-trip-guide">Guide: {trip.guide}</p>
                   </div>
                   <button
-                    className="btn-view"
+                    className="travel-btn-view"
                     onClick={() => navigate(`/trips/${trip.id}`)}
                   >
                     View
@@ -154,7 +160,7 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-            <button className="btn-primary btn-full" onClick={() => navigate('/trips')}>
+            <button className="travel-btn-primary travel-btn-full" onClick={() => navigate('/trips')}>
               View All Trips
             </button>
           </div>
